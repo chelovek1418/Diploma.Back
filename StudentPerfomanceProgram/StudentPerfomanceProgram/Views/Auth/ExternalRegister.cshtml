@@ -1,0 +1,25 @@
+﻿@model ExternalRegisterViewModel
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Register</title>
+</head>
+<body>
+    <form asp-controller="Auth" asp-action="ExternalRegister" method="post">
+        <input type="hidden" asp-for="ReturnUrl" />
+        <div>
+            <label>Username</label>
+            <input asp-for="Username" />
+        </div>
+        <div>
+            <button type="submit">Sign Up</button>
+        </div>
+    </form>
+</body>
+</html>

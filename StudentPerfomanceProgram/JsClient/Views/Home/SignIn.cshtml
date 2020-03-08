@@ -1,0 +1,28 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>SignIn</title>
+</head>
+<body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/oidc-client/1.10.1/oidc-client.min.js"></script>
+    <script>
+        var userManger = new Oidc.UserManager({
+            userStore: new Oidc.WebStorageStateStore({ store: window.localStorage }),
+            response_mode: "query"
+        });
+        userManger.signinCallback().then(res => {
+            console.log(res);
+
+            window.location.href = '/home/index';
+        })
+    </script>
+
+</body>
+</html>
