@@ -1,7 +1,6 @@
 ﻿using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using StudentPerfomance.Dal.Constants.Procedures;
-using StudentPerfomance.Dal.Data;
 
 namespace StudentPerfomance.Dal.Repository
 {

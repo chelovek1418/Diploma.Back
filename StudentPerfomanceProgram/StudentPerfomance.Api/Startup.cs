@@ -1,15 +1,16 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using StudentPerfomance.Bll.Dtos;
+using StudentPerfomance.Bll.Interfaces;
+using StudentPerfomance.Bll.Services;
+using StudentPerfomance.Dal;
+using StudentPerfomance.Dal.Entities;
+using StudentPerfomance.Dal.Interfaces;
+using StudentPerfomance.Dal.Repository;
 
 namespace StudentPerfomance.Api
 {
@@ -24,13 +25,23 @@ namespace StudentPerfomance.Api
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddAuthentication("Bearer")
-                .AddJwtBearer("Bearer", config =>
-                {
-                    config.Authority = "https://localhost:44361/";
+            var connectionString = Configuration.GetConnectionString("DefaultConnection");
 
-                    config.Audience = "api1";
-                });
+            services.AddDbContext<StudentPerfomanceDbContext>(o => o.UseSqlServer(connectionString));
+            
+            services.AddScoped<IGroupRepository, GroupRepository>();
+            services.AddScoped<IGroupService, GroupService>();
+
+            services.AddScoped<IRepository<Lessons>, LessonRepository>();
+            services.AddScoped<ICrudService<LessonDto>, LessonService>();
+
+            //services.AddAuthentication("Bearer")
+            //    .AddJwtBearer("Bearer", config =>
+            //    {
+            //        config.Authority = "https://localhost:44361/";
+
+            //        config.Audience = "api1";
+            //    });
 
             services.AddCors(opt =>
                 opt.AddPolicy("AllowAll", p => p
@@ -54,9 +65,9 @@ namespace StudentPerfomance.Api
 
             app.UseRouting();
 
-            app.UseAuthentication();
+            //app.UseAuthentication();
 
-            app.UseAuthorization();
+            //app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
