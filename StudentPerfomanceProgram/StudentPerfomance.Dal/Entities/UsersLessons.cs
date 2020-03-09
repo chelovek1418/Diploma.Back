@@ -1,4 +1,7 @@
-﻿namespace StudentPerfomance.Dal.Entities
+﻿using System;
+using System.Collections.Generic;
+
+namespace StudentPerfomance.Dal.Entities
 {
     public partial class UsersLessons
     {
@@ -6,6 +9,6 @@
         public int LessonId { get; set; }
 
         public virtual Lessons Lesson { get; set; }
-        public virtual Users User { get; set; }
+        public virtual User User { get; set; }
     }
 }

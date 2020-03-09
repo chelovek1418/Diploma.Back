@@ -1,6 +1,4 @@
-﻿using StudentPerfomance.Dal.Data;
-
-namespace StudentPerfomance.Dal.Repository
+﻿namespace StudentPerfomance.Dal.Repository
 {
     public abstract class ContextProvider
     {

@@ -1,4 +1,7 @@
-﻿namespace StudentPerfomance.Dal.Entities
+﻿using System;
+using System.Collections.Generic;
+
+namespace StudentPerfomance.Dal.Entities
 {
     public partial class GroupsLessons
     {

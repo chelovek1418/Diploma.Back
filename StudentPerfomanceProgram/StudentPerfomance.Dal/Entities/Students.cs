@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace StudentPerfomance.Dal.Entities
 {
@@ -13,7 +14,7 @@ namespace StudentPerfomance.Dal.Entities
         public int GroupId { get; set; }
 
         public virtual Groups Group { get; set; }
-        public virtual Users IdNavigation { get; set; }
+        public virtual User IdNavigation { get; set; }
         public virtual ICollection<Marks> Marks { get; set; }
     }
 }

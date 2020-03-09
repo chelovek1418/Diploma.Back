@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace StudentPerfomance.Bll.Interfaces
+namespace StudentPerfomance.Dal.Interfaces
 {
-    public interface ICrudService<T> where T : class
+    public interface IRepository<T> where T : class
     {
         IAsyncEnumerable<T> GetAllAsync();
 

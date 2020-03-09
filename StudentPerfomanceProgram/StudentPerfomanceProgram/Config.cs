@@ -1,5 +1,6 @@
 ﻿using IdentityServer4;
 using IdentityServer4.Models;
+using StudentPerfomance.IdentityServer.Data.Constants;
 using System.Collections.Generic;
 
 namespace StudentPerfomance.Api
@@ -11,53 +12,55 @@ namespace StudentPerfomance.Api
             {
                 new IdentityResources.OpenId(),
                 //new IdentityResources.Profile(),
-                new IdentityResource
-                {
-                    Name = "rc.scope",
-                    UserClaims =
-                    {
-                        "rc.garndma"
-                    }
-                }
+                //new IdentityResource
+                //{
+                //    Name = "rc.scope",
+                //    UserClaims =
+                //    {
+                //        "rc.garndma"
+                //    }
+                //}
             };
 
-        public static IEnumerable<ApiResource> GetApis() => new List<ApiResource> { new ApiResource("api1")/*, new ApiResource("api2", new string[] { "rc.api.garndma" })*/ };
+        public static IEnumerable<ApiResource> GetApis() => new List<ApiResource> { new ApiResource(IdentityData.StudentPerfomanceApi) };
 
         public static IEnumerable<Client> GetClients() => new List<Client>
         {
-            new Client
-            {
-                ClientId = "client",
-                AllowedGrantTypes = GrantTypes.ClientCredentials,
-                ClientSecrets = { new Secret("secret".Sha256()) },
-                AllowedScopes = { "api1" }
-            },
-            new Client
-            {
-                ClientId = "client_id_mvc",
-                AllowedGrantTypes = GrantTypes.Code,
-                RequirePkce = true,
+            //new Client
+            //{
+            //    ClientId = "client",
+            //    AllowedGrantTypes = GrantTypes.ClientCredentials,
+            //    ClientSecrets = { new Secret("secret".Sha256()) },
+            //    AllowedScopes = { IdentityData.StudentPerfomanceApi }
+            //},
+            //new Client
+            //{
+            //    ClientId = "client_id_mvc",
+            //    AllowedGrantTypes = GrantTypes.Code,
+            //    RequirePkce = true,
 
-                ClientSecrets = { new Secret("client_secret_mvc".Sha256()) },
-                AllowedScopes =
-                {
-                    "api1",
-                    "api2",
-                    IdentityServerConstants.StandardScopes.OpenId,
-                    //IdentityServerConstants.StandardScopes.Profile,
-                    "rc.scope"
-                },
+            //    ClientSecrets = { new Secret("client_secret_mvc".Sha256()) },
+            //    AllowedScopes =
+            //    {
+            //        IdentityData.StudentPerfomanceApi,
+            //        "api2",
+            //        IdentityServerConstants.StandardScopes.OpenId,
+            //        //IdentityServerConstants.StandardScopes.Profile,
+            //        "rc.scope"
+            //    },
 
-                RedirectUris = { "https://localhost:44308/signin-oidc" },
-                PostLogoutRedirectUris = { "https://localhost:44308/Home/Index" },
+            //    RedirectUris = { "https://localhost:44308/signin-oidc" },
+            //    PostLogoutRedirectUris = { "https://localhost:44308/Home/Index" },
 
-                RequireConsent = false,
+            //    RequireConsent = false,
 
-                AllowOfflineAccess = true,
+            //    AllowOfflineAccess = true,
 
-                //AlwaysIncludeUserClaimsInIdToken = true,
-            },
-            // JavaScript Client
+            //    //AlwaysIncludeUserClaimsInIdToken = true,
+            //},
+
+
+            // JS Client
             new Client
             {
                 ClientId = "client_id_js",
@@ -73,12 +76,10 @@ namespace StudentPerfomance.Api
                 AllowedScopes =
                 {
                     IdentityServerConstants.StandardScopes.OpenId,
-                    "api1",
-                    "api2",
-                    "rc.scope"
+                    IdentityData.StudentPerfomanceApi,
+                    //"api2",
+                    //"rc.scope"
                 },
-
-                AccessTokenLifetime = 1,
 
                 AllowAccessTokensViaBrowser = true,
                 RequireConsent = false,
