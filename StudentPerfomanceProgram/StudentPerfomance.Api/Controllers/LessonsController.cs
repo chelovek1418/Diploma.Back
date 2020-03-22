@@ -12,17 +12,28 @@ namespace StudentPerfomance.Api.Controllers
     [ApiController]
     public class LessonsController : ControllerBase
     {
-        private readonly ICrudService<LessonDto> _crudService;
+        private readonly ILessonService _lessonService;
 
-        public LessonsController(ICrudService<LessonDto> crudService)
+        public LessonsController(ILessonService lessonService)
         {
-            _crudService = crudService;
+            _lessonService = lessonService;
         }
 
         [HttpGet]
         public async IAsyncEnumerable<LessonViewModel> Get()
         {
-            var lessons = _crudService.GetAllAsync();
+            var lessons = _lessonService.GetAllAsync();
+
+            await foreach (var lesson in lessons)
+            {
+                yield return lesson.ToViewModel();
+            }
+        }
+
+        [HttpGet("[action]")]
+        public async IAsyncEnumerable<LessonViewModel> GetByGroup(int groupId)
+        {
+            var lessons = _lessonService.GetLessonsByGroup(groupId);
 
             await foreach (var lesson in lessons)
             {
@@ -33,7 +44,7 @@ namespace StudentPerfomance.Api.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<LessonViewModel>> Get(int id)
         {
-            var lesson = await _crudService.GetByIdAsync(id);
+            var lesson = await _lessonService.GetByIdAsync(id);
 
             if (lesson == null)
                 return NotFound(nameof(LessonViewModel));
@@ -47,7 +58,7 @@ namespace StudentPerfomance.Api.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            viewModel.Id = await _crudService.CreateAsync(viewModel.ToDto());
+            viewModel.Id = await _lessonService.CreateAsync(viewModel.ToDto());
 
             return CreatedAtAction(nameof(Get), viewModel);
         }
@@ -59,7 +70,7 @@ namespace StudentPerfomance.Api.Controllers
                 return BadRequest(ModelState);
 
             viewModel.Id = id;
-            await _crudService.UpdateAsync(viewModel.ToDto());
+            await _lessonService.UpdateAsync(viewModel.ToDto());
 
             return NoContent();
         }
@@ -67,7 +78,7 @@ namespace StudentPerfomance.Api.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            await _crudService.DeleteAsync(id);
+            await _lessonService.DeleteAsync(id);
 
             return NoContent();
         }

@@ -1,0 +1,196 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using StudentPerfomance.Api.Extensions;
+using StudentPerfomance.Api.Helpers;
+using StudentPerfomance.Api.ViewModels.UserViewModels;
+using StudentPerfomance.Bll.Interfaces;
+
+namespace StudentPerfomance.Api.Controllers
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    public class UsersController : ControllerBase
+    {
+        private readonly IUserService _userService;
+
+        public UsersController(IUserService userService)
+        {
+            _userService = userService;
+        }
+
+        [HttpGet]
+        public async IAsyncEnumerable<UserViewModel> Get()
+        {
+            var users = _userService.GetAllAsync();
+
+            await foreach (var user in users)
+            {
+                yield return user.ToViewModel();
+            }
+        }
+
+        [HttpGet("[action]")]
+        public async IAsyncEnumerable<StudentViewModel> GetTopSudents(DateTime? date)
+        {
+            if (!date.HasValue)
+                date = DateTimeHelper.GetTermStartDate();
+
+            await foreach (var student in _userService.GetTopStudents((DateTime)date))
+                yield return student.ToViewModel();
+        }
+
+        [HttpGet("[action]")]
+        public async Task<ActionResult<StudentViewModel>> GetBestStudent()
+        {
+            var student = await _userService.GetBestStudent();
+
+            if (student == null)
+                return NotFound(nameof(StudentViewModel));
+
+            return Ok(student.ToViewModel());
+        }
+
+        [HttpGet("[action]")]
+        public async Task<ActionResult<StudentViewModel>> GetWorstStudent()
+        {
+            var student = await _userService.GetWorstStudent();
+
+            if (student == null)
+                return NotFound(nameof(StudentViewModel));
+
+            return Ok(student.ToViewModel());
+        }
+
+        [HttpGet("[action]")]
+        public async Task<ActionResult<StudentViewModel>> GetBestStudentForLessonInGroup(int lessonId, int groupId)
+        {
+            var student = await _userService.GetBestStudentForLessonInGroup(lessonId, groupId);
+
+            if (student == null)
+                return NotFound(nameof(StudentViewModel));
+
+            return Ok(student.ToViewModel());
+        }
+
+        [HttpGet("[action]")]
+        public async Task<ActionResult<StudentViewModel>> GetWorstStudentForLessonInGroup(int lessonId, int groupId)
+        {
+            var student = await _userService.GetWorstStudentForLessonInGroup(lessonId, groupId);
+
+            if (student == null)
+                return NotFound(nameof(StudentViewModel));
+
+            return Ok(student.ToViewModel());
+        }
+
+        [HttpGet("[action]")]
+        public async Task<ActionResult<StudentViewModel>> GetBestStudentForLesson(int lessonId)
+        {
+            var student = await _userService.GetBestStudentForLesson(lessonId);
+
+            if (student == null)
+                return NotFound(nameof(StudentViewModel));
+
+            return Ok(student.ToViewModel());
+        }
+
+        [HttpGet("[action]")]
+        public async Task<ActionResult<StudentViewModel>> GetWorstStudentForLesson(int lessonId)
+        {
+            var student = await _userService.GetWorstStudentForLesson(lessonId);
+
+            if (student == null)
+                return NotFound(nameof(StudentViewModel));
+
+            return Ok(student.ToViewModel());
+        }
+
+        [HttpGet("[action]")]
+        public async Task<ActionResult<StudentViewModel>> GetBestStudentInGroup(int groupId)
+        {
+            var student = await _userService.GetBestStudentInGroup(groupId);
+
+            if (student == null)
+                return NotFound(nameof(StudentViewModel));
+
+            return Ok(student.ToViewModel());
+        }
+
+        [HttpGet("[action]")]
+        public async Task<ActionResult<StudentViewModel>> GetWorstStudentInGroup(int groupId)
+        {
+            var student = await _userService.GetWorstStudentInGroup(groupId);
+
+            if (student == null)
+                return NotFound(nameof(StudentViewModel));
+
+            return Ok(student.ToViewModel());
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<UserViewModel>> Get(int id)
+        {
+            var user = await _userService.GetByIdAsync(id);
+
+            if (user == null)
+                return NotFound(nameof(UserViewModel));
+
+            return Ok(user.ToViewModel());
+        }
+
+        [HttpGet("[action]")]
+        public async Task<ActionResult<StudentViewModel>> GetStudent(int id)
+        {
+            var student = await _userService.GetStudentByIdAsync(id);
+
+            if (student == null)
+                return NotFound(nameof(StudentViewModel));
+
+            return Ok(student.ToViewModel());
+        }
+
+        [HttpPost("[action]")]
+        public async Task<IActionResult> CreateStudent([FromBody] StudentViewModel viewModel)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            viewModel.Id = await _userService.CreateStudentAsync(viewModel.ToDto());
+
+            return CreatedAtAction(nameof(Get), viewModel);
+        }
+
+        [HttpPost("[action]")]
+        public async Task<IActionResult> CreateUser([FromBody] UserViewModel viewModel)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            viewModel.Id = await _userService.CreateAsync(viewModel.ToDto());
+
+            return CreatedAtAction(nameof(Get), viewModel);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Put(int id, [FromBody] UserViewModel viewModel)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            viewModel.Id = id;
+            await _userService.UpdateAsync(viewModel.ToDto());
+
+            return NoContent();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            await _userService.DeleteAsync(id);
+
+            return NoContent();
+        }
+    }
+}

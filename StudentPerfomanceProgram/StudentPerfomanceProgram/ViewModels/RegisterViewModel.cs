@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace StudentPerfomance.IdentityServer.Controllers
+namespace StudentPerfomance.IdentityServer.ViewModels
 {
     public class RegisterViewModel
     {

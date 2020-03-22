@@ -4,67 +4,24 @@ using IdentityServer4.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using StudentPerfomance.IdentityServer.Models;
+using StudentPerfomance.IdentityServer.ViewModels;
 
 namespace StudentPerfomance.IdentityServer.Controllers
 {
-    [ApiController]
-    [Route("api/[controller]/[action]")]
-    public class AuthController : ControllerBase
+    public class AuthController : Controller
     {
         private readonly SignInManager<SPUser> _signInManager;
-        private readonly IIdentityServerInteractionService _identityInteractionService;
         private readonly UserManager<SPUser> _userManager;
+        private readonly IIdentityServerInteractionService _interactionService;
 
-        public AuthController(SignInManager<SPUser> signInManager, UserManager<SPUser> userManager, IIdentityServerInteractionService serverInteractionService)
+        public AuthController(
+            UserManager<SPUser> userManager,
+            SignInManager<SPUser> signInManager,
+            IIdentityServerInteractionService interactionService)
         {
-            _identityInteractionService = serverInteractionService;
             _signInManager = signInManager;
             _userManager = userManager;
-        }
-
-        [HttpGet("{returnUrl}")]
-        public async Task<ActionResult<LoginViewModel>> Login(string returnUrl)
-        {
-            var externalProviders = await _signInManager.GetExternalAuthenticationSchemesAsync();
-
-            return Ok(new LoginViewModel { ReturnUrl = returnUrl, ExternalProviders = externalProviders });
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Login(LoginViewModel loginViewModel)
-        {
-            if (ModelState.IsValid && (await _signInManager.PasswordSignInAsync(loginViewModel.Username, loginViewModel.Password, false, false)).Succeeded)
-            {
-                return NoContent();
-            }
-
-            return BadRequest(ModelState);
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Register(RegisterViewModel vm)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            var user = new SPUser { UserName = vm.Email };
-            //await _userManager.AddClaimAsync(user, new Claim("rc.garndma", "big.cookie"));
-            //await _userManager.AddClaimAsync(user, new Claim("rc.api.garndma", "big.api.cookie"));
-
-            var registerResult = await _userManager.CreateAsync(user, vm.Password);
-
-            if (registerResult.Succeeded)
-            {
-                await _signInManager.SignInAsync(user, false);
-
-                return Ok();
-            }
-            else
-            {
-                return BadRequest(registerResult.Errors);
-            }
+            _interactionService = interactionService;
         }
 
         [HttpGet]
@@ -72,40 +29,102 @@ namespace StudentPerfomance.IdentityServer.Controllers
         {
             await _signInManager.SignOutAsync();
 
-            var logoutRequest = await _identityInteractionService.GetLogoutContextAsync(logoutId);
+            var logoutRequest = await _interactionService.GetLogoutContextAsync(logoutId);
 
             if (string.IsNullOrEmpty(logoutRequest.PostLogoutRedirectUri))
             {
-                return NoContent();
+                return RedirectToAction("Index", "Home");
             }
 
-            return Ok(logoutRequest.PostLogoutRedirectUri);
+            return Redirect(logoutRequest.PostLogoutRedirectUri);
         }
 
-        public IActionResult ExternalLogin(string provider, string returnUrl)
+        [HttpGet]
+        public async Task<IActionResult> Login(string returnUrl)
         {
-            var redirectUri = Url.Action(nameof(ExternalLoginCallback), "Auth", new { returnUrl });
-            var properties = _signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUri);
+            var externalProviders = await _signInManager.GetExternalAuthenticationSchemesAsync();
+            return View(new LoginViewModel
+            {
+                ReturnUrl = returnUrl,
+                ExternalProviders = externalProviders
+            });
+        }
 
+        [HttpPost]
+        public async Task<IActionResult> Login(LoginViewModel vm)
+        {
+            // check if the model is valid
+
+            var result = await _signInManager.PasswordSignInAsync(vm.Username, vm.Password, false, false);
+
+            if (result.Succeeded)
+            {
+                return Redirect(vm.ReturnUrl);
+            }
+            else if (result.IsLockedOut)
+            {
+
+            }
+
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult Register(string returnUrl)
+        {
+            return View(new RegisterViewModel { ReturnUrl = returnUrl });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Register(RegisterViewModel vm)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(vm);
+            }
+
+            var user = new SPUser { UserName = vm.Email };
+            var result = await _userManager.CreateAsync(user, vm.Password);
+
+            if (result.Succeeded)
+            {
+                await _signInManager.SignInAsync(user, false);
+
+                return Redirect(vm.ReturnUrl);
+            }
+
+            return View();
+        }
+
+        public async Task<IActionResult> ExternalLogin(string provider, string returnUrl)
+        {
+            var redirectUri = Url.Action(nameof(ExteranlLoginCallback), "Auth", new { returnUrl });
+            var properties = _signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUri);
             return Challenge(properties, provider);
         }
 
-        public async Task<IActionResult> ExternalLoginCallback(string returnUrl)
+        public async Task<IActionResult> ExteranlLoginCallback(string returnUrl)
         {
             var info = await _signInManager.GetExternalLoginInfoAsync();
             if (info == null)
             {
-                return RedirectToAction(nameof(Login));
+                return RedirectToAction("Login");
             }
 
-            if ((await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, false)).Succeeded)
+            var result = await _signInManager
+                .ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, false);
+
+            if (result.Succeeded)
             {
-                return Ok(returnUrl);
+                return Redirect(returnUrl);
             }
 
             var username = info.Principal.FindFirst(ClaimTypes.Name.Replace(" ", "_")).Value;
-
-            return Ok(new ExternalRegisterViewModel { Username = username, ReturnUrl = returnUrl });
+            return View("ExternalRegister", new ExternalRegisterViewModel
+            {
+                Username = username,
+                ReturnUrl = returnUrl
+            });
         }
 
         public async Task<IActionResult> ExternalRegister(ExternalRegisterViewModel vm)
@@ -113,21 +132,151 @@ namespace StudentPerfomance.IdentityServer.Controllers
             var info = await _signInManager.GetExternalLoginInfoAsync();
             if (info == null)
             {
-                return RedirectToAction(nameof(Login));
+                return RedirectToAction("Login");
             }
 
             var user = new SPUser { UserName = vm.Username };
-            //await _userManager.AddClaimAsync(user, new Claim("rc.garndma", "big.cookie"));
-            //await _userManager.AddClaimAsync(user, new Claim("rc.api.garndma", "big.api.cookie"));
+            var result = await _userManager.CreateAsync(user);
 
-            if (!(await _userManager.CreateAsync(user)).Succeeded | !(await _userManager.AddLoginAsync(user, info)).Succeeded)
+            if (!result.Succeeded)
             {
-                return BadRequest(vm);
+                return View(vm);
+            }
+
+            result = await _userManager.AddLoginAsync(user, info);
+
+            if (!result.Succeeded)
+            {
+                return View(vm);
             }
 
             await _signInManager.SignInAsync(user, false);
 
-            return Ok();
+            return Redirect(vm.ReturnUrl);
         }
     }
+
+    //[ApiController]
+    //[Route("api/[controller]/[action]")]
+    //public class AuthController : ControllerBase
+    //{
+    //    private readonly SignInManager<SPUser> _signInManager;
+    //    private readonly IIdentityServerInteractionService _identityInteractionService;
+    //    private readonly UserManager<SPUser> _userManager;
+
+    //    public AuthController(SignInManager<SPUser> signInManager, UserManager<SPUser> userManager, IIdentityServerInteractionService serverInteractionService)
+    //    {
+    //        _identityInteractionService = serverInteractionService;
+    //        _signInManager = signInManager;
+    //        _userManager = userManager;
+    //    }
+
+    //    [HttpGet("{returnUrl}")]
+    //    public async Task<ActionResult<LoginViewModel>> Login(string returnUrl)
+    //    {
+    //        var externalProviders = await _signInManager.GetExternalAuthenticationSchemesAsync();
+
+    //        return Ok(new LoginViewModel { ReturnUrl = returnUrl, ExternalProviders = externalProviders });
+    //    }
+
+    //    [HttpPost]
+    //    public async Task<IActionResult> Login(LoginViewModel loginViewModel)
+    //    {
+    //        if (ModelState.IsValid && (await _signInManager.PasswordSignInAsync(loginViewModel.Username, loginViewModel.Password, false, false)).Succeeded)
+    //        {
+    //            return NoContent();
+    //        }
+
+    //        return BadRequest(ModelState);
+    //    }
+
+    //    [HttpPost]
+    //    public async Task<IActionResult> Register(RegisterViewModel vm)
+    //    {
+    //        if (!ModelState.IsValid)
+    //        {
+    //            return BadRequest(ModelState);
+    //        }
+
+    //        var user = new SPUser { UserName = vm.Email };
+    //        //await _userManager.AddClaimAsync(user, new Claim("rc.garndma", "big.cookie"));
+    //        //await _userManager.AddClaimAsync(user, new Claim("rc.api.garndma", "big.api.cookie"));
+
+    //        var registerResult = await _userManager.CreateAsync(user, vm.Password);
+
+    //        if (registerResult.Succeeded)
+    //        {
+    //            await _signInManager.SignInAsync(user, false);
+
+    //            return Ok();
+    //        }
+    //        else
+    //        {
+    //            return BadRequest(registerResult.Errors);
+    //        }
+    //    }
+
+    //    [HttpGet]
+    //    public async Task<IActionResult> Logout(string logoutId)
+    //    {
+    //        await _signInManager.SignOutAsync();
+
+    //        var logoutRequest = await _identityInteractionService.GetLogoutContextAsync(logoutId);
+
+    //        if (string.IsNullOrEmpty(logoutRequest.PostLogoutRedirectUri))
+    //        {
+    //            return NoContent();
+    //        }
+
+    //        return Ok(logoutRequest.PostLogoutRedirectUri);
+    //    }
+
+    //    public IActionResult ExternalLogin(string provider, string returnUrl)
+    //    {
+    //        var redirectUri = Url.Action(nameof(ExternalLoginCallback), "Auth", new { returnUrl });
+    //        var properties = _signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUri);
+
+    //        return Challenge(properties, provider);
+    //    }
+
+    //    public async Task<IActionResult> ExternalLoginCallback(string returnUrl)
+    //    {
+    //        var info = await _signInManager.GetExternalLoginInfoAsync();
+    //        if (info == null)
+    //        {
+    //            return RedirectToAction(nameof(Login));
+    //        }
+
+    //        if ((await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, false)).Succeeded)
+    //        {
+    //            return Ok(returnUrl);
+    //        }
+
+    //        var username = info.Principal.FindFirst(ClaimTypes.Name.Replace(" ", "_")).Value;
+
+    //        return Ok(new ExternalRegisterViewModel { Username = username, ReturnUrl = returnUrl });
+    //    }
+
+    //    public async Task<IActionResult> ExternalRegister(ExternalRegisterViewModel vm)
+    //    {
+    //        var info = await _signInManager.GetExternalLoginInfoAsync();
+    //        if (info == null)
+    //        {
+    //            return RedirectToAction(nameof(Login));
+    //        }
+
+    //        var user = new SPUser { UserName = vm.Username };
+    //        //await _userManager.AddClaimAsync(user, new Claim("rc.garndma", "big.cookie"));
+    //        //await _userManager.AddClaimAsync(user, new Claim("rc.api.garndma", "big.api.cookie"));
+
+    //        if (!(await _userManager.CreateAsync(user)).Succeeded | !(await _userManager.AddLoginAsync(user, info)).Succeeded)
+    //        {
+    //            return BadRequest(vm);
+    //        }
+
+    //        await _signInManager.SignInAsync(user, false);
+
+    //        return Ok();
+    //    }
+    //}
 }

@@ -12,14 +12,14 @@ namespace StudentPerfomance.Api
             {
                 new IdentityResources.OpenId(),
                 //new IdentityResources.Profile(),
-                //new IdentityResource
-                //{
-                //    Name = "rc.scope",
-                //    UserClaims =
-                //    {
-                //        "rc.garndma"
-                //    }
-                //}
+                new IdentityResource
+                {
+                    Name = "rc.scope",
+                    UserClaims =
+                    {
+                        "rc.garndma"
+                    }
+                }
             };
 
         public static IEnumerable<ApiResource> GetApis() => new List<ApiResource> { new ApiResource(IdentityData.StudentPerfomanceApi) };
@@ -33,31 +33,31 @@ namespace StudentPerfomance.Api
             //    ClientSecrets = { new Secret("secret".Sha256()) },
             //    AllowedScopes = { IdentityData.StudentPerfomanceApi }
             //},
-            //new Client
-            //{
-            //    ClientId = "client_id_mvc",
-            //    AllowedGrantTypes = GrantTypes.Code,
-            //    RequirePkce = true,
+            new Client
+            {
+                ClientId = "client_id_mvc",
+                AllowedGrantTypes = GrantTypes.Code,
+                RequirePkce = true,
 
-            //    ClientSecrets = { new Secret("client_secret_mvc".Sha256()) },
-            //    AllowedScopes =
-            //    {
-            //        IdentityData.StudentPerfomanceApi,
-            //        "api2",
-            //        IdentityServerConstants.StandardScopes.OpenId,
-            //        //IdentityServerConstants.StandardScopes.Profile,
-            //        "rc.scope"
-            //    },
+                ClientSecrets = { new Secret("client_secret_mvc".Sha256()) },
+                AllowedScopes =
+                {
+                    IdentityData.StudentPerfomanceApi,
+                    //"api2",
+                    IdentityServerConstants.StandardScopes.OpenId,
+                    //IdentityServerConstants.StandardScopes.Profile,
+                    "rc.scope"
+                },
 
-            //    RedirectUris = { "https://localhost:44308/signin-oidc" },
-            //    PostLogoutRedirectUris = { "https://localhost:44308/Home/Index" },
+                RedirectUris = { "https://localhost:44308/signin-oidc" },
+                PostLogoutRedirectUris = { "https://localhost:44308/Home/Index" },
 
-            //    RequireConsent = false,
+                RequireConsent = false,
 
-            //    AllowOfflineAccess = true,
+                AllowOfflineAccess = true,
 
-            //    //AlwaysIncludeUserClaimsInIdToken = true,
-            //},
+                //AlwaysIncludeUserClaimsInIdToken = true,
+            },
 
 
             // JS Client
@@ -78,7 +78,7 @@ namespace StudentPerfomance.Api
                     IdentityServerConstants.StandardScopes.OpenId,
                     IdentityData.StudentPerfomanceApi,
                     //"api2",
-                    //"rc.scope"
+                    "rc.scope"
                 },
 
                 AllowAccessTokensViaBrowser = true,

@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using StudentPerfomance.Api.ViewModels.UserViewModels;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace StudentPerfomance.Api.ViewModels.GroupViewModels
 {
@@ -8,5 +10,12 @@ namespace StudentPerfomance.Api.ViewModels.GroupViewModels
 
         [Required]
         public string Title { get; set; }
+
+        public IEnumerable<StudentViewModel> Students { get; set; }
+
+        public GroupViewModel()
+        {
+            Students = new List<StudentViewModel>();
+        }
     }
 }

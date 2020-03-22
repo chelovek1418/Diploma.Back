@@ -1,12 +1,14 @@
-﻿using StudentPerfomance.Dal.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using StudentPerfomance.Dal.Entities;
 using StudentPerfomance.Dal.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace StudentPerfomance.Dal.Repository
 {
-    public class LessonRepository : ContextProvider, IRepository<Lessons>
+    public class LessonRepository : ContextProvider, ILessonRepository
     {
         public LessonRepository(StudentPerfomanceDbContext context) : base(context)
         {
@@ -34,7 +36,7 @@ namespace StudentPerfomance.Dal.Repository
             await dbContext.SaveChangesAsync();
         }
 
-        public IAsyncEnumerable<Lessons> GetAllAsync() => dbContext.Lessons.AsAsyncEnumerable();
+        public IAsyncEnumerable<Lessons> GetAllAsync() => dbContext.Lessons.AsNoTracking().AsAsyncEnumerable();
 
         public async Task<Lessons> GetByIdAsync(int id)
         {
@@ -46,6 +48,8 @@ namespace StudentPerfomance.Dal.Repository
             return model;
         }
 
+        public IAsyncEnumerable<Lessons> GetLessonsByGroup(int groupId) => dbContext.GroupsLessons.Where(y => y.GroupId == groupId).Select(x=>x.Lesson).AsAsyncEnumerable();
+        
         public async Task UpdateAsync(Lessons model)
         {
             if (model == null)

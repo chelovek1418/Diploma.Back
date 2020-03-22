@@ -32,16 +32,22 @@ namespace StudentPerfomance.Api
             services.AddScoped<IGroupRepository, GroupRepository>();
             services.AddScoped<IGroupService, GroupService>();
 
-            services.AddScoped<IRepository<Lessons>, LessonRepository>();
-            services.AddScoped<ICrudService<LessonDto>, LessonService>();
+            services.AddScoped<ILessonRepository, LessonRepository>();
+            services.AddScoped<ILessonService, LessonService>();
 
-            //services.AddAuthentication("Bearer")
-            //    .AddJwtBearer("Bearer", config =>
-            //    {
-            //        config.Authority = "https://localhost:44361/";
+            services.AddScoped<IMarkRepository, MarkRepository>();
+            services.AddScoped<IMarkService, MarkService>();
 
-            //        config.Audience = "api1";
-            //    });
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IUserService, UserService>();
+
+            services.AddAuthentication("Bearer")
+                .AddJwtBearer("Bearer", config =>
+                {
+                    config.Authority = "https://localhost:44361/";
+
+                    config.Audience = "StudentPerfomanceApi";
+                });
 
             services.AddCors(opt =>
                 opt.AddPolicy("AllowAll", p => p
@@ -65,9 +71,9 @@ namespace StudentPerfomance.Api
 
             app.UseRouting();
 
-            //app.UseAuthentication();
+            app.UseAuthentication();
 
-            //app.UseAuthorization();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {

@@ -1,6 +1,7 @@
 ﻿using StudentPerfomance.Api.ViewModels.GroupViewModels;
 using StudentPerfomance.Bll.Dtos;
 using System;
+using System.Linq;
 
 namespace StudentPerfomance.Api.Extensions
 {
@@ -14,7 +15,8 @@ namespace StudentPerfomance.Api.Extensions
             return new GroupDto
             {
                 Id = vm.Id,
-                Title = vm.Title
+                Title = vm.Title,
+                Students = vm.Students.Select(x => x.ToDto())
             };
         }
 
@@ -26,7 +28,8 @@ namespace StudentPerfomance.Api.Extensions
             return new GroupViewModel
             {
                 Id = dto.Id,
-                Title = dto.Title
+                Title = dto.Title,
+                Students = dto.Students.Select(x=>x.ToViewModel())
             };
         }
     }

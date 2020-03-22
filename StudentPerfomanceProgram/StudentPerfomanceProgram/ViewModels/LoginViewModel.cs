@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using System.Collections.Generic;
 
-namespace StudentPerfomance.IdentityServer.Controllers
+namespace StudentPerfomance.IdentityServer.ViewModels
 {
     public class LoginViewModel
     {

@@ -1,7 +1,8 @@
-﻿namespace StudentPerfomance.Dal.Constants.Procedures
+﻿namespace StudentPerfomance.Dal.Constants
 {
     internal static class StoredProcedures
     {
+        internal const string GetTopStudents = nameof(GetTopStudents);
         internal const string AddSubjectForGroup = nameof(AddSubjectForGroup);
         internal const string AddSubjectMarkForStudent = nameof(AddSubjectMarkForStudent);
         internal const string GetAverageMarkForLessonForStudentProcedure = nameof(GetAverageMarkForLessonForStudentProcedure);
