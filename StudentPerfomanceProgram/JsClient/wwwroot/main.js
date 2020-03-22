@@ -5,7 +5,7 @@
     redirect_uri: "https://localhost:44378/home/signin",
     post_logout_redirect_uri: "https://localhost:44378/Home/Index",
     response_type: "code",
-    scope: "openid rc.scope api1 api2"
+    scope: "openid rc.scope StudentPerfomanceApi"
 };
 
 var userManager = new Oidc.UserManager(config);

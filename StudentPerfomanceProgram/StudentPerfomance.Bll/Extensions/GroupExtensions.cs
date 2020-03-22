@@ -1,6 +1,7 @@
 ﻿using StudentPerfomance.Bll.Dtos;
 using StudentPerfomance.Dal.Entities;
 using System;
+using System.Linq;
 
 namespace StudentPerfomance.Bll.Extensions
 {
@@ -14,7 +15,8 @@ namespace StudentPerfomance.Bll.Extensions
             return new GroupDto
             {
                 Id = entity.Id,
-                Title = entity.Title
+                Title = entity.Title,
+                Students = entity.Students.Select(x => x.ToDto())
             };
         }
 
@@ -26,7 +28,8 @@ namespace StudentPerfomance.Bll.Extensions
             return new Groups
             {
                 Id = dto.Id,
-                Title = dto.Title
+                Title = dto.Title,
+                Students = dto.Students.Select(x => x.ToEntity()).ToHashSet()
             };
         }
     }

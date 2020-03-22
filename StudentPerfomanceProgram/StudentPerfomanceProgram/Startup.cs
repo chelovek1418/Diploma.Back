@@ -77,7 +77,7 @@ namespace StudentPerfomanceProgram
 
             services.AddCors();
 
-            services.AddControllers().AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+            services.AddControllersWithViews().AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
             //services.AddScoped<StudentManagementRepository>();
         }
@@ -105,7 +105,7 @@ namespace StudentPerfomanceProgram
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllers();
+                endpoints.MapDefaultControllerRoute();
             });
         }
     }

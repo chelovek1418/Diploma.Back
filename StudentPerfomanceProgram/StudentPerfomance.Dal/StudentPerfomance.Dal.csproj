@@ -5,6 +5,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20200312192924_AddEmailToUserModel.cs" />
+    <Compile Remove="Migrations\20200312192924_AddEmailToUserModel.Designer.cs" />
+    <Compile Remove="Migrations\20200312193205_AddEmailToUserModel.cs" />
+    <Compile Remove="Migrations\20200312193205_AddEmailToUserModel.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="IdentityServer4" Version="3.1.1" />
     <PackageReference Include="IdentityServer4.AspNetIdentity" Version="3.1.1" />
     <PackageReference Include="IdentityServer4.EntityFramework" Version="3.1.1" />

@@ -1,4 +1,5 @@
-﻿using StudentPerfomance.Dal.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using StudentPerfomance.Dal.Entities;
 using StudentPerfomance.Dal.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -14,15 +15,6 @@ namespace StudentPerfomance.Dal.Repository
 
         public async Task AddLesson(int groupId, int lessonId)
         {
-            var lesson = await dbContext.Lessons.FindAsync(lessonId);
-            var group = await dbContext.Groups.FindAsync(groupId);
-
-            if (lesson == null)
-                throw new NullReferenceException(nameof(Lessons));
-
-            if (group == null)
-                throw new NullReferenceException(nameof(Groups));
-
             await dbContext.GroupsLessons.AddAsync(new GroupsLessons { GroupId = groupId, LessonId = lessonId });
             await dbContext.SaveChangesAsync();
         }
@@ -64,7 +56,10 @@ namespace StudentPerfomance.Dal.Repository
 
         public async Task<Groups> GetByIdAsync(int id)
         {
-            var model = await dbContext.Groups.FindAsync(id);
+            var model = await dbContext.Groups
+                .Include(x => x.Students)
+                .ThenInclude(s=>s.IdNavigation)
+                .FirstOrDefaultAsync(x => x.Id == id);
 
             if (model == null)
                 throw new NullReferenceException(nameof(Groups));

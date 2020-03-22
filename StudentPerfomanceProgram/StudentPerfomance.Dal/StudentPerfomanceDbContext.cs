@@ -18,6 +18,7 @@ namespace StudentPerfomance.Dal
         public virtual DbSet<GetBestStudentIdView> GetBestStudentIdView { get; set; }
         public virtual DbSet<GetWorstStudentIdView> GetWorstStudentIdView { get; set; }
         public virtual DbSet<Groups> Groups { get; set; }
+        public virtual DbSet<RatingByLesson> Ratings { get; set; }
         public virtual DbSet<GroupsLessons> GroupsLessons { get; set; }
         public virtual DbSet<Lessons> Lessons { get; set; }
         public virtual DbSet<Marks> Marks { get; set; }
@@ -134,6 +135,15 @@ namespace StudentPerfomance.Dal
 
             modelBuilder.Entity<User>(entity =>
             {
+                entity.HasIndex(e => e.Email)
+                    .HasName("UQ_User_Email")
+                    .IsUnique();
+
+                entity.Property(e => e.Email)
+                    .IsRequired()
+                    .HasMaxLength(30)
+                    .IsUnicode(false);
+
                 entity.Property(e => e.FirstName)
                     .IsRequired()
                     .HasMaxLength(20);
