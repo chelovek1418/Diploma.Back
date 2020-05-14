@@ -23,6 +23,8 @@ namespace StudentPerfomance.Dal.Interfaces
 
         IAsyncEnumerable<Marks> GetMarksForTimeByStudentId(int studentId, DateTime startDate);
 
+        Task<IEnumerable<Marks>> GetTotalMarksForGroupByLessonId(int groupId, int lessonId, DateTime startDate, DateTime endDate);
+
         IAsyncEnumerable<Marks> GetMarksForTimeByLessonByStudentId(int studentId, int lseeonId, DateTime startDate);
     }
 }

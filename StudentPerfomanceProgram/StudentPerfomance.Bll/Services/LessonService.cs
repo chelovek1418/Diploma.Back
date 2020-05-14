@@ -2,7 +2,9 @@
 using StudentPerfomance.Bll.Extensions;
 using StudentPerfomance.Bll.Interfaces;
 using StudentPerfomance.Dal.Interfaces;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace StudentPerfomance.Bll.Services
@@ -15,6 +17,8 @@ namespace StudentPerfomance.Bll.Services
         {
             _repository = repository;
         }
+
+        public async Task<bool> CheckTitleAsync(string title) => await _repository.CheckTitleAsync(title);
 
         public async Task<int> CreateAsync(LessonDto model) => await _repository.CreateAsync(model.ToEntity());
 
@@ -40,6 +44,15 @@ namespace StudentPerfomance.Bll.Services
             {
                 yield return lesson.ToDto();
             }
+        }
+
+        public async Task<IEnumerable<LessonDto>> GetLessonsWithMarksForTimeByStudentId(int studentId, DateTime startDate, DateTime endDate) =>
+            (await _repository.GetLessonsWithMarksForTimeByStudentId(studentId, startDate, endDate)).Select(x => x.ToDto());
+
+        public async IAsyncEnumerable<LessonDto> SearchLessonsAsync(string term)
+        {
+            await foreach (var lesson in _repository.SearchAsync(term))
+                yield return lesson.ToDto();
         }
 
         public async Task UpdateAsync(LessonDto model) => await _repository.UpdateAsync(model.ToEntity());

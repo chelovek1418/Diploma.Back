@@ -1,9 +1,9 @@
-﻿using StudentPerfomance.Api.ViewModels.UserViewModels;
+﻿using StudentPerfomance.Api.ViewModels.MarkViewModels;
+using StudentPerfomance.Api.ViewModels.UserViewModels;
 using StudentPerfomance.Bll.Dtos;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace StudentPerfomance.Api.Extensions
 {
@@ -59,7 +59,8 @@ namespace StudentPerfomance.Api.Extensions
             {
                 Id = dto.Id,
                 GroupId = dto.GroupId,
-                User = dto.User.ToViewModel()
+                User = dto.User.ToViewModel(),
+                Marks = dto.Marks?.Select(x => x?.ToViewModel()) ?? new List<MarkViewModel>()
             };
         }
     }

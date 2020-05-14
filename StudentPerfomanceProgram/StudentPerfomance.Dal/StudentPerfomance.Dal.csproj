@@ -25,6 +25,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Z.EntityFramework.Plus.EF6" Version="1.12.20" />
   </ItemGroup>
 
 </Project>

@@ -16,7 +16,7 @@ namespace StudentPerfomance.Bll.Extensions
             {
                 Id = entity.Id,
                 Title = entity.Title,
-                Students = entity.Students.Select(x => x.ToDto())
+                Students = entity.Students?.Select(x => x?.ToDto())
             };
         }
 
@@ -29,7 +29,7 @@ namespace StudentPerfomance.Bll.Extensions
             {
                 Id = dto.Id,
                 Title = dto.Title,
-                Students = dto.Students.Select(x => x.ToEntity()).ToHashSet()
+                Students = dto.Students?.Select(x => x?.ToEntity()).ToHashSet()
             };
         }
     }

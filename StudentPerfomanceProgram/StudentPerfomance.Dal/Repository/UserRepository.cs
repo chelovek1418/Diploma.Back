@@ -6,7 +6,6 @@ using StudentPerfomance.Dal.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace StudentPerfomance.Dal.Repository
@@ -164,11 +163,37 @@ namespace StudentPerfomance.Dal.Repository
         public async IAsyncEnumerable<Students> GetTopStudents(DateTime date)
         {
             var dateParam = new SqlParameter("@startDate", date.ToString("yyyy-MM-dd"));
-            foreach (var student in dbContext.Students.FromSqlRaw(StoredProcedures.GetTopStudents + " @startDate", dateParam).AsNoTracking().ToList())
+            foreach (var student in await dbContext.Students.FromSqlRaw(StoredProcedures.GetTopStudents + " @startDate", dateParam).AsNoTracking().ToListAsync())
                 yield return await dbContext.Students.Include(x => x.IdNavigation).FirstOrDefaultAsync(x => x == student);
         }
 
-            #region Privates
+        public IAsyncEnumerable<User> SearchAsync(string term) 
+        {
+            term = term.ToLower();
+            return dbContext.User.Where(x => x.Email.ToLower().Contains(term) || x.FirstName.ToLower().Contains(term) || x.LastName.ToLower().Contains(term)).AsNoTracking().Take(20).AsAsyncEnumerable();
+        }
+
+        public IAsyncEnumerable<Students> SearchStudentsAsync(string term)
+        {
+            term = term.ToLower();
+            return dbContext.Students
+                .Include(x => x.IdNavigation)
+                .Where(x => x.IdNavigation.Email.ToLower().Contains(term) || x.IdNavigation.FirstName.ToLower().Contains(term) || x.IdNavigation.LastName.ToLower().Contains(term))
+                .AsNoTracking().Take(20).AsAsyncEnumerable();
+        }
+
+        public IAsyncEnumerable<Students> GetStudents(int take, int skip) => dbContext.Students.Include(x => x.IdNavigation).Skip(skip).Take(take).AsNoTracking().AsAsyncEnumerable();
+
+        public async Task UpdateStudentAsync(Students model)
+        {
+            if (model == null)
+                throw new ArgumentNullException(nameof(Students));
+
+            dbContext.Students.Update(model);
+            await dbContext.SaveChangesAsync();
+        }
+
+        #region Privates
 
         private int? GetBestStudentIdInGroup(int groupId)
         {

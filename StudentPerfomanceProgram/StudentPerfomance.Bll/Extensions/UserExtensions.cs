@@ -1,6 +1,8 @@
 ﻿using StudentPerfomance.Bll.Dtos;
 using StudentPerfomance.Dal.Entities;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace StudentPerfomance.Bll.Extensions
 {
@@ -43,7 +45,8 @@ namespace StudentPerfomance.Bll.Extensions
             {
                 Id = entity.Id,
                 GroupId = entity.GroupId,
-                User = entity.IdNavigation.ToDto()
+                User = entity.IdNavigation.ToDto(),
+                Marks = entity.Marks?.Select(x => x?.ToDto()) ?? new List<MarkDto>()
             };
         }
 

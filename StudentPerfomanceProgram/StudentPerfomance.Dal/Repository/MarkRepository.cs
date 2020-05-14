@@ -167,5 +167,14 @@ namespace StudentPerfomance.Dal.Repository
         }
 
         public async Task<double> GetAverageMark() => await dbContext.Marks.AverageAsync(x => x.Mark);
+
+        public async Task<IEnumerable<Marks>> GetTotalMarksForGroupByLessonId(int groupId, int lessonId, DateTime startDate, DateTime endDate)
+        {
+            var marks = await dbContext.Marks
+                .Where(x => x.LessonId == lessonId && x.Student.GroupId == groupId && x.MarkDate >= startDate && x.MarkDate <= endDate)
+                .AsNoTracking().ToListAsync();
+
+            return marks.GroupBy(x => x.StudentId).Select(x => new Marks { LessonId = lessonId, StudentId = x.Key, Mark = (byte)x.Sum(m => m.Mark), MarkDate = endDate });
+        }
     }
 }

@@ -31,7 +31,7 @@ namespace StudentPerfomance.Bll.Extensions
             {
                 Id = dto.Id,
                 LessonId = dto.LessonId,
-                Mark = dto.Mark,
+                Mark = (byte)dto.Mark,
                 MarkDate = dto.MarkDate,
                 StudentId = dto.StudentId,
                 Lesson = dto.Lesson?.ToEntity()

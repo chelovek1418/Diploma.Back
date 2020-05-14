@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using StudentPerfomance.Api.Extensions;
@@ -23,11 +24,11 @@ namespace StudentPerfomance.Api.Controllers
         [HttpGet]
         public async IAsyncEnumerable<MarkViewModel> Get()
         {
-            var lessons = _markService.GetAllAsync();
+            var marks = _markService.GetAllAsync();
 
-            await foreach (var lesson in lessons)
+            await foreach (var mark in marks)
             {
-                yield return lesson.ToViewModel();
+                yield return mark.ToViewModel();
             }
         }
 
@@ -54,6 +55,18 @@ namespace StudentPerfomance.Api.Controllers
             {
                 yield return mark.ToViewModel();
             }
+        }
+
+        [HttpGet("[action]")]
+        public async Task<IEnumerable<MarkViewModel>> GetTotalMarksForGroupByLesson(int groupId, int lessonId, DateTime? startDate, DateTime? endDate)
+        {
+            if (startDate == null || startDate.Value > DateTime.Now || startDate.Value < DateTime.Today.AddYears(-10))
+                startDate = DateTimeHelper.GetTermStartDate();
+
+            if (endDate == null || endDate.Value <= startDate.Value || endDate.Value > DateTime.Today)
+                endDate = DateTime.Now;
+
+            return (await _markService.GetTotalMarksForGroupByLessonId(groupId, lessonId, startDate.Value, endDate.Value)).Select(x => x.ToViewModel());
         }
 
         [HttpGet("[action]")]
@@ -114,7 +127,7 @@ namespace StudentPerfomance.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] MarkViewModel viewModel)
         {
-            if (!ModelState.IsValid)
+            if (!ModelState.IsValid || viewModel.MarkDate > DateTime.Now)
                 return BadRequest(ModelState);
 
             viewModel.Id = await _markService.CreateAsync(viewModel.ToDto());

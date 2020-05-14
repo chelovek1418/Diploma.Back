@@ -4,11 +4,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using StudentPerfomance.Bll.Dtos;
+using StudentPerfomance.Api.Helpers.Filters;
 using StudentPerfomance.Bll.Interfaces;
 using StudentPerfomance.Bll.Services;
 using StudentPerfomance.Dal;
-using StudentPerfomance.Dal.Entities;
 using StudentPerfomance.Dal.Interfaces;
 using StudentPerfomance.Dal.Repository;
 
@@ -55,7 +54,7 @@ namespace StudentPerfomance.Api
                     .AllowAnyMethod()
                     .AllowAnyHeader()));
 
-            services.AddControllers();
+            services.AddControllers(options => options.Filters.Add(new ExceptionFilterAttribute()));
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
