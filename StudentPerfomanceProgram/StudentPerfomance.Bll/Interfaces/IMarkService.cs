@@ -32,5 +32,7 @@ namespace StudentPerfomance.Bll.Interfaces
         Task<double> GetProductivityForTimeByStudentId(int studentId, int term);
 
         Task<double> GetProductivityForTimeByLessonByStudentId(int studentId, int lessonId, int term);
+
+        Task<IEnumerable<MarkDto>> GetTotalMarksForGroupByLessonId(int groupId, int lessonId, DateTime startDate, DateTime endDate);
     }
 }

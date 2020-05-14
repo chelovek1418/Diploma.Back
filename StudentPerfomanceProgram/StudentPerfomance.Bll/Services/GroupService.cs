@@ -1,8 +1,8 @@
 ﻿using StudentPerfomance.Bll.Dtos;
 using StudentPerfomance.Bll.Extensions;
 using StudentPerfomance.Bll.Interfaces;
-using StudentPerfomance.Dal.Entities;
 using StudentPerfomance.Dal.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -16,6 +16,8 @@ namespace StudentPerfomance.Bll.Services
         {
             _repository = repository;
         }
+
+        public async Task<bool> CheckTitleAsync(string title) => await _repository.CheckTitleAsync(title);
 
         public async Task AddLesson(int groupId, int lessonId) => await _repository.AddLesson(groupId, lessonId);
 
@@ -38,5 +40,19 @@ namespace StudentPerfomance.Bll.Services
         public async Task<GroupDto> GetByIdAsync(int id) => (await _repository.GetByIdAsync(id)).ToDto();
 
         public async Task UpdateAsync(GroupDto model) => await _repository.UpdateAsync(model.ToEntity());
+
+        public async IAsyncEnumerable<GroupDto> GetByLessonAsync(int id)
+        {
+            await foreach (var group in _repository.GetByLessonAsync(id))
+                yield return group.ToDto();
+        }
+
+        public async IAsyncEnumerable<GroupDto> SearchGroupsAsync(string term)
+        {
+            await foreach (var group in _repository.SearchAsync(term))
+                yield return group.ToDto();
+        }
+
+        public async Task<GroupDto> GetWithMarksByLesson(int groupId, int lessonId, DateTime date) => (await _repository.GetWithMarksByLesson(groupId, lessonId, date)).ToDto();
     }
 }

@@ -1,6 +1,9 @@
 ﻿using StudentPerfomance.Api.ViewModels;
+using StudentPerfomance.Api.ViewModels.MarkViewModels;
 using StudentPerfomance.Bll.Dtos;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace StudentPerfomance.Api.Extensions
 {
@@ -26,7 +29,15 @@ namespace StudentPerfomance.Api.Extensions
             return new LessonViewModel
             {
                 Id = dto.Id,
-                Title = dto.Title
+                Title = dto.Title,
+                Marks = dto.Marks?.Select(m => new MarkViewModel
+                {
+                    Id = m.Id,
+                    LessonId = m.LessonId,
+                    Mark = m.Mark,
+                    MarkDate = m.MarkDate,
+                    StudentId = m.StudentId
+                }).ToList() ?? new List<MarkViewModel>()
             };
         }
     }

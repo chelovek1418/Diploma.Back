@@ -1,7 +1,6 @@
 ﻿using StudentPerfomance.Bll.Dtos;
 using StudentPerfomance.Bll.Extensions;
 using StudentPerfomance.Bll.Interfaces;
-using StudentPerfomance.Dal.Entities;
 using StudentPerfomance.Dal.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -28,6 +27,18 @@ namespace StudentPerfomance.Bll.Services
         {
             await foreach (var user in _repository.GetAllAsync())
                 yield return user.ToDto();
+        }
+
+        public async IAsyncEnumerable<UserDto> SearchAsync(string term)
+        {
+            await foreach (var user in _repository.SearchAsync(term))
+                yield return user.ToDto();
+        }
+
+        public async IAsyncEnumerable<StudentDto> SearchStudentsAsync(string term)
+        {
+            await foreach (var student in _repository.SearchStudentsAsync(term))
+                yield return student.ToDto();
         }
 
         public async Task<StudentDto> GetBestStudent() => (await _repository.GetBestStudent()).ToDto();
@@ -57,5 +68,13 @@ namespace StudentPerfomance.Bll.Services
             await foreach (var student in _repository.GetTopStudents(date))
                 yield return student.ToDto();
         }
+
+        public async IAsyncEnumerable<StudentDto> GetStudents(int take, int skip)
+        {
+            await foreach (var student in _repository.GetStudents(take, skip))
+                yield return student.ToDto();
+        }
+
+        public async Task UpdateStudentAsync(StudentDto model) => await _repository.UpdateStudentAsync(model.ToEntity());
     }
 }

@@ -9,6 +9,8 @@ namespace StudentPerfomance.Bll.Interfaces
     {
         Task<int> CreateStudentAsync(StudentDto model);
 
+        Task UpdateStudentAsync(StudentDto model);
+
         Task<StudentDto> GetStudentByIdAsync(int id);
 
         Task<StudentDto> GetBestStudent();
@@ -28,5 +30,11 @@ namespace StudentPerfomance.Bll.Interfaces
         Task<StudentDto> GetWorstStudentInGroup(int groupId);
 
         IAsyncEnumerable<StudentDto> GetTopStudents(DateTime date);
+
+        IAsyncEnumerable<StudentDto> GetStudents(int take, int skip);
+
+        IAsyncEnumerable<UserDto> SearchAsync(string term);
+
+        IAsyncEnumerable<StudentDto> SearchStudentsAsync(string term);
     }
 }

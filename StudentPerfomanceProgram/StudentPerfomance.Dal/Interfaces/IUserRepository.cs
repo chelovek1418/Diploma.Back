@@ -9,6 +9,8 @@ namespace StudentPerfomance.Dal.Interfaces
     {
         Task<int> CreateStudentAsync(Students model);
 
+        Task UpdateStudentAsync(Students model);
+
         Task<Students> GetStudentByIdAsync(int id);
 
         Task<Students> GetBestStudent();
@@ -28,5 +30,11 @@ namespace StudentPerfomance.Dal.Interfaces
         Task<Students> GetWorstStudentInGroup(int groupId);
 
         IAsyncEnumerable<Students> GetTopStudents(DateTime date);
+
+        IAsyncEnumerable<Students> GetStudents(int take, int skip);
+
+        IAsyncEnumerable<User> SearchAsync(string term);
+
+        IAsyncEnumerable<Students> SearchStudentsAsync(string term);
     }
 }

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace StudentPerfomance.Bll.Dtos
 {
@@ -9,5 +7,6 @@ namespace StudentPerfomance.Bll.Dtos
         public int Id { get; set; }
         public int GroupId { get; set; }
         public UserDto User { get; set; }
+        public IEnumerable<MarkDto> Marks { get; set; }
     }
 }

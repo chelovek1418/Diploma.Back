@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using StudentPerfomance.Api.ViewModels.MarkViewModels;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace StudentPerfomance.Api.ViewModels.UserViewModels
 {
@@ -8,5 +10,6 @@ namespace StudentPerfomance.Api.ViewModels.UserViewModels
         public int GroupId { get; set; }
         [Required]
         public UserViewModel User { get; set; }
+        public IEnumerable<MarkViewModel> Marks { get; set; }
     }
 }

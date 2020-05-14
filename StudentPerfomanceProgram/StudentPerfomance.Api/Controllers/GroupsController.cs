@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using StudentPerfomance.Api.Extensions;
@@ -22,12 +24,15 @@ namespace StudentPerfomance.Api.Controllers
         [HttpGet]
         public async IAsyncEnumerable<GroupViewModel> Get()
         {
-            var groups = _groupService.GetAllAsync();
-
-            await foreach (var group in groups)
-            {
+            await foreach (var group in _groupService.GetAllAsync())
                 yield return group.ToViewModel();
-            }
+        }
+
+        [HttpGet("[action]")]
+        public async IAsyncEnumerable<GroupViewModel> GetByLesson(int lessonId)
+        {
+            await foreach (var group in _groupService.GetByLessonAsync(lessonId))
+                yield return group.ToViewModel();
         }
 
         // GET: api/Groups/5
@@ -40,6 +45,32 @@ namespace StudentPerfomance.Api.Controllers
                 return NotFound(nameof(GroupViewModel));
 
             return Ok(group.ToViewModel());
+        }
+
+        [HttpGet("[action]")]
+        public async Task<ActionResult<GroupViewModel>> GetWithMarksByLesson(int groupId, int lessonId, DateTime? date)
+        {
+            if (!date.HasValue || date.Value.Month > DateTime.Today.Month)
+                date = DateTime.Today;
+
+            if (groupId < 0 || lessonId < 0)
+                return BadRequest($"{nameof(groupId)} or/and {nameof(lessonId)}");
+
+            return Ok((await _groupService.GetWithMarksByLesson(groupId, lessonId, date.Value)).ToViewModel());
+        }
+
+        [HttpGet("[action]")]
+        public async IAsyncEnumerable<GroupViewModel> SearchGroups(string search)
+        {
+            IAsyncEnumerable<GroupViewModel> groups;
+
+            if (string.IsNullOrWhiteSpace(search))
+                groups = AsyncEnumerable.Empty<GroupViewModel>();
+            else
+                groups = _groupService.SearchGroupsAsync(search).Select(x => x.ToViewModel());
+
+            await foreach (var group in groups)
+                yield return group;
         }
 
         // POST: api/Groups
@@ -65,6 +96,16 @@ namespace StudentPerfomance.Api.Controllers
             await _groupService.UpdateAsync(viewModel.ToDto());
 
             return NoContent();
+        }
+
+
+        [HttpGet("[action]")]
+        public async Task<ActionResult<bool>> CheckTitle(string title)
+        {
+            if (string.IsNullOrWhiteSpace(title))
+                return BadRequest(nameof(title));
+
+            return Ok(await _groupService.CheckTitleAsync(title));
         }
 
         // DELETE: api/ApiWithActions/5

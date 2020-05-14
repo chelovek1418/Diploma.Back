@@ -23,6 +23,7 @@ namespace StudentPerfomance.Dal
         public virtual DbSet<Lessons> Lessons { get; set; }
         public virtual DbSet<Marks> Marks { get; set; }
         public virtual DbSet<Students> Students { get; set; }
+        public virtual DbSet<Teachers> Teacher { get; set; }
         public virtual DbSet<User> User { get; set; }
         public virtual DbSet<UsersLessons> UsersLessons { get; set; }
 

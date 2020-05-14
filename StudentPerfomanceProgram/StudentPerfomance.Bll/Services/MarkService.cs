@@ -194,5 +194,8 @@ namespace StudentPerfomance.Bll.Services
 
             return studentAverageMark > globalAverageMark;
         }
+
+        public async Task<IEnumerable<MarkDto>> GetTotalMarksForGroupByLessonId(int groupId, int lessonId, DateTime startDate, DateTime endDate) => 
+            (await _repository.GetTotalMarksForGroupByLessonId(groupId, lessonId, startDate, endDate)).Select(x => x.ToDto());
     }
 }
