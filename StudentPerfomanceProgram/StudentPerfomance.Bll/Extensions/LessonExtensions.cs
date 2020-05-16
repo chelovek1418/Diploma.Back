@@ -8,10 +8,10 @@ namespace StudentPerfomance.Bll.Extensions
 {
     public static class LessonExtensions
     {
-        public static LessonDto ToDto(this Lessons entity)
+        public static LessonDto ToDto(this Subject entity)
         {
             if (entity == null)
-                throw new ArgumentNullException(nameof(Lessons));
+                throw new ArgumentNullException(nameof(Subject));
 
             return new LessonDto
             {
@@ -20,20 +20,20 @@ namespace StudentPerfomance.Bll.Extensions
                 Marks = entity.Marks?.Select(m => new MarkDto
                 {
                     Id = m.Id,
-                    LessonId = m.LessonId,
-                    Mark = m.Mark,
-                    MarkDate = m.MarkDate,
+                    LessonId = m.SubjectId,
+                    Mark = m.Grade,
+                    MarkDate = m.Date,
                     StudentId = m.StudentId
                 }).ToList() ?? new List<MarkDto>()
             };
         }
 
-        public static Lessons ToEntity(this LessonDto dto)
+        public static Subject ToEntity(this LessonDto dto)
         {
             if (dto == null)
                 throw new ArgumentNullException(nameof(LessonDto));
 
-            return new Lessons
+            return new Subject
             {
                 Id = dto.Id,
                 Title = dto.Title

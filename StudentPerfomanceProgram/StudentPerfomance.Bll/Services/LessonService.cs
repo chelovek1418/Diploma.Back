@@ -11,9 +11,9 @@ namespace StudentPerfomance.Bll.Services
 {
     public class LessonService : ILessonService
     {
-        private readonly ILessonRepository _repository;
+        private readonly ISubjectRepository _repository;
 
-        public LessonService(ILessonRepository repository)
+        public LessonService(ISubjectRepository repository)
         {
             _repository = repository;
         }
@@ -26,34 +26,20 @@ namespace StudentPerfomance.Bll.Services
 
         public async IAsyncEnumerable<LessonDto> GetAllAsync()
         {
-            var lessons = _repository.GetAllAsync();
-
-            await foreach (var lesson in lessons)
-            {
+            await foreach (var lesson in _repository.GetAllAsync())
                 yield return lesson.ToDto();
-            }
         }
 
         public async Task<LessonDto> GetByIdAsync(int id) => (await _repository.GetByIdAsync(id)).ToDto();
 
-        public async IAsyncEnumerable<LessonDto> GetLessonsByGroup(int groupId)
-        {
-            var lessons = _repository.GetLessonsByGroup(groupId);
+        public async Task<int> GetCount() => await _repository.GetCount();
 
-            await foreach (var lesson in lessons)
-            {
-                yield return lesson.ToDto();
-            }
-        }
+        public async Task<IEnumerable<LessonDto>> GetLessonsByGroup(int groupId) => (await _repository.FilterAsync(x => x.GroupSubjects.Any(g => g.GroupId == groupId))).Select(x => x.ToDto());
 
         public async Task<IEnumerable<LessonDto>> GetLessonsWithMarksForTimeByStudentId(int studentId, DateTime startDate, DateTime endDate) =>
             (await _repository.GetLessonsWithMarksForTimeByStudentId(studentId, startDate, endDate)).Select(x => x.ToDto());
 
-        public async IAsyncEnumerable<LessonDto> SearchLessonsAsync(string term)
-        {
-            await foreach (var lesson in _repository.SearchAsync(term))
-                yield return lesson.ToDto();
-        }
+        public async Task<IEnumerable<LessonDto>> SearchLessons(string term) => (await _repository.FilterAsync(x => x.Title.ToLower().Contains(term.ToLower()))).Select(x => x.ToDto());
 
         public async Task UpdateAsync(LessonDto model) => await _repository.UpdateAsync(model.ToEntity());
     }

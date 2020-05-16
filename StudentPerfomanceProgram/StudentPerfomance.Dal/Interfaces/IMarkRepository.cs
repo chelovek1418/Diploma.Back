@@ -5,26 +5,22 @@ using System.Threading.Tasks;
 
 namespace StudentPerfomance.Dal.Interfaces
 {
-    public interface IMarkRepository : IRepository<Marks>
+    public interface IMarkRepository : IRepository<Mark>
     {
-        Task<double> GetAverageMarkByLessonForStudent(int studentId, int lessonId);
+        Task<double> GetAverageMarkByLessonForStudent(int studentId, int lessonId, DateTime startDate, DateTime endDate);
 
-        Task<double> GetAverageMarkByLessonInGroup(int lessonId, int groupId);
+        Task<double> GetAverageMarkByLessonInGroup(int lessonId, int groupId, DateTime startDate, DateTime endDate);
 
-        Task<double> GetAverageMarkForLesson(int lessonId);
+        Task<double> GetAverageMarkForLesson(int lessonId, DateTime startDate, DateTime endDate);
 
-        Task<double> GetAverageMarkForStudent(int studentId);
+        Task<double> GetAverageMarkForStudent(int studentId, DateTime startDate, DateTime endDate);
 
-        Task<double> GetAverageMarkInGroup(int groupId);
+        Task<double> GetAverageMarkInGroup(int groupId, DateTime startDate, DateTime endDate);
 
-        Task<double> GetAverageMark();
+        Task<double> GetAverageMark(DateTime startDate, DateTime endDate);
 
-        IAsyncEnumerable<RatingByLesson> GetStudentRating(int studentId);
+        IAsyncEnumerable<Mark> GetMarksForTimeByStudentId(int studentId, DateTime startDate, DateTime endDate);
 
-        IAsyncEnumerable<Marks> GetMarksForTimeByStudentId(int studentId, DateTime startDate);
-
-        Task<IEnumerable<Marks>> GetTotalMarksForGroupByLessonId(int groupId, int lessonId, DateTime startDate, DateTime endDate);
-
-        IAsyncEnumerable<Marks> GetMarksForTimeByLessonByStudentId(int studentId, int lseeonId, DateTime startDate);
+        IAsyncEnumerable<Mark> GetMarksByLessonForStudent(int studentId, int lseeonId, DateTime startDate, DateTime endDate);
     }
 }

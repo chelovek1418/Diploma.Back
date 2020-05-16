@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace StudentPerfomance.Bll.Interfaces
@@ -14,5 +15,7 @@ namespace StudentPerfomance.Bll.Interfaces
         Task UpdateAsync(T model);
 
         Task DeleteAsync(int id);
+
+        Task<int> GetCount();
     }
 }

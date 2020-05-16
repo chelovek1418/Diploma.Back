@@ -11,7 +11,7 @@ namespace StudentPerfomance.Bll.Interfaces
         Task AddLesson(int groupId, int lessonId);
         Task DropLesson(int groupId, int lessonId);
         Task<bool> CheckTitleAsync(string title);
-        IAsyncEnumerable<GroupDto> GetByLessonAsync(int id);
-        IAsyncEnumerable<GroupDto> SearchGroupsAsync(string term);
+        Task<IEnumerable<GroupDto>> GetByLessonAsync(int id);
+        Task<IEnumerable<GroupDto>> SearchGroupsAsync(string term);
     }
 }

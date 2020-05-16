@@ -7,31 +7,31 @@ namespace StudentPerfomance.Bll.Interfaces
 {
     public interface IMarkService : ICrudService<MarkDto>
     {
-        Task<double> GetAverageMarkByLessonForStudent(int studentId, int lessonId);
+        Task<double> GetAverageMarkByLessonForStudent(int studentId, int lessonId, DateTime startDate, DateTime endDate);
 
-        Task<double> GetAverageMarkByLessonInGroup(int lessonId, int groupId);
+        Task<double> GetAverageMarkByLessonInGroup(int lessonId, int groupId, DateTime startDate, DateTime endDate);
 
-        Task<double> GetAverageMarkForLesson(int lessonId);
+        Task<double> GetAverageMarkForLesson(int lessonId, DateTime startDate, DateTime endDate);
 
-        Task<double> GetAverageMarkForStudent(int studentId);
+        Task<double> GetAverageMarkForStudent(int studentId, DateTime startDate, DateTime endDate);
 
-        Task<double> GetAverageMarkInGroup(int groupId);
+        Task<double> GetAverageMarkInGroup(int groupId, DateTime startDate, DateTime endDate);
 
-        IAsyncEnumerable<RatingByLessonDto> GetStudentRating(int studentId);
+        IAsyncEnumerable<RatingByLessonDto> GetStudentRating(int studentId, DateTime startDate, DateTime endDate);
 
-        Task<bool> GetGlobalRating(int studentId);
+        Task<bool> GetGlobalRating(int studentId, DateTime startDate, DateTime endDate);
 
-        IAsyncEnumerable<MarkDto> GetMarksForTimeByStudentId(int studentId, DateTime startDate);
+        IAsyncEnumerable<MarkDto> GetMarksForTimeByStudentId(int studentId, DateTime startDate, DateTime endDate);
 
-        Task<RatingByLessonDto> GetBestLessonByMarkByStudentId(int studentId); 
+        Task<RatingByLessonDto> GetBestLessonByMarkByStudentId(int studentId, DateTime startDate, DateTime endDate); 
         
-        Task<RatingByLessonDto> GetWorstLessonByMarkByStudentId(int studentId);
+        Task<RatingByLessonDto> GetWorstLessonByMarkByStudentId(int studentId, DateTime startDate, DateTime endDate);
 
-        IAsyncEnumerable<MarkDto> GetMarksForTimeByLessonByStudentId(int studentId, int lseeonId, DateTime startDate);
+        IAsyncEnumerable<MarkDto> GetMarksForTimeByLessonByStudentId(int studentId, int lessonId, DateTime startDate, DateTime endDate);
 
-        Task<double> GetProductivityForTimeByStudentId(int studentId, int term);
+        Task<double> GetProductivityForTimeByStudentId(int studentId, DateTime startDate, DateTime endDate);
 
-        Task<double> GetProductivityForTimeByLessonByStudentId(int studentId, int lessonId, int term);
+        Task<double> GetProductivityForTimeByLessonByStudentId(int studentId, int lessonId, DateTime startDate, DateTime endDate);
 
         Task<IEnumerable<MarkDto>> GetTotalMarksForGroupByLessonId(int groupId, int lessonId, DateTime startDate, DateTime endDate);
     }

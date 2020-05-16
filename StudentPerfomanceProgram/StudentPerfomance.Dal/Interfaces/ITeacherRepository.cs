@@ -2,7 +2,7 @@
 
 namespace StudentPerfomance.Dal.Interfaces
 {
-    public interface IUserRepository : IRepository<User>
+    public interface ITeacherRepository : IRepository<Teacher>
     {
     }
 }

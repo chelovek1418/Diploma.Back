@@ -25,41 +25,27 @@ namespace StudentPerfomance.Bll.Services
 
         public async IAsyncEnumerable<MarkDto> GetAllAsync()
         {
-            var marks = _repository.GetAllAsync();
-
-            await foreach (var mark in marks)
-            {
+            await foreach (var mark in _repository.GetAllAsync())
                 yield return mark.ToDto();
-            }
         }
 
-        public async IAsyncEnumerable<RatingByLessonDto> GetStudentRating(int studentId)
-        {
-            var rating = _repository.GetStudentRating(studentId);
+        public async Task<double> GetAverageMarkByLessonForStudent(int studentId, int lessonId, DateTime startDate, DateTime endDate) => await _repository.GetAverageMarkByLessonForStudent(studentId, lessonId, startDate, endDate);
 
-            await foreach (var position in rating)
-            {
-                yield return position.ToDto();
-            }
-        }
+        public async Task<double> GetAverageMarkByLessonInGroup(int lessonId, int groupId, DateTime startDate, DateTime endDate) => await _repository.GetAverageMarkByLessonInGroup(lessonId, groupId, startDate, endDate);
 
-        public async Task<double> GetAverageMarkByLessonForStudent(int studentId, int lessonId) => await _repository.GetAverageMarkByLessonForStudent(studentId, lessonId);
+        public async Task<double> GetAverageMarkForLesson(int lessonId, DateTime startDate, DateTime endDate) => await _repository.GetAverageMarkForLesson(lessonId, startDate, endDate);
 
-        public async Task<double> GetAverageMarkByLessonInGroup(int lessonId, int groupId) => await _repository.GetAverageMarkByLessonInGroup(lessonId, groupId);
+        public async Task<double> GetAverageMarkForStudent(int studentId, DateTime startDate, DateTime endDate) => await _repository.GetAverageMarkForStudent(studentId, startDate, endDate);
 
-        public async Task<double> GetAverageMarkForLesson(int lessonId) => await _repository.GetAverageMarkForLesson(lessonId);
-
-        public async Task<double> GetAverageMarkForStudent(int studentId) => await _repository.GetAverageMarkForStudent(studentId);
-
-        public async Task<double> GetAverageMarkInGroup(int groupId) => await _repository.GetAverageMarkInGroup(groupId);
+        public async Task<double> GetAverageMarkInGroup(int groupId, DateTime startDate, DateTime endDate) => await _repository.GetAverageMarkInGroup(groupId, startDate, endDate);
 
         public async Task<MarkDto> GetByIdAsync(int id) => (await _repository.GetByIdAsync(id)).ToDto();
 
         public async Task UpdateAsync(MarkDto model) => await _repository.UpdateAsync(model.ToEntity());
 
-        public async IAsyncEnumerable<MarkDto> GetMarksForTimeByStudentId(int studentId, DateTime startDate)
+        public async IAsyncEnumerable<MarkDto> GetMarksForTimeByStudentId(int studentId, DateTime startDate, DateTime endDate)
         {
-            var marks = _repository.GetMarksForTimeByStudentId(studentId, startDate);
+            var marks = _repository.GetMarksForTimeByStudentId(studentId, startDate, endDate);
 
             await foreach (var mark in marks)
             {
@@ -67,9 +53,9 @@ namespace StudentPerfomance.Bll.Services
             }
         }
 
-        public async IAsyncEnumerable<MarkDto> GetMarksForTimeByLessonByStudentId(int studentId, int lessonId, DateTime startDate)
+        public async IAsyncEnumerable<MarkDto> GetMarksForTimeByLessonByStudentId(int studentId, int lessonId, DateTime startDate, DateTime endDate)
         {
-            var marks = _repository.GetMarksForTimeByLessonByStudentId(studentId, lessonId, startDate);
+            var marks = _repository.GetMarksByLessonForStudent(studentId, lessonId, startDate, endDate);
 
             await foreach (var mark in marks)
             {
@@ -77,125 +63,138 @@ namespace StudentPerfomance.Bll.Services
             }
         }
 
-        public async Task<RatingByLessonDto> GetBestLessonByMarkByStudentId(int studentId)
+        public async Task<RatingByLessonDto> GetBestLessonByMarkByStudentId(int studentId, DateTime startDate, DateTime endDate)
         {
-            var today = DateTime.Today;
-            var marksStream = _repository.GetMarksForTimeByStudentId(studentId, today.Month >= 9 ? new DateTime(today.Year, 9, 1) : new DateTime(today.Year, 1, 1));
-            var marks = new List<Marks>();
+            var marksStream = _repository.GetMarksForTimeByStudentId(studentId, startDate, endDate);
+            var marks = new List<Mark>();
 
             await foreach (var mark in marksStream)
                 marks.Add(mark);
 
             var bestLesson = new RatingByLessonDto();
-            foreach (var group in marks.GroupBy(x => x.LessonId))
+            foreach (var group in marks.GroupBy(x => x.SubjectId))
             {
                 var count = 0;
                 var sum = 0.0;
                 foreach (var item in group)
                 {
                     count++;
-                    sum += item.Mark;
+                    sum += item.Grade ?? 0;
                 }
 
                 if (count != 0 && sum / count > bestLesson.Rating)
                 {
                     bestLesson.Rating = Math.Round((sum / count), 2);
                     bestLesson.Id = group.Key;
-                    bestLesson.Title = group.FirstOrDefault()?.Lesson?.Title;
+                    bestLesson.Title = group.FirstOrDefault()?.Subject?.Title;
                 }
             }
 
             return bestLesson;
         }
 
-        public async Task<RatingByLessonDto> GetWorstLessonByMarkByStudentId(int studentId)
+        public async Task<RatingByLessonDto> GetWorstLessonByMarkByStudentId(int studentId, DateTime startDate, DateTime endDate)
         {
             var today = DateTime.Today;
-            var marksStream = _repository.GetMarksForTimeByStudentId(studentId, today.Month >= 9 ? new DateTime(today.Year, 9, 1) : new DateTime(today.Year, 1, 1));
-            var marks = new List<Marks>();
+            var marksStream = _repository.GetMarksForTimeByStudentId(studentId, startDate, endDate);
+            var marks = new List<Mark>();
 
             await foreach (var mark in marksStream)
                 marks.Add(mark);
 
             var worstLesson = new RatingByLessonDto();
-            foreach (var group in marks.GroupBy(x => x.LessonId))
+            foreach (var group in marks.GroupBy(x => x.SubjectId))
             {
                 var count = 0;
                 var sum = 0.0;
                 foreach (var item in group)
                 {
                     count++;
-                    sum += item.Mark;
+                    sum += item.Grade ?? 0;
                 }
 
                 if (count != 0 && (sum / count < worstLesson.Rating || worstLesson.Rating == 0))
                 {
                     worstLesson.Rating = Math.Round((sum / count), 2);
                     worstLesson.Id = group.Key;
-                    worstLesson.Title = group.FirstOrDefault()?.Lesson?.Title;
+                    worstLesson.Title = group.FirstOrDefault()?.Subject?.Title;
                 }
             }
 
             return worstLesson;
         }
 
-        public async Task<double> GetProductivityForTimeByStudentId(int studentId, int term)
+        public async Task<double> GetProductivityForTimeByStudentId(int studentId, DateTime startDate, DateTime endDate)
         {
-            var marks = _repository.GetMarksForTimeByStudentId(studentId, DateTime.Today.AddDays(-term * 2));
+            throw new NotImplementedException();
+            ////var marks = _repository.GetMarksForTimeByStudentId(studentId, startDate, endDate);
 
-            var perviousMarks = new List<Marks>();
-            var currentMarks = new List<Marks>();
+            ////var perviousMarks = new List<Mark>();
+            ////var currentMarks = new List<Mark>();
 
-            await foreach (var mark in marks)
-            {
-                if (mark.MarkDate >= DateTime.Today.AddDays(-term))
-                    currentMarks.Add(mark);
-                else
-                    perviousMarks.Add(mark);
-            }
+            ////await foreach (var mark in marks)
+            ////{
+            ////    if (mark.Date >= DateTime.Today.AddDays(-term))
+            ////        currentMarks.Add(mark);
+            ////    else
+            ////        perviousMarks.Add(mark);
+            ////}
 
-            if (!currentMarks.Any())
-                return 0;
+            ////if (!currentMarks.Any())
+            ////    return 0;
 
-            if (perviousMarks.Any() && perviousMarks.Average(x => x.Mark) != 0)
-                return (1 - (currentMarks.Average(x => x.Mark) / perviousMarks.Average(x => x.Mark))) * 100;
+            ////if (perviousMarks.Any() && perviousMarks.Average(x => x.Grade) != 0)
+            ////    return (1 - (currentMarks.Average(x => x.Grade) / perviousMarks.Average(x => x.Grade))) * 100;
 
-            return 100;
+            ////return 100;
         }
 
-        public async Task<double> GetProductivityForTimeByLessonByStudentId(int studentId, int lessonId, int term)
+        public async Task<double> GetProductivityForTimeByLessonByStudentId(int studentId, int lessonId, DateTime startDate, DateTime endDate)
         {
-            var marks = _repository.GetMarksForTimeByLessonByStudentId(studentId, lessonId, DateTime.Today.AddDays(-term * 2));
+            throw new NotImplementedException();
+            ////var marks = _repository.GetMarksByLessonForStudent(studentId, lessonId, DateTime.Today.AddDays(-term * 2));
 
-            var perviousMarks = new List<Marks>();
-            var currentMarks = new List<Marks>();
+            ////var perviousMarks = new List<Mark>();
+            ////var currentMarks = new List<Mark>();
 
-            await foreach (var mark in marks)
-            {
-                if (mark.MarkDate >= DateTime.Today.AddDays(-term))
-                    currentMarks.Add(mark);
-                else
-                    perviousMarks.Add(mark);
-            }
+            ////await foreach (var mark in marks)
+            ////{
+            ////    if (mark.Date >= DateTime.Today.AddDays(-term))
+            ////        currentMarks.Add(mark);
+            ////    else
+            ////        perviousMarks.Add(mark);
+            ////}
 
-            if (!currentMarks.Any())
-                return 0;
+            ////if (!currentMarks.Any())
+            ////    return 0;
 
-            if (perviousMarks.Any() && perviousMarks.Average(x => x.Mark) != 0)
-                return (1 - (currentMarks.Average(x => x.Mark) / perviousMarks.Average(x => x.Mark))) * 100;
+            ////if (perviousMarks.Any() && perviousMarks.Average(x => x.Grade) != 0)
+            ////    return (1 - (currentMarks.Average(x => x.Grade) / perviousMarks.Average(x => x.Grade))) * 100;
 
-            return 100;
+            ////return 100;
         }
 
-        public async Task<bool> GetGlobalRating(int studentId)
+        public async Task<bool> GetGlobalRating(int studentId, DateTime startDate, DateTime endDate)
         {
-            var studentAverageMark = await _repository.GetAverageMarkForStudent(studentId);
-            var globalAverageMark = await _repository.GetAverageMark();
+            throw new NotImplementedException();
+            //var studentAverageMark = await _repository.GetAverageMarkForStudent(studentId);
+            //var globalAverageMark = await _repository.GetAverageMark();
 
-            return studentAverageMark > globalAverageMark;
+            //return studentAverageMark > globalAverageMark;
         }
 
-        public async Task<IEnumerable<MarkDto>> GetTotalMarksForGroupByLessonId(int groupId, int lessonId, DateTime startDate, DateTime endDate) => 
-            (await _repository.GetTotalMarksForGroupByLessonId(groupId, lessonId, startDate, endDate)).Select(x => x.ToDto());
+        public async Task<IEnumerable<MarkDto>> GetTotalMarksForGroupByLessonId(int groupId, int lessonId, DateTime startDate, DateTime endDate)
+        {
+            var marks = await _repository.FilterAsync(x => x.SubjectId == lessonId && x.Student.GroupId == groupId && x.Date >= startDate && x.Date <= endDate);
+
+            return marks.GroupBy(x => x.StudentId).Select(x => new MarkDto { LessonId = lessonId, StudentId = x.Key, Mark = x.Sum(m => m.Grade), MarkDate = endDate });
+        }
+
+        public IAsyncEnumerable<RatingByLessonDto> GetStudentRating(int studentId, DateTime startDate, DateTime endDate)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<int> GetCount() => await _repository.GetCount();
     }
 }
