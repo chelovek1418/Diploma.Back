@@ -29,11 +29,7 @@ namespace StudentPerfomance.Api.Controllers
         }
 
         [HttpGet("[action]")]
-        public async IAsyncEnumerable<GroupViewModel> GetByLesson(int lessonId)
-        {
-            await foreach (var group in _groupService.GetByLessonAsync(lessonId))
-                yield return group.ToViewModel();
-        }
+        public async Task<IEnumerable<GroupViewModel>> GetByLesson(int lessonId) => (await _groupService.GetByLessonAsync(lessonId)).Select(x => x.ToViewModel());
 
         // GET: api/Groups/5
         [HttpGet("{id}", Name = "Get")]
@@ -60,17 +56,12 @@ namespace StudentPerfomance.Api.Controllers
         }
 
         [HttpGet("[action]")]
-        public async IAsyncEnumerable<GroupViewModel> SearchGroups(string search)
+        public async Task<ActionResult<IEnumerable<GroupViewModel>>> SearchGroups(string search)
         {
-            IAsyncEnumerable<GroupViewModel> groups;
-
             if (string.IsNullOrWhiteSpace(search))
-                groups = AsyncEnumerable.Empty<GroupViewModel>();
+                return BadRequest();
             else
-                groups = _groupService.SearchGroupsAsync(search).Select(x => x.ToViewModel());
-
-            await foreach (var group in groups)
-                yield return group;
+                return Ok((await _groupService.SearchGroupsAsync(search)).Select(x => x.ToViewModel()));
         }
 
         // POST: api/Groups

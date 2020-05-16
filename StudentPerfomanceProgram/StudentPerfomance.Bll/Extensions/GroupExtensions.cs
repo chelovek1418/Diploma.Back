@@ -7,10 +7,10 @@ namespace StudentPerfomance.Bll.Extensions
 {
     public static class GroupExtensions
     {
-        public static GroupDto ToDto(this Groups entity)
+        public static GroupDto ToDto(this Group entity)
         {
             if (entity == null)
-                throw new ArgumentNullException(nameof(Groups));
+                throw new ArgumentNullException(nameof(Group));
 
             return new GroupDto
             {
@@ -20,12 +20,12 @@ namespace StudentPerfomance.Bll.Extensions
             };
         }
 
-        public static Groups ToEntity(this GroupDto dto)
+        public static Group ToEntity(this GroupDto dto)
         {
             if (dto == null)
                 throw new ArgumentNullException(nameof(GroupDto));
 
-            return new Groups
+            return new Group
             {
                 Id = dto.Id,
                 Title = dto.Title,

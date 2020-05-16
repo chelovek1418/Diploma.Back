@@ -35,7 +35,7 @@ namespace StudentPerfomance.Api.Controllers
         [HttpGet("[action]")]
         public async IAsyncEnumerable<RatingByLessonViewModel> GetRating(int studentId)
         {
-            var rating = _markService.GetStudentRating(studentId);
+            var rating = _markService.GetStudentRating(studentId, new DateTime(), new DateTime());
 
             await foreach (var position in rating)
             {
@@ -49,7 +49,7 @@ namespace StudentPerfomance.Api.Controllers
             if (date == null || date.Value > DateTime.Now || date.Value < DateTime.Today.AddYears(-10))
                 date = DateTimeHelper.GetTermStartDate();
 
-            var marks = _markService.GetMarksForTimeByStudentId(studentId, (DateTime)date);
+            var marks = _markService.GetMarksForTimeByStudentId(studentId, (DateTime)date, new DateTime());
 
             await foreach (var mark in marks)
             {
@@ -75,7 +75,7 @@ namespace StudentPerfomance.Api.Controllers
             if (date == null || date.Value > DateTime.Now || date.Value < DateTime.Today.AddYears(-10))
                 date = DateTimeHelper.GetTermStartDate();
 
-            var marks = _markService.GetMarksForTimeByLessonByStudentId(studentId, lessonId, (DateTime)date);
+            var marks = _markService.GetMarksForTimeByLessonByStudentId(studentId, lessonId, (DateTime)date, new DateTime());
 
             await foreach (var mark in marks)
             {
@@ -94,35 +94,35 @@ namespace StudentPerfomance.Api.Controllers
             return Ok(lesson.ToViewModel());
         }
 
-        [HttpGet("[action]")]
-        public async Task<double> GetAverageForStudentByLesson(int studentId, int lessonId) => await _markService.GetAverageMarkByLessonForStudent(studentId, lessonId);
+        ////[HttpGet("[action]")]
+        ////public async Task<double> GetAverageForStudentByLesson(int studentId, int lessonId) => await _markService.GetAverageMarkByLessonForStudent(studentId, lessonId);
 
-        [HttpGet("[action]")]
-        public async Task<double> GetAverageByLessonInGroup(int lessonId, int groupId) => await _markService.GetAverageMarkByLessonInGroup(lessonId, groupId);
+        ////[HttpGet("[action]")]
+        ////public async Task<double> GetAverageByLessonInGroup(int lessonId, int groupId) => await _markService.GetAverageMarkByLessonInGroup(lessonId, groupId);
 
-        [HttpGet("[action]")]
-        public async Task<double> GetAverageByLesson(int lessonId) => await _markService.GetAverageMarkForLesson(lessonId);
+        ////[HttpGet("[action]")]
+        ////public async Task<double> GetAverageByLesson(int lessonId) => await _markService.GetAverageMarkForLesson(lessonId);
 
-        [HttpGet("[action]")]
-        public async Task<double> GetAverageByStudent(int studentId) => await _markService.GetAverageMarkForStudent(studentId);
+        ////[HttpGet("[action]")]
+        ////public async Task<double> GetAverageByStudent(int studentId) => await _markService.GetAverageMarkForStudent(studentId);
 
-        [HttpGet("[action]")]
-        public async Task<double> GetAverageInGroup(int groupId) => await _markService.GetAverageMarkInGroup(groupId);
+        ////[HttpGet("[action]")]
+        ////public async Task<double> GetAverageInGroup(int groupId) => await _markService.GetAverageMarkInGroup(groupId);
 
-        [HttpGet("[action]")]
-        public async Task<RatingByLessonViewModel> GetMostRatedLesson(int studentId) => (await _markService.GetBestLessonByMarkByStudentId(studentId)).ToViewModel();
+        ////[HttpGet("[action]")]
+        ////public async Task<RatingByLessonViewModel> GetMostRatedLesson(int studentId) => (await _markService.GetBestLessonByMarkByStudentId(studentId)).ToViewModel();
 
-        [HttpGet("[action]")]
-        public async Task<RatingByLessonViewModel> GetLessRatedLesson(int studentId) => (await _markService.GetWorstLessonByMarkByStudentId(studentId)).ToViewModel();
+        ////[HttpGet("[action]")]
+        ////public async Task<RatingByLessonViewModel> GetLessRatedLesson(int studentId) => (await _markService.GetWorstLessonByMarkByStudentId(studentId)).ToViewModel();
 
-        [HttpGet("[action]")]
-        public async Task<double> GetProductivityForTime(int studentId, int term = 7) => await _markService.GetProductivityForTimeByStudentId(studentId, term);
+        ////[HttpGet("[action]")]
+        ////public async Task<double> GetProductivityForTime(int studentId, int term = 7) => await _markService.GetProductivityForTimeByStudentId(studentId, term);
 
-        [HttpGet("[action]")]
-        public async Task<bool> IsGoodStudent(int studentId) => await _markService.GetGlobalRating(studentId);
+        ////[HttpGet("[action]")]
+        ////public async Task<bool> IsGoodStudent(int studentId) => await _markService.GetGlobalRating(studentId);
 
-        [HttpGet("[action]")]
-        public async Task<double> GetProductivityForTimeByLesson(int studentId, int lessonId, int term = 7) => await _markService.GetProductivityForTimeByLessonByStudentId(studentId, lessonId, term);
+        ////[HttpGet("[action]")]
+        ////public async Task<double> GetProductivityForTimeByLesson(int studentId, int lessonId, int term = 7) => await _markService.GetProductivityForTimeByLessonByStudentId(studentId, lessonId, term);
 
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] MarkViewModel viewModel)

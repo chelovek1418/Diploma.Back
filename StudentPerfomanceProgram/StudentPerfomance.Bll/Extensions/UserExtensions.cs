@@ -36,30 +36,30 @@ namespace StudentPerfomance.Bll.Extensions
             };
         }
 
-        public static StudentDto ToDto(this Students entity)
+        public static StudentDto ToDto(this Student entity)
         {
             if (entity == null)
-                throw new ArgumentNullException(nameof(Students));
+                throw new ArgumentNullException(nameof(Student));
 
             return new StudentDto
             {
                 Id = entity.Id,
                 GroupId = entity.GroupId,
-                User = entity.IdNavigation.ToDto(),
+                User = entity.User.ToDto(),
                 Marks = entity.Marks?.Select(x => x?.ToDto()) ?? new List<MarkDto>()
             };
         }
 
-        public static Students ToEntity(this StudentDto dto)
+        public static Student ToEntity(this StudentDto dto)
         {
             if (dto == null)
                 throw new ArgumentNullException(nameof(StudentDto));
 
-            return new Students
+            return new Student
             {
                 Id = dto.Id,
                 GroupId = dto.GroupId,
-                IdNavigation = dto.User.ToEntity()
+                User = dto.User.ToEntity()
             };
         }
     }

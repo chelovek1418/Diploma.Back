@@ -1,139 +1,25 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using StudentPerfomance.Dal.Entities;
-using StudentPerfomance.Dal.Views;
 
 namespace StudentPerfomance.Dal
 {
-    public partial class StudentPerfomanceDbContext : DbContext
+    public class StudentPerfomanceDbContext : DbContext
     {
-        public StudentPerfomanceDbContext()
-        {
-        }
-
         public StudentPerfomanceDbContext(DbContextOptions<StudentPerfomanceDbContext> options) : base(options)
         {
         }
-
-        public virtual DbSet<AverageStudentGrade> AverageStudentGrade { get; set; }
-        public virtual DbSet<GetBestStudentIdView> GetBestStudentIdView { get; set; }
-        public virtual DbSet<GetWorstStudentIdView> GetWorstStudentIdView { get; set; }
-        public virtual DbSet<Groups> Groups { get; set; }
-        public virtual DbSet<RatingByLesson> Ratings { get; set; }
-        public virtual DbSet<GroupsLessons> GroupsLessons { get; set; }
-        public virtual DbSet<Lessons> Lessons { get; set; }
-        public virtual DbSet<Marks> Marks { get; set; }
-        public virtual DbSet<Students> Students { get; set; }
-        public virtual DbSet<Teachers> Teacher { get; set; }
-        public virtual DbSet<User> User { get; set; }
-        public virtual DbSet<UsersLessons> UsersLessons { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<Student> Students { get; set; }
+        public DbSet<Teacher> Teachers { get; set; }
+        public DbSet<Group> Groups { get; set; }
+        public DbSet<GroupSubject> GroupSubjects { get; set; }
+        public DbSet<Subject> Subjects { get; set; }
+        public DbSet<Mark> Marks { get; set; }
+        public DbSet<TeacherSubject> TeacherSubjects { get; set; }
+        public DbSet<Detail> Details { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<AverageStudentGrade>(entity =>
-            {
-                entity.HasNoKey();
-
-                entity.ToView("AverageStudentGrade");
-            });
-
-            modelBuilder.Entity<GetBestStudentIdView>(entity =>
-            {
-                entity.HasNoKey();
-
-                entity.ToView("GetBestStudentIdView");
-
-                entity.Property(e => e.StudentId)
-                    .IsRequired()
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
-            });
-
-            modelBuilder.Entity<GetWorstStudentIdView>(entity =>
-            {
-                entity.HasNoKey();
-
-                entity.ToView("GetWorstStudentIdView");
-
-                entity.Property(e => e.StudentId)
-                    .IsRequired()
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
-            });
-
-            modelBuilder.Entity<Groups>(entity =>
-            {
-                entity.HasIndex(e => e.Title)
-                    .HasName("UQ_Group_Title")
-                    .IsUnique();
-
-                entity.Property(e => e.Title)
-                    .IsRequired()
-                    .HasMaxLength(20);
-            });
-
-            modelBuilder.Entity<GroupsLessons>(entity =>
-            {
-                entity.HasKey(e => new { e.GroupId, e.LessonId })
-                    .HasName("PK_GroupLesson_GroupIdLessonId");
-
-                entity.HasIndex(e => e.LessonId);
-
-                entity.HasOne(d => d.Group)
-                    .WithMany(p => p.GroupsLessons)
-                    .HasForeignKey(d => d.GroupId)
-                    .HasConstraintName("FK_GroupLesson_UserId");
-
-                entity.HasOne(d => d.Lesson)
-                    .WithMany(p => p.GroupsLessons)
-                    .HasForeignKey(d => d.LessonId)
-                    .HasConstraintName("FK_GroupLesson_LessonId");
-            });
-
-            modelBuilder.Entity<Lessons>(entity =>
-            {
-                entity.Property(e => e.Title)
-                    .IsRequired()
-                    .HasMaxLength(50);
-            });
-
-            modelBuilder.Entity<Marks>(entity =>
-            {
-                entity.HasIndex(e => e.LessonId);
-
-                entity.HasIndex(e => e.StudentId);
-
-                entity.Property(e => e.MarkDate)
-                    .HasColumnType("date")
-                    .HasDefaultValueSql("(getdate())");
-
-                entity.HasOne(d => d.Lesson)
-                    .WithMany(p => p.Marks)
-                    .HasForeignKey(d => d.LessonId)
-                    .HasConstraintName("FK_Mark_LessonId");
-
-                entity.HasOne(d => d.Student)
-                    .WithMany(p => p.Marks)
-                    .HasForeignKey(d => d.StudentId)
-                    .HasConstraintName("FK_Mark_StudentId");
-            });
-
-            modelBuilder.Entity<Students>(entity =>
-            {
-                entity.HasIndex(e => e.GroupId);
-
-                entity.Property(e => e.Id).ValueGeneratedNever();
-
-                entity.HasOne(d => d.Group)
-                    .WithMany(p => p.Students)
-                    .HasForeignKey(d => d.GroupId)
-                    .HasConstraintName("FK_Student_GroupId");
-
-                entity.HasOne(d => d.IdNavigation)
-                    .WithOne(p => p.Students)
-                    .HasForeignKey<Students>(d => d.Id)
-                    .HasConstraintName("FK_Student_Id");
-            });
-
             modelBuilder.Entity<User>(entity =>
             {
                 entity.HasIndex(e => e.Email)
@@ -153,30 +39,149 @@ namespace StudentPerfomance.Dal
                     .IsRequired()
                     .HasMaxLength(20);
 
-                entity.Property(e => e.Photo).HasMaxLength(1);
+                entity.Property(e => e.Patronymic)
+                   .IsRequired()
+                   .HasMaxLength(30);
+
+                entity.Property(e => e.PhoneNumber)
+                   .HasMaxLength(15);
+
+                entity.Property(e => e.Department)
+                   .IsRequired()
+                   .HasMaxLength(20);
             });
 
-            modelBuilder.Entity<UsersLessons>(entity =>
+            modelBuilder.Entity<Student>(entity =>
             {
-                entity.HasKey(e => new { e.UserId, e.LessonId })
-                    .HasName("PK_UserLesson_UserIdLessonId");
+                entity.Property(e => e.Id).ValueGeneratedNever();
 
-                entity.HasIndex(e => e.LessonId);
-
-                entity.HasOne(d => d.Lesson)
-                    .WithMany(p => p.UsersLessons)
-                    .HasForeignKey(d => d.LessonId)
-                    .HasConstraintName("FK_UserLesson_LessonId");
+                entity.HasOne(d => d.Group)
+                    .WithMany(p => p.Students)
+                    .OnDelete(DeleteBehavior.SetNull)
+                    .HasForeignKey(d => d.GroupId)
+                    .HasConstraintName("FK_Student_GroupId");
 
                 entity.HasOne(d => d.User)
-                    .WithMany(p => p.UsersLessons)
-                    .HasForeignKey(d => d.UserId)
-                    .HasConstraintName("FK_UserLesson_UserId");
+                    .WithOne(p => p.Student)
+                    .HasForeignKey<Student>(d => d.Id)
+                    .HasConstraintName("FK_Student_Id");
             });
 
-            OnModelCreatingPartial(modelBuilder);
-        }
+            modelBuilder.Entity<Teacher>(entity =>
+            {
+                entity.Property(e => e.Id).ValueGeneratedNever();
 
-        partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
+                entity.Property(e => e.Position)
+                    .IsRequired()
+                    .HasMaxLength(30);
+
+                entity.HasOne(d => d.User)
+                    .WithOne(p => p.Teacher)
+                    .HasForeignKey<Teacher>(d => d.Id)
+                    .HasConstraintName("FK_Teacher_Id");
+            });
+
+            modelBuilder.Entity<Group>(entity =>
+            {
+                entity.HasIndex(e => e.Title)
+                    .HasName("UQ_Group_Title")
+                    .IsUnique();
+
+                entity.Property(e => e.Faculty)
+                    .IsRequired()
+                    .HasMaxLength(20);
+
+                entity.Property(e => e.Speciality)
+                    .IsRequired()
+                    .HasMaxLength(30);
+
+                entity.Property(e => e.Title)
+                    .IsRequired()
+                    .HasMaxLength(20);
+
+                entity.Property(e => e.Specialization)
+                    .IsRequired()
+                    .HasMaxLength(30);
+
+                entity.HasCheckConstraint("CK_Group_Year_More_Than_0", "[Year] >= 1 AND [Year] <= 6");
+            });
+
+            modelBuilder.Entity<GroupSubject>(entity =>
+            {
+                entity.HasIndex(e => e.SubjectId);
+
+                entity.HasIndex(e => e.GroupId);
+
+                entity.HasOne(d => d.Group)
+                    .WithMany(p => p.GroupSubjects)
+                    .HasForeignKey(d => d.GroupId)
+                    .HasConstraintName("FK_GroupSubject_GroupId");
+
+                entity.HasOne(d => d.Subject)
+                    .WithMany(p => p.GroupSubjects)
+                    .HasForeignKey(d => d.SubjectId)
+                    .HasConstraintName("FK_GroupSubject_SubjectId");
+            });
+
+            modelBuilder.Entity<Subject>(entity =>
+            {
+                entity.Property(e => e.Title)
+                    .IsRequired()
+                    .HasMaxLength(50);
+            });
+
+            modelBuilder.Entity<Mark>(entity =>
+            {
+                entity.HasIndex(e => e.SubjectId);
+
+                entity.HasIndex(e => e.StudentId);
+
+                entity.Property(e => e.Date)
+                    .HasColumnType("date")
+                    .HasDefaultValueSql("(getdate())");
+
+                entity.HasOne(d => d.Subject)
+                    .WithMany(p => p.Marks)
+                    .HasForeignKey(d => d.SubjectId)
+                    .HasConstraintName("FK_Mark_SubjectId");
+
+                entity.HasOne(d => d.Student)
+                    .WithMany(p => p.Marks)
+                    .HasForeignKey(d => d.StudentId)
+                    .HasConstraintName("FK_Mark_StudentId");
+            });
+
+            modelBuilder.Entity<TeacherSubject>(entity =>
+            {
+                entity.HasKey(e => new { e.TeacherId, e.SubjectId })
+                    .HasName("PK_TeacherSubject_TeacherIdSubjectId");
+
+                entity.HasIndex(e => e.SubjectId);
+
+                entity.HasIndex(e => e.TeacherId);
+
+                entity.HasOne(d => d.Subject)
+                    .WithMany(p => p.TeacherSubjects)
+                    .HasForeignKey(d => d.SubjectId)
+                    .HasConstraintName("FK_TeacherSubject_SubjectId");
+
+                entity.HasOne(d => d.Teacher)
+                    .WithMany(p => p.TeacherSubjects)
+                    .HasForeignKey(d => d.TeacherId)
+                    .HasConstraintName("FK_TeacherSubject_TeacherId");
+            });
+
+            modelBuilder.Entity<Detail>(entity =>
+            {
+                entity.HasOne(d => d.GroupSubject)
+                    .WithMany(p => p.Details)
+                    .HasForeignKey(d => d.GroupSubjecttId)
+                    .HasConstraintName("FK_Detail_GroupSubjecttId");
+
+                entity.HasCheckConstraint("CK_Detail_DayOfWeek", "[DayOfWeek] >= 0 AND [DayOfWeek] <= 6");
+
+                entity.HasCheckConstraint("CK_Detail_Pair", "[Pair] >= 1 AND [Pair] <= 5");
+            });
+        }
     }
 }

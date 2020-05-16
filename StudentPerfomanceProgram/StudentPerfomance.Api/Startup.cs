@@ -31,7 +31,7 @@ namespace StudentPerfomance.Api
             services.AddScoped<IGroupRepository, GroupRepository>();
             services.AddScoped<IGroupService, GroupService>();
 
-            services.AddScoped<ILessonRepository, LessonRepository>();
+            services.AddScoped<ISubjectRepository, SubjectRepository>();
             services.AddScoped<ILessonService, LessonService>();
 
             services.AddScoped<IMarkRepository, MarkRepository>();

@@ -6,61 +6,35 @@ namespace StudentPerfomance.Bll.Extensions
 {
     public static class MarkExtensions
     {
-        public static MarkDto ToDto(this Marks entity)
+        public static MarkDto ToDto(this Mark entity)
         {
             if (entity == null)
-                throw new ArgumentNullException(nameof(Marks));
+                throw new ArgumentNullException(nameof(Mark));
 
             return new MarkDto
             {
                 Id = entity.Id,
-                LessonId = entity.LessonId,
-                Mark = entity.Mark,
-                MarkDate = entity.MarkDate,
+                LessonId = entity.SubjectId,
+                Mark = entity.Grade,
+                MarkDate = entity.Date,
                 StudentId = entity.StudentId,
-                Lesson = entity.Lesson?.ToDto()
+                Lesson = entity.Subject?.ToDto()
             };
         }
 
-        public static Marks ToEntity(this MarkDto dto)
+        public static Mark ToEntity(this MarkDto dto)
         {
             if (dto == null)
                 throw new ArgumentNullException(nameof(MarkDto));
 
-            return new Marks
+            return new Mark
             {
                 Id = dto.Id,
-                LessonId = dto.LessonId,
-                Mark = (byte)dto.Mark,
-                MarkDate = dto.MarkDate,
+                SubjectId = dto.LessonId,
+                Grade = (byte)dto.Mark,
+                Date = dto.MarkDate,
                 StudentId = dto.StudentId,
-                Lesson = dto.Lesson?.ToEntity()
-            };
-        }
-
-        public static RatingByLessonDto ToDto(this RatingByLesson entity)
-        {
-            if (entity == null)
-                throw new ArgumentNullException(nameof(RatingByLesson));
-
-            return new RatingByLessonDto
-            {
-                Id = entity.Id,
-                Rating = entity.Rating,
-                Title = entity.Title
-            };
-        }
-
-        public static RatingByLesson ToEntity(this RatingByLessonDto dto)
-        {
-            if (dto == null)
-                throw new ArgumentNullException(nameof(RatingByLessonDto));
-
-            return new RatingByLesson
-            {
-                Id = dto.Id,
-                Rating = (int)dto.Rating,
-                Title = dto.Title
+                Subject = dto.Lesson?.ToEntity()
             };
         }
     }

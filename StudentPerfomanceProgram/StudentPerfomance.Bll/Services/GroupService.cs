@@ -4,6 +4,7 @@ using StudentPerfomance.Bll.Interfaces;
 using StudentPerfomance.Dal.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace StudentPerfomance.Bll.Services
@@ -29,30 +30,20 @@ namespace StudentPerfomance.Bll.Services
 
         public async IAsyncEnumerable<GroupDto> GetAllAsync()
         {
-            var groups = _repository.GetAllAsync();
-
-            await foreach (var group in groups)
-            {
+            await foreach (var group in _repository.GetAllAsync())
                 yield return group.ToDto();
-            }
         }
 
         public async Task<GroupDto> GetByIdAsync(int id) => (await _repository.GetByIdAsync(id)).ToDto();
 
         public async Task UpdateAsync(GroupDto model) => await _repository.UpdateAsync(model.ToEntity());
 
-        public async IAsyncEnumerable<GroupDto> GetByLessonAsync(int id)
-        {
-            await foreach (var group in _repository.GetByLessonAsync(id))
-                yield return group.ToDto();
-        }
+        public async Task<IEnumerable<GroupDto>> GetByLessonAsync(int id) => (await _repository.FilterAsync(x => x.GroupSubjects.Any(y => y.SubjectId == id))).Select(x => x.ToDto());
 
-        public async IAsyncEnumerable<GroupDto> SearchGroupsAsync(string term)
-        {
-            await foreach (var group in _repository.SearchAsync(term))
-                yield return group.ToDto();
-        }
+        public async Task<IEnumerable<GroupDto>> SearchGroupsAsync(string term) => (await _repository.FilterAsync(x => x.Title.ToLower().Contains(term.ToLower()))).Select(x => x.ToDto());
 
         public async Task<GroupDto> GetWithMarksByLesson(int groupId, int lessonId, DateTime date) => (await _repository.GetWithMarksByLesson(groupId, lessonId, date)).ToDto();
+
+        public async Task<int> GetCount() => await _repository.GetCount();
     }
 }

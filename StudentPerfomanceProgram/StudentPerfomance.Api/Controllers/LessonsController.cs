@@ -33,24 +33,15 @@ namespace StudentPerfomance.Api.Controllers
         }
 
         [HttpGet("[action]")]
-        public async IAsyncEnumerable<LessonViewModel> GetByGroup(int groupId)
-        {
-            await foreach (var lesson in _lessonService.GetLessonsByGroup(groupId))
-                yield return lesson.ToViewModel();
-        }
+        public async Task<IEnumerable<LessonViewModel>> GetByGroup(int groupId) => (await _lessonService.GetLessonsByGroup(groupId)).Select(x => x.ToViewModel());
 
         [HttpGet("[action]")]
-        public async IAsyncEnumerable<LessonViewModel> SearchLessons(string search)
+        public async Task<ActionResult<IAsyncEnumerable<LessonViewModel>>> SearchLessons(string search)
         {
-            IAsyncEnumerable<LessonViewModel> lessons;
-
             if (string.IsNullOrWhiteSpace(search))
-                lessons = AsyncEnumerable.Empty<LessonViewModel>();
+                return BadRequest();
             else
-                lessons = _lessonService.SearchLessonsAsync(search).Select(x => x.ToViewModel());
-
-            await foreach (var lesson in lessons)
-                yield return lesson;
+                return Ok((await _lessonService.SearchLessons(search)).Select(x => x.ToViewModel()));
         }
 
         [HttpGet("[action]")]
