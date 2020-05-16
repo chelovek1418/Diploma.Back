@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using StudentPerfomance.Dal;
 
 namespace StudentPerfomance.Dal.Migrations
 {
     [DbContext(typeof(StudentPerfomanceDbContext))]
-    partial class StudentPerfomanceDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200516114641_Add_Semestr_Field_To_Detail")]
+    partial class Add_Semestr_Field_To_Detail
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -48,8 +50,6 @@ namespace StudentPerfomance.Dal.Migrations
                     b.HasIndex("GroupSubjectId");
 
                     b.ToTable("Details");
-
-                    b.HasCheckConstraint("CK_Detail_Semestr", "[Semestr] >= 0 AND [Semestr] <= 3");
 
                     b.HasCheckConstraint("CK_Detail_DayOfWeek", "[DayOfWeek] >= 0 AND [DayOfWeek] <= 6");
 
@@ -256,14 +256,13 @@ namespace StudentPerfomance.Dal.Migrations
                         .HasMaxLength(20);
 
                     b.Property<string>("Patronymic")
+                        .IsRequired()
                         .HasColumnType("nvarchar(30)")
                         .HasMaxLength(30);
 
                     b.Property<string>("PhoneNumber")
-                        .IsRequired()
-                        .HasColumnType("varchar(15)")
-                        .HasMaxLength(15)
-                        .IsUnicode(false);
+                        .HasColumnType("nvarchar(15)")
+                        .HasMaxLength(15);
 
                     b.Property<byte[]>("Photo")
                         .HasColumnType("varbinary(max)");
@@ -272,7 +271,7 @@ namespace StudentPerfomance.Dal.Migrations
 
                     b.HasIndex("Email")
                         .IsUnique()
-                        .HasName("UQ_User_PhoneNumber");
+                        .HasName("UQ_User_Email");
 
                     b.ToTable("Users");
                 });

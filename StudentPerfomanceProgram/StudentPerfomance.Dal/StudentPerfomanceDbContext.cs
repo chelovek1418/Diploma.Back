@@ -26,6 +26,10 @@ namespace StudentPerfomance.Dal
                     .HasName("UQ_User_Email")
                     .IsUnique();
 
+                entity.HasIndex(e => e.Email)
+                    .HasName("UQ_User_PhoneNumber")
+                    .IsUnique();
+
                 entity.Property(e => e.Email)
                     .IsRequired()
                     .HasMaxLength(30)
@@ -40,15 +44,16 @@ namespace StudentPerfomance.Dal
                     .HasMaxLength(20);
 
                 entity.Property(e => e.Patronymic)
-                   .IsRequired()
-                   .HasMaxLength(30);
+                    .HasMaxLength(30);
 
                 entity.Property(e => e.PhoneNumber)
-                   .HasMaxLength(15);
+                    .IsRequired()
+                    .HasMaxLength(15)
+                    .IsUnicode(false);
 
                 entity.Property(e => e.Department)
-                   .IsRequired()
-                   .HasMaxLength(20);
+                    .IsRequired()
+                    .HasMaxLength(20);
             });
 
             modelBuilder.Entity<Student>(entity =>
@@ -175,8 +180,14 @@ namespace StudentPerfomance.Dal
             {
                 entity.HasOne(d => d.GroupSubject)
                     .WithMany(p => p.Details)
-                    .HasForeignKey(d => d.GroupSubjecttId)
-                    .HasConstraintName("FK_Detail_GroupSubjecttId");
+                    .HasForeignKey(d => d.GroupSubjectId)
+                    .HasConstraintName("FK_Detail_GroupSubjectId");
+
+                entity.Property(e => e.Semestr)
+                    .HasColumnType("tinyint")
+                    .HasDefaultValue(0);
+                
+                entity.HasCheckConstraint("CK_Detail_Semestr", "[Semestr] >= 0 AND [Semestr] <= 3");
 
                 entity.HasCheckConstraint("CK_Detail_DayOfWeek", "[DayOfWeek] >= 0 AND [DayOfWeek] <= 6");
 

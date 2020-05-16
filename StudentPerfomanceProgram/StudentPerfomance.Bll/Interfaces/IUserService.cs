@@ -1,40 +1,12 @@
 ﻿using StudentPerfomance.Bll.Dtos;
-using System;
-using System.Collections.Generic;
+using StudentPerfomance.Dal.Entities;
 using System.Threading.Tasks;
 
 namespace StudentPerfomance.Bll.Interfaces
 {
-    public interface IUserService : ICrudService<UserDto>
+    public interface IUserService : ICrudService<User, UserDto>
     {
-        Task<int> CreateStudentAsync(StudentDto model);
-
-        Task UpdateStudentAsync(StudentDto model);
-
-        Task<StudentDto> GetStudentByIdAsync(int id);
-
-        Task<StudentDto> GetBestStudent();
-
-        Task<StudentDto> GetWorstStudent();
-
-        Task<StudentDto> GetBestStudentForLessonInGroup(int lessonId, int groupId);
-
-        Task<StudentDto> GetWorstStudentForLessonInGroup(int lessonId, int groupId);
-
-        Task<StudentDto> GetBestStudentForLesson(int lessonId);
-
-        Task<StudentDto> GetWorstStudentForLesson(int lessonId);
-
-        Task<StudentDto> GetBestStudentInGroup(int groupId);
-
-        Task<StudentDto> GetWorstStudentInGroup(int groupId);
-
-        IAsyncEnumerable<StudentDto> GetTopStudents(DateTime date);
-
-        IAsyncEnumerable<StudentDto> GetStudents(int take, int skip);
-
-        IAsyncEnumerable<UserDto> SearchAsync(string term);
-
-        IAsyncEnumerable<StudentDto> SearchStudentsAsync(string term);
+        Task<bool> CheckEmail(string email);
+        Task<bool> CheckPhone(string phone);
     }
 }

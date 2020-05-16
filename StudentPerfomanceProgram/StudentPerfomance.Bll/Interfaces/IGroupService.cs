@@ -1,11 +1,12 @@
 ﻿using StudentPerfomance.Bll.Dtos;
+using StudentPerfomance.Dal.Entities;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace StudentPerfomance.Bll.Interfaces
 {
-    public interface IGroupService : ICrudService<GroupDto>
+    public interface IGroupService : ICrudService<Group, GroupDto>
     {
         Task<GroupDto> GetWithMarksByLesson(int groupId, int lessonId, DateTime date);
         Task AddLesson(int groupId, int lessonId);

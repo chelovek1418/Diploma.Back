@@ -1,11 +1,12 @@
 ﻿using StudentPerfomance.Bll.Dtos;
+using StudentPerfomance.Dal.Entities;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace StudentPerfomance.Bll.Interfaces
 {
-    public interface ILessonService : ICrudService<LessonDto>
+    public interface ILessonService : ICrudService<Subject, LessonDto>
     {
         Task<IEnumerable<LessonDto>> GetLessonsByGroup(int groupId);
         Task<bool> CheckTitleAsync(string title);

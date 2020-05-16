@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using StudentPerfomance.Dal;
 
 namespace StudentPerfomance.Dal.Migrations
 {
     [DbContext(typeof(StudentPerfomanceDbContext))]
-    partial class StudentPerfomanceDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200516163245_Drop_Required_Patronymic_And_Add_UQ_User_PhoneNumber_Constraint")]
+    partial class Drop_Required_Patronymic_And_Add_UQ_User_PhoneNumber_Constraint
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -24,7 +24,7 @@ namespace StudentPerfomance.Api.Controllers
         [HttpGet]
         public async IAsyncEnumerable<LessonViewModel> Get()
         {
-            var lessons = _lessonService.GetAllAsync();
+            var lessons = _lessonService.GetAllAsync(Bll.Extensions.LessonExtensions.ToDto);
 
             await foreach (var lesson in lessons)
             {
@@ -69,7 +69,7 @@ namespace StudentPerfomance.Api.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<LessonViewModel>> Get(int id)
         {
-            var lesson = await _lessonService.GetByIdAsync(id);
+            var lesson = await _lessonService.GetByIdAsync(id, Bll.Extensions.LessonExtensions.ToDto);
 
             if (lesson == null)
                 return NotFound(nameof(LessonViewModel));
@@ -92,7 +92,7 @@ namespace StudentPerfomance.Api.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            viewModel.Id = await _lessonService.CreateAsync(viewModel.ToDto());
+            viewModel.Id = await _lessonService.CreateAsync(viewModel.ToDto(), Bll.Extensions.LessonExtensions.ToEntity);
 
             return CreatedAtAction(nameof(Get), viewModel);
         }
@@ -104,7 +104,7 @@ namespace StudentPerfomance.Api.Controllers
                 return BadRequest(ModelState);
 
             viewModel.Id = id;
-            await _lessonService.UpdateAsync(viewModel.ToDto());
+            await _lessonService.UpdateAsync(viewModel.ToDto(), Bll.Extensions.LessonExtensions.ToEntity);
 
             return NoContent();
         }

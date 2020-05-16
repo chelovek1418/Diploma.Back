@@ -10,23 +10,13 @@ using System.Threading.Tasks;
 
 namespace StudentPerfomance.Bll.Services
 {
-    public class MarkService : IMarkService
+    public class MarkService : AbstractCrudService<Mark, MarkDto>, IMarkService
     {
-        private readonly IMarkRepository _repository;
+        new private readonly IMarkRepository _repository;
 
-        public MarkService(IMarkRepository repository)
+        public MarkService(IMarkRepository repository) : base(repository)
         {
             _repository = repository;
-        }
-
-        public async Task<int> CreateAsync(MarkDto model) => await _repository.CreateAsync(model.ToEntity());
-
-        public async Task DeleteAsync(int id) => await _repository.DeleteAsync(id);
-
-        public async IAsyncEnumerable<MarkDto> GetAllAsync()
-        {
-            await foreach (var mark in _repository.GetAllAsync())
-                yield return mark.ToDto();
         }
 
         public async Task<double> GetAverageMarkByLessonForStudent(int studentId, int lessonId, DateTime startDate, DateTime endDate) => await _repository.GetAverageMarkByLessonForStudent(studentId, lessonId, startDate, endDate);
@@ -39,28 +29,16 @@ namespace StudentPerfomance.Bll.Services
 
         public async Task<double> GetAverageMarkInGroup(int groupId, DateTime startDate, DateTime endDate) => await _repository.GetAverageMarkInGroup(groupId, startDate, endDate);
 
-        public async Task<MarkDto> GetByIdAsync(int id) => (await _repository.GetByIdAsync(id)).ToDto();
-
-        public async Task UpdateAsync(MarkDto model) => await _repository.UpdateAsync(model.ToEntity());
-
         public async IAsyncEnumerable<MarkDto> GetMarksForTimeByStudentId(int studentId, DateTime startDate, DateTime endDate)
         {
-            var marks = _repository.GetMarksForTimeByStudentId(studentId, startDate, endDate);
-
-            await foreach (var mark in marks)
-            {
+            await foreach (var mark in _repository.GetMarksForTimeByStudentId(studentId, startDate, endDate))
                 yield return mark.ToDto();
-            }
         }
 
         public async IAsyncEnumerable<MarkDto> GetMarksForTimeByLessonByStudentId(int studentId, int lessonId, DateTime startDate, DateTime endDate)
         {
-            var marks = _repository.GetMarksByLessonForStudent(studentId, lessonId, startDate, endDate);
-
-            await foreach (var mark in marks)
-            {
+            await foreach (var mark in _repository.GetMarksByLessonForStudent(studentId, lessonId, startDate, endDate))
                 yield return mark.ToDto();
-            }
         }
 
         public async Task<RatingByLessonDto> GetBestLessonByMarkByStudentId(int studentId, DateTime startDate, DateTime endDate)
@@ -194,7 +172,5 @@ namespace StudentPerfomance.Bll.Services
         {
             throw new NotImplementedException();
         }
-
-        public async Task<int> GetCount() => await _repository.GetCount();
     }
 }

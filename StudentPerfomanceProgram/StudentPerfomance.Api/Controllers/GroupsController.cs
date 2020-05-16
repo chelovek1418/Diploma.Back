@@ -20,28 +20,63 @@ namespace StudentPerfomance.Api.Controllers
             _groupService = groupService;
         }
 
+        #region CRUD
+
         // GET: api/Groups
         [HttpGet]
         public async IAsyncEnumerable<GroupViewModel> Get()
         {
-            await foreach (var group in _groupService.GetAllAsync())
+            await foreach (var group in _groupService.GetAllAsync(Bll.Extensions.GroupExtensions.ToDto))
                 yield return group.ToViewModel();
         }
-
-        [HttpGet("[action]")]
-        public async Task<IEnumerable<GroupViewModel>> GetByLesson(int lessonId) => (await _groupService.GetByLessonAsync(lessonId)).Select(x => x.ToViewModel());
 
         // GET: api/Groups/5
         [HttpGet("{id}", Name = "Get")]
         public async Task<ActionResult<GroupViewModel>> Get(int id)
         {
-            var group = await _groupService.GetByIdAsync(id);
+            var group = await _groupService.GetByIdAsync(id, Bll.Extensions.GroupExtensions.ToDto);
 
             if (group == null)
                 return NotFound(nameof(GroupViewModel));
 
             return Ok(group.ToViewModel());
         }
+
+        // POST: api/Groups
+        [HttpPost]
+        public async Task<IActionResult> Post([FromBody] GroupViewModel viewModel)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            viewModel.Id = await _groupService.CreateAsync(viewModel.ToDto(), Bll.Extensions.GroupExtensions.ToEntity);
+
+            return CreatedAtAction(nameof(Get), viewModel);
+        }
+
+        // PUT: api/Groups/5
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Put(int id, [FromBody] GroupViewModel viewModel)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            viewModel.Id = id;
+            await _groupService.UpdateAsync(viewModel.ToDto(), Bll.Extensions.GroupExtensions.ToEntity);
+
+            return NoContent();
+        }
+
+        // DELETE: api/ApiWithActions/5
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            await _groupService.DeleteAsync(id);
+
+            return NoContent();
+        }
+
+        #endregion
 
         [HttpGet("[action]")]
         public async Task<ActionResult<GroupViewModel>> GetWithMarksByLesson(int groupId, int lessonId, DateTime? date)
@@ -64,32 +99,6 @@ namespace StudentPerfomance.Api.Controllers
                 return Ok((await _groupService.SearchGroupsAsync(search)).Select(x => x.ToViewModel()));
         }
 
-        // POST: api/Groups
-        [HttpPost]
-        public async Task<IActionResult> Post([FromBody] GroupViewModel viewModel)
-        {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
-            viewModel.Id = await _groupService.CreateAsync(viewModel.ToDto());
-
-            return CreatedAtAction(nameof(Get), viewModel);
-        }
-
-        // PUT: api/Groups/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, [FromBody] GroupViewModel viewModel)
-        {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
-            viewModel.Id = id;
-            await _groupService.UpdateAsync(viewModel.ToDto());
-
-            return NoContent();
-        }
-
-
         [HttpGet("[action]")]
         public async Task<ActionResult<bool>> CheckTitle(string title)
         {
@@ -99,14 +108,8 @@ namespace StudentPerfomance.Api.Controllers
             return Ok(await _groupService.CheckTitleAsync(title));
         }
 
-        // DELETE: api/ApiWithActions/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
-        {
-            await _groupService.DeleteAsync(id);
-
-            return NoContent();
-        }
+        [HttpGet("[action]")]
+        public async Task<IEnumerable<GroupViewModel>> GetByLesson(int lessonId) => (await _groupService.GetByLessonAsync(lessonId)).Select(x => x.ToViewModel());
 
         [HttpPost("[action]")]
         public async Task<IActionResult> AddLesson([FromBody] LessonGroupViewModel viewModel)

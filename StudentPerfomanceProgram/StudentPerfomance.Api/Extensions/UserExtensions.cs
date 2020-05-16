@@ -20,6 +20,10 @@ namespace StudentPerfomance.Api.Extensions
                 Email = viewModel.Email,
                 FirstName = viewModel.FirstName,
                 LastName = viewModel.LastName,
+                Patronymic = viewModel.Patronymic,
+                Department = viewModel.Department,
+                PhoneNumber = viewModel.PhoneNumber,
+                Photo = viewModel.Photo
             };
         }
 
@@ -34,6 +38,10 @@ namespace StudentPerfomance.Api.Extensions
                 Email = dto.Email,
                 FirstName = dto.FirstName,
                 LastName = dto.LastName,
+                Patronymic = dto.Patronymic,
+                Department = dto.Department,
+                PhoneNumber = dto.PhoneNumber,
+                Photo = dto.Photo
             };
         }
 
@@ -61,6 +69,32 @@ namespace StudentPerfomance.Api.Extensions
                 GroupId = dto.GroupId,
                 User = dto.User.ToViewModel(),
                 Marks = dto.Marks?.Select(x => x?.ToViewModel()) ?? new List<MarkViewModel>()
+            };
+        }
+
+        public static TeacherDto ToDto(this TeacherViewModel viewModel)
+        {
+            if (viewModel == null)
+                throw new ArgumentNullException(nameof(TeacherViewModel));
+
+            return new TeacherDto
+            {
+                Id = viewModel.Id,
+                Position = viewModel.Position,
+                User = viewModel.User.ToDto()
+            };
+        }
+
+        public static TeacherViewModel ToViewModel(this TeacherDto dto)
+        {
+            if (dto == null)
+                throw new ArgumentNullException(nameof(TeacherDto));
+
+            return new TeacherViewModel
+            {
+                Id = dto.Id,
+                Position = dto.Position,
+                User = dto.User.ToViewModel()
             };
         }
     }

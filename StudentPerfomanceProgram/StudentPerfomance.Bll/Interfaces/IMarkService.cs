@@ -1,11 +1,12 @@
 ﻿using StudentPerfomance.Bll.Dtos;
+using StudentPerfomance.Dal.Entities;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace StudentPerfomance.Bll.Interfaces
 {
-    public interface IMarkService : ICrudService<MarkDto>
+    public interface IMarkService : ICrudService<Mark, MarkDto>
     {
         Task<double> GetAverageMarkByLessonForStudent(int studentId, int lessonId, DateTime startDate, DateTime endDate);
 
