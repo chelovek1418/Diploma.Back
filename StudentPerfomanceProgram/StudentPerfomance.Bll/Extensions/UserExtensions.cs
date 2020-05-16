@@ -19,6 +19,10 @@ namespace StudentPerfomance.Bll.Extensions
                 Email = entity.Email,
                 FirstName = entity.FirstName,
                 LastName = entity.LastName,
+                Patronymic = entity.Patronymic,
+                Department = entity.Department,
+                PhoneNumber = entity.PhoneNumber,
+                Photo = entity.Photo
             };
         }
 
@@ -33,6 +37,10 @@ namespace StudentPerfomance.Bll.Extensions
                 Email = dto.Email,
                 FirstName = dto.FirstName,
                 LastName = dto.LastName,
+                Department = dto.Department,
+                Patronymic = dto.Patronymic,
+                PhoneNumber = dto.PhoneNumber,
+                Photo = dto.Photo
             };
         }
 
@@ -59,6 +67,32 @@ namespace StudentPerfomance.Bll.Extensions
             {
                 Id = dto.Id,
                 GroupId = dto.GroupId,
+                User = dto.User.ToEntity()
+            };
+        }
+
+        public static TeacherDto ToDto(this Teacher entity)
+        {
+            if (entity == null)
+                throw new ArgumentNullException(nameof(Teacher));
+
+            return new TeacherDto
+            {
+                Id = entity.Id,
+                Position = entity.Position,
+                User = entity.User.ToDto()
+            };
+        }
+
+        public static Teacher ToEntity(this TeacherDto dto)
+        {
+            if (dto == null)
+                throw new ArgumentNullException(nameof(TeacherDto));
+
+            return new Teacher
+            {
+                Id = dto.Id,
+                Position = dto.Position,
                 User = dto.User.ToEntity()
             };
         }

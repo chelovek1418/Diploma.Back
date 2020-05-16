@@ -24,7 +24,7 @@ namespace StudentPerfomance.Api.Controllers
         [HttpGet]
         public async IAsyncEnumerable<MarkViewModel> Get()
         {
-            var marks = _markService.GetAllAsync();
+            var marks = _markService.GetAllAsync(Bll.Extensions.MarkExtensions.ToDto);
 
             await foreach (var mark in marks)
             {
@@ -86,7 +86,7 @@ namespace StudentPerfomance.Api.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<MarkViewModel>> Get(int id)
         {
-            var lesson = await _markService.GetByIdAsync(id);
+            var lesson = await _markService.GetByIdAsync(id, Bll.Extensions.MarkExtensions.ToDto);
 
             if (lesson == null)
                 return NotFound(nameof(MarkViewModel));
@@ -130,7 +130,7 @@ namespace StudentPerfomance.Api.Controllers
             if (!ModelState.IsValid || viewModel.MarkDate > DateTime.Now)
                 return BadRequest(ModelState);
 
-            viewModel.Id = await _markService.CreateAsync(viewModel.ToDto());
+            viewModel.Id = await _markService.CreateAsync(viewModel.ToDto(), Bll.Extensions.MarkExtensions.ToEntity);
 
             return CreatedAtAction(nameof(Get), viewModel);
         }
@@ -142,7 +142,7 @@ namespace StudentPerfomance.Api.Controllers
                 return BadRequest(ModelState);
 
             viewModel.Id = id;
-            await _markService.UpdateAsync(viewModel.ToDto());
+            await _markService.UpdateAsync(viewModel.ToDto(), Bll.Extensions.MarkExtensions.ToEntity);
 
             return NoContent();
         }

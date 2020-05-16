@@ -7,8 +7,9 @@ namespace StudentPerfomance.Dal.Entities
         public int Id { get; set; }
         public int DayOfWeek { get; set; }
         public int Pair { get; set; }
-        public int GroupSubjecttId { get; set; }
+        public int GroupSubjectId { get; set; }
         public GroupSubject GroupSubject { get; set; }
-        public bool? IsNumerator {get;set;}
+        public bool? IsNumerator { get; set; }
+        public int Semestr { get; set; }
     }
 }

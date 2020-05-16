@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using StudentPerfomance.Dal;
 
 namespace StudentPerfomance.Dal.Migrations
 {
     [DbContext(typeof(StudentPerfomanceDbContext))]
-    partial class StudentPerfomanceDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200516141158_Fix_Field_Patronymic")]
+    partial class Fix_Field_Patronymic
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -260,10 +262,8 @@ namespace StudentPerfomance.Dal.Migrations
                         .HasMaxLength(30);
 
                     b.Property<string>("PhoneNumber")
-                        .IsRequired()
-                        .HasColumnType("varchar(15)")
-                        .HasMaxLength(15)
-                        .IsUnicode(false);
+                        .HasColumnType("nvarchar(15)")
+                        .HasMaxLength(15);
 
                     b.Property<byte[]>("Photo")
                         .HasColumnType("varbinary(max)");
@@ -272,7 +272,7 @@ namespace StudentPerfomance.Dal.Migrations
 
                     b.HasIndex("Email")
                         .IsUnique()
-                        .HasName("UQ_User_PhoneNumber");
+                        .HasName("UQ_User_Email");
 
                     b.ToTable("Users");
                 });
