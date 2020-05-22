@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using StudentPerfomance.Dal;
 
 namespace StudentPerfomance.Dal.Migrations
 {
     [DbContext(typeof(StudentPerfomanceDbContext))]
-    partial class StudentPerfomanceDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200519071105_Fix_Group_Entity")]
+    partial class Fix_Group_Entity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -58,7 +60,7 @@ namespace StudentPerfomance.Dal.Migrations
 
                     b.HasCheckConstraint("CK_Detail_DayOfWeek", "[DayOfWeek] >= 0 AND [DayOfWeek] <= 6");
 
-                    b.HasCheckConstraint("CK_Detail_Pair", "[Pair] >= 0 AND [Pair] <= 4");
+                    b.HasCheckConstraint("CK_Detail_Pair", "[Pair] >= 1 AND [Pair] <= 5");
                 });
 
             modelBuilder.Entity("StudentPerfomance.Dal.Entities.Group", b =>

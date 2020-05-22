@@ -1,11 +1,14 @@
 ﻿using StudentPerfomance.Bll.Dtos;
 using StudentPerfomance.Dal.Entities;
+using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace StudentPerfomance.Bll.Interfaces
 {
     public interface IStudentService : ICrudService<Student, StudentDto>
     {
+        Task<IEnumerable<StudentDto>> FilterAsync(string term);
         Task<StudentDto> GetStudentByIdAsync(int id);
 
         Task<StudentDto> GetBestStudent();
@@ -24,6 +27,6 @@ namespace StudentPerfomance.Bll.Interfaces
 
         Task<StudentDto> GetWorstStudentInGroup(int groupId);
 
-        ////IAsyncEnumerable<StudentDto> GetTopStudents(DateTime date);
+        Task<IEnumerable<StudentDto>> GetTopStudents(DateTime startDate, DateTime endDate);
     }
 }

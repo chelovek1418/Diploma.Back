@@ -27,7 +27,7 @@ namespace StudentPerfomance.Api
             var connectionString = Configuration.GetConnectionString("DefaultConnection");
 
             services.AddDbContext<StudentPerfomanceDbContext>(o => o.UseSqlServer(connectionString));
-            
+
             services.AddScoped<IGroupRepository, GroupRepository>();
             services.AddScoped<IGroupService, GroupService>();
 
@@ -46,6 +46,9 @@ namespace StudentPerfomance.Api
             services.AddScoped<IStudentRepository, StudentRepository>();
             services.AddScoped<IStudentService, StudentService>();
 
+            services.AddScoped<IDetailRepository, DetailRepository>();
+            services.AddScoped<IDetailService, DetailService>();
+
             services.AddAuthentication("Bearer")
                 .AddJwtBearer("Bearer", config =>
                 {
@@ -60,7 +63,8 @@ namespace StudentPerfomance.Api
                     .AllowAnyMethod()
                     .AllowAnyHeader()));
 
-            services.AddControllers(options => options.Filters.Add(new ExceptionFilterAttribute()));
+            services.AddControllers(options => options.Filters.Add(new ExceptionFilterAttribute()))
+                    .AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

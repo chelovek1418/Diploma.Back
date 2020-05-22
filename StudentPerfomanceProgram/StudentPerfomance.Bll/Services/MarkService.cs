@@ -168,9 +168,7 @@ namespace StudentPerfomance.Bll.Services
             return marks.GroupBy(x => x.StudentId).Select(x => new MarkDto { LessonId = lessonId, StudentId = x.Key, Mark = x.Sum(m => m.Grade), MarkDate = endDate });
         }
 
-        public IAsyncEnumerable<RatingByLessonDto> GetStudentRating(int studentId, DateTime startDate, DateTime endDate)
-        {
-            throw new NotImplementedException();
-        }
+        public async Task<IEnumerable<RatingByLessonDto>> GetStudentRating(int studentId, DateTime startDate, DateTime endDate) => throw new NotImplementedException();
+            //(await _repository.FilterAsync(x => x.StudentId == studentId && x.Date >= startDate && x.Date <= endDate)).Select(x => new RatingByLessonDto { Id = x.SubjectId, Title = x.S })
     }
 }

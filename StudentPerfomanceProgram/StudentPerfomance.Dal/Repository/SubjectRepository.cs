@@ -14,14 +14,6 @@ namespace StudentPerfomance.Dal.Repository
         {
         }
 
-        public async Task<bool> CheckTitleAsync(string title)
-        {
-            if (string.IsNullOrWhiteSpace(title))
-                throw new ArgumentException(nameof(title));
-
-            return !await dbContext.Subjects.AnyAsync(x => x.Title == title);
-        }
-
         public async Task<IEnumerable<Subject>> GetLessonsWithMarksForTimeByStudentId(int studentId, DateTime startDate, DateTime endDate)
         {
             var lessons = await dbContext.Subjects

@@ -21,27 +21,62 @@ namespace StudentPerfomance.Api.Controllers
             _markService = markService;
         }
 
+        #region CRUD
+
         [HttpGet]
         public async IAsyncEnumerable<MarkViewModel> Get()
         {
-            var marks = _markService.GetAllAsync(Bll.Extensions.MarkExtensions.ToDto);
-
-            await foreach (var mark in marks)
-            {
+            await foreach (var mark in _markService.GetAllAsync(Bll.Extensions.MarkExtensions.ToDto))
                 yield return mark.ToViewModel();
-            }
         }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<MarkViewModel>> Get(int id)
+        {
+            var lesson = await _markService.GetByIdAsync(id, Bll.Extensions.MarkExtensions.ToDto);
+
+            if (lesson == null)
+                return NotFound(nameof(MarkViewModel));
+
+            return Ok(lesson.ToViewModel());
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Post([FromBody] MarkViewModel viewModel)
+        {
+            if (!ModelState.IsValid || viewModel.MarkDate > DateTime.Now)
+                return BadRequest(ModelState);
+
+            viewModel.Id = await _markService.CreateAsync(viewModel.ToDto(), Bll.Extensions.MarkExtensions.ToEntity);
+
+            return CreatedAtAction(nameof(Get), viewModel);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Put(int id, [FromBody] MarkViewModel viewModel)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            viewModel.Id = id;
+            await _markService.UpdateAsync(viewModel.ToDto(), Bll.Extensions.MarkExtensions.ToEntity);
+
+            return NoContent();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            await _markService.DeleteAsync(id);
+
+            return NoContent();
+        }
+
+        #endregion
 
         [HttpGet("[action]")]
-        public async IAsyncEnumerable<RatingByLessonViewModel> GetRating(int studentId)
-        {
-            var rating = _markService.GetStudentRating(studentId, new DateTime(), new DateTime());
-
-            await foreach (var position in rating)
-            {
-                yield return position.ToViewModel();
-            }
-        }
+        public async Task<IEnumerable<RatingByLessonViewModel>> GetRating(int studentId, DateTime? startDate, DateTime? endDate) => throw new NotImplementedException();
+            //(await _markService.GetStudentRating(studentId, new DateTime(), new DateTime())).Select(x => x)
 
         [HttpGet("[action]")]
         public async IAsyncEnumerable<MarkViewModel> GetMarksForTime(int studentId, DateTime? date)
@@ -83,16 +118,7 @@ namespace StudentPerfomance.Api.Controllers
             }
         }
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<MarkViewModel>> Get(int id)
-        {
-            var lesson = await _markService.GetByIdAsync(id, Bll.Extensions.MarkExtensions.ToDto);
 
-            if (lesson == null)
-                return NotFound(nameof(MarkViewModel));
-
-            return Ok(lesson.ToViewModel());
-        }
 
         ////[HttpGet("[action]")]
         ////public async Task<double> GetAverageForStudentByLesson(int studentId, int lessonId) => await _markService.GetAverageMarkByLessonForStudent(studentId, lessonId);
@@ -123,36 +149,5 @@ namespace StudentPerfomance.Api.Controllers
 
         ////[HttpGet("[action]")]
         ////public async Task<double> GetProductivityForTimeByLesson(int studentId, int lessonId, int term = 7) => await _markService.GetProductivityForTimeByLessonByStudentId(studentId, lessonId, term);
-
-        [HttpPost]
-        public async Task<IActionResult> Post([FromBody] MarkViewModel viewModel)
-        {
-            if (!ModelState.IsValid || viewModel.MarkDate > DateTime.Now)
-                return BadRequest(ModelState);
-
-            viewModel.Id = await _markService.CreateAsync(viewModel.ToDto(), Bll.Extensions.MarkExtensions.ToEntity);
-
-            return CreatedAtAction(nameof(Get), viewModel);
-        }
-
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, [FromBody] MarkViewModel viewModel)
-        {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
-            viewModel.Id = id;
-            await _markService.UpdateAsync(viewModel.ToDto(), Bll.Extensions.MarkExtensions.ToEntity);
-
-            return NoContent();
-        }
-
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
-        {
-            await _markService.DeleteAsync(id);
-
-            return NoContent();
-        }
     }
 }

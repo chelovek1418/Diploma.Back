@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using StudentPerfomance.Api.Extensions;
 using StudentPerfomance.Api.ViewModels.UserViewModels;
@@ -73,5 +71,11 @@ namespace StudentPerfomance.Api.Controllers
         }
 
         #endregion
+
+        [HttpGet("[action]")]
+        public async Task<IEnumerable<TeacherViewModel>> GetUnconfirmedTeachers() => (await _teacherService.GetUnconfirmedTeachers()).Select(x => x.ToViewModel());
+
+        [HttpPost("[action]")]
+        public async Task ConfirmTeacher([FromBody] int id) => await _teacherService.ConfirmTeacher(id);
     }
 }

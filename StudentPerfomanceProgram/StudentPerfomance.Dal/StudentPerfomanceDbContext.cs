@@ -74,6 +74,11 @@ namespace StudentPerfomance.Dal
 
             modelBuilder.Entity<Teacher>(entity =>
             {
+                entity.HasQueryFilter(u => u.IsConfirmed);
+
+                entity.Property(e => e.IsConfirmed)
+                    .HasDefaultValue(false);
+
                 entity.Property(e => e.Id).ValueGeneratedNever();
 
                 entity.Property(e => e.Position)
@@ -116,6 +121,8 @@ namespace StudentPerfomance.Dal
                 entity.HasIndex(e => e.SubjectId);
 
                 entity.HasIndex(e => e.GroupId);
+
+                entity.HasAlternateKey(e => new { e.GroupId, e.SubjectId });
 
                 entity.HasOne(d => d.Group)
                     .WithMany(p => p.GroupSubjects)
@@ -191,7 +198,7 @@ namespace StudentPerfomance.Dal
 
                 entity.HasCheckConstraint("CK_Detail_DayOfWeek", "[DayOfWeek] >= 0 AND [DayOfWeek] <= 6");
 
-                entity.HasCheckConstraint("CK_Detail_Pair", "[Pair] >= 1 AND [Pair] <= 5");
+                entity.HasCheckConstraint("CK_Detail_Pair", "[Pair] >= 0 AND [Pair] <= 4");
             });
         }
     }

@@ -53,7 +53,7 @@ namespace StudentPerfomance.Api.Extensions
             return new StudentDto
             {
                 Id = viewModel.Id,
-                GroupId = viewModel.GroupId,
+                Group = viewModel.Group?.ToDto(),
                 User = viewModel.User.ToDto()
             };
         }
@@ -66,7 +66,7 @@ namespace StudentPerfomance.Api.Extensions
             return new StudentViewModel
             {
                 Id = dto.Id,
-                GroupId = dto.GroupId,
+                Group = dto.Group?.ToViewModel(),
                 User = dto.User.ToViewModel(),
                 Marks = dto.Marks?.Select(x => x?.ToViewModel()) ?? new List<MarkViewModel>()
             };

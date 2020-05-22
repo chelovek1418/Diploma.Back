@@ -3,6 +3,7 @@ using StudentPerfomance.Dal.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace StudentPerfomance.Dal.Repository
@@ -37,7 +38,7 @@ namespace StudentPerfomance.Dal.Repository
             await dbContext.SaveChangesAsync();
         }
 
-        public virtual async Task<IEnumerable<TEntity>> FilterAsync(Func<TEntity, bool> predicate) => await Task.Run(() => dbContext.Set<TEntity>().AsNoTracking().Where(predicate));
+        public virtual async Task<IEnumerable<TEntity>> FilterAsync(Expression<Func<TEntity, bool>> predicate) => await Task.Run(() => dbContext.Set<TEntity>().AsNoTracking().Where(predicate));
 
         public virtual IAsyncEnumerable<TEntity> GetAllAsync() => dbContext.Set<TEntity>().AsNoTracking().AsAsyncEnumerable();
 

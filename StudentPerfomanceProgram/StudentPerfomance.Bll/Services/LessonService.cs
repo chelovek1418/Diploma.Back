@@ -19,7 +19,7 @@ namespace StudentPerfomance.Bll.Services
             _repository = repository;
         }
 
-        public async Task<bool> CheckTitleAsync(string title) => await _repository.CheckTitleAsync(title);
+        public async Task<bool> CheckTitleAsync(string title) => !(await _repository.FilterAsync(x => x.Title == title)).Any();
 
         public async Task<IEnumerable<LessonDto>> GetLessonsByGroup(int groupId) => (await _repository.FilterAsync(x => x.GroupSubjects.Any(g => g.GroupId == groupId))).Select(x => x.ToDto());
 

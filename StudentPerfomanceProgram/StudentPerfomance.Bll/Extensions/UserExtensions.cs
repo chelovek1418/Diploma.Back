@@ -52,7 +52,7 @@ namespace StudentPerfomance.Bll.Extensions
             return new StudentDto
             {
                 Id = entity.Id,
-                GroupId = entity.GroupId,
+                Group = entity.Group?.ToDto(),
                 User = entity.User.ToDto(),
                 Marks = entity.Marks?.Select(x => x?.ToDto()) ?? new List<MarkDto>()
             };
@@ -66,7 +66,7 @@ namespace StudentPerfomance.Bll.Extensions
             return new Student
             {
                 Id = dto.Id,
-                GroupId = dto.GroupId,
+                GroupId = dto.Group?.Id,
                 User = dto.User.ToEntity()
             };
         }

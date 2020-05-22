@@ -12,7 +12,7 @@ namespace StudentPerfomance.Bll.Extensions
             if (entity == null)
                 throw new ArgumentNullException(nameof(Group));
 
-            return new GroupDto
+            var group = new GroupDto
             {
                 Id = entity.Id,
                 Title = entity.Title,
@@ -21,9 +21,21 @@ namespace StudentPerfomance.Bll.Extensions
                 Specialization = entity.Specialization,
                 Year = entity.Year,
                 Curator = entity.Teacher?.ToDto(),
-                Headmen = entity.Student?.ToDto(),
-                Students = entity.Students?.Select(x => x?.ToDto())
+                //Students = entity.Students?.Select(x => x?.ToDto()),
+                //Headmen = entity.Students?.FirstOrDefault(x => x.Id == entity.StudentId)?.ToDto(),
             };
+
+            group.Students = entity.Students?.Select(x => new StudentDto
+            {
+                User = x.User.ToDto(),
+                Group = group,
+                Id = x.Id,
+                Marks = x.Marks?.Select(y => y.ToDto())
+            });
+
+            group.Headmen = group.Students?.FirstOrDefault(x => x.Id == entity.StudentId);
+
+            return group;
         }
 
         public static Group ToEntity(this GroupDto dto)
@@ -40,7 +52,7 @@ namespace StudentPerfomance.Bll.Extensions
                 Specialization = dto.Specialization,
                 Year = dto.Year,
                 Teacher = dto.Curator?.ToEntity(),
-                Student = dto.Headmen?.ToEntity(),
+                StudentId = dto.Headmen?.Id,
                 Students = dto.Students?.Select(x => x?.ToEntity()).ToHashSet()
             };
         }

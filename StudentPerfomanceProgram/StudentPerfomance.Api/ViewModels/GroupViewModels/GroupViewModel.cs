@@ -13,7 +13,7 @@ namespace StudentPerfomance.Api.ViewModels.GroupViewModels
         public string Title { get; set; }
 
         [Required]
-        [StringLength(20, MinimumLength = 2, ErrorMessage = "Faculty length must be in the range of 2 to 20")]
+        [StringLength(20, MinimumLength = 1, ErrorMessage = "Faculty length must be in the range of 2 to 20")]
         public string Faculty { get; set; }
 
         [Required]

@@ -15,6 +15,6 @@ namespace StudentPerfomance.Dal.Interfaces
         Task<Student> GetWorstStudentForLesson(int lessonId, DateTime startDate, DateTime endDate);
         Task<Student> GetWorstStudentInGroup(int groupId, DateTime startDate, DateTime endDate);
         Task<Student> GetBestStudentInGroup(int groupId, DateTime startDate, DateTime endDate);
-        IAsyncEnumerable<Student> GetTopStudents(DateTime startDate, DateTime endDate);
+        Task<IEnumerable<Student>> GetTopStudents(DateTime startDate, DateTime endDate);
     }
 }

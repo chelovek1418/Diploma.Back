@@ -1,7 +1,11 @@
 ﻿using StudentPerfomance.Bll.Dtos;
+using StudentPerfomance.Bll.Extensions;
 using StudentPerfomance.Bll.Interfaces;
 using StudentPerfomance.Dal.Entities;
 using StudentPerfomance.Dal.Interfaces;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace StudentPerfomance.Bll.Services
@@ -13,6 +17,9 @@ namespace StudentPerfomance.Bll.Services
         {
             _repository = repository;
         }
+
+        public async Task<IEnumerable<StudentDto>> FilterAsync(string term) => 
+            (await _repository.FilterAsync(x => x.User.Email.ToLower().StartsWith(term) || x.User.FirstName.ToLower().StartsWith(term) || x.User.LastName.ToLower().StartsWith(term))).Select(x => x.ToDto());
 
         public Task<StudentDto> GetBestStudent()
         {
@@ -38,6 +45,9 @@ namespace StudentPerfomance.Bll.Services
         {
             throw new System.NotImplementedException();
         }
+
+        public async Task<IEnumerable<StudentDto>> GetTopStudents(DateTime startDate, DateTime endDate) => 
+            (await _repository.GetTopStudents(startDate, endDate)).Select(x => x.ToDto());
 
         public Task<StudentDto> GetWorstStudent()
         {
