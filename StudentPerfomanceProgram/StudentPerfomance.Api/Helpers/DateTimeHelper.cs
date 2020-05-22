@@ -13,7 +13,7 @@ namespace StudentPerfomance.Api.Helpers
         internal static DateTime GetNearestEducationalMonthStartDate()
         {
             var today = DateTime.Today;
-            return today.Month > 5 && today.Month < 90 ? new DateTime(today.Year, 5, 1) : new DateTime(today.Year, today.Month, 1);
+            return today.Month > 5 && today.Month < 9 ? new DateTime(today.Year, 5, 1) : new DateTime(today.Year, today.Month, 1);
         }
 
         internal static string CheckStartDate(DateTime dateTime)
@@ -27,5 +27,7 @@ namespace StudentPerfomance.Api.Helpers
 
             return error;
         }
+
+        internal static int GetCurrentSemestr() => DateTime.Today.Month >= 8 ? 1 : 0; 
     }
 }

@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using StudentPerfomance.Api.Extensions;
+using StudentPerfomance.Api.Helpers;
 using StudentPerfomance.Api.ViewModels.UserViewModels;
 using StudentPerfomance.Bll.Interfaces;
 
@@ -73,5 +73,34 @@ namespace StudentPerfomance.Api.Controllers
         }
 
         #endregion
+
+        [HttpGet("[action]")]
+        public async Task<ActionResult<IEnumerable<StudentViewModel>>> Search(string search)
+        {
+            search = search?.Trim();
+
+            if (string.IsNullOrWhiteSpace(search))
+                return BadRequest("Empty search word");
+
+            return Ok((await _studentService.FilterAsync(search.ToLower())).Select(x => x.ToViewModel()));
+        }
+
+        [HttpGet("[action]")]
+        public async Task<ActionResult<IEnumerable<StudentViewModel>>> GetBestStudents(DateTime? startDate, DateTime? endDate)
+        {
+            if (!startDate.HasValue)
+                startDate = DateTimeHelper.GetTermStartDate();
+            else
+            {
+                var errorMessage = DateTimeHelper.CheckStartDate(startDate.Value);
+                if (errorMessage != null)
+                    return BadRequest(errorMessage);
+            }
+
+            if (!endDate.HasValue || endDate.Value < startDate.Value)
+                endDate = DateTime.Now;
+
+            return Ok((await _studentService.GetTopStudents(startDate.Value, endDate.Value)).Select(x => x.ToViewModel()));
+        }
     }
 }

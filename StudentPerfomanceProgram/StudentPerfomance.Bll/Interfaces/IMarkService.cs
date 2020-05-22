@@ -18,7 +18,7 @@ namespace StudentPerfomance.Bll.Interfaces
 
         Task<double> GetAverageMarkInGroup(int groupId, DateTime startDate, DateTime endDate);
 
-        IAsyncEnumerable<RatingByLessonDto> GetStudentRating(int studentId, DateTime startDate, DateTime endDate);
+        Task<IEnumerable<RatingByLessonDto>> GetStudentRating(int studentId, DateTime startDate, DateTime endDate);
 
         Task<bool> GetGlobalRating(int studentId, DateTime startDate, DateTime endDate);
 

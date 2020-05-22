@@ -15,6 +15,8 @@
     <Compile Remove="Migrations\20200516114331_Add_Semestr_Filed_To_Detail.Designer.cs" />
     <Compile Remove="Migrations\20200516114507_Add_Semestr_Filed_To_Detail.cs" />
     <Compile Remove="Migrations\20200516114507_Add_Semestr_Filed_To_Detail.Designer.cs" />
+    <Compile Remove="Migrations\20200517104052_Rebuild_Detail.cs" />
+    <Compile Remove="Migrations\20200517104052_Rebuild_Detail.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

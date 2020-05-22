@@ -1,5 +1,4 @@
-﻿using Microsoft.Data.SqlClient;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using StudentPerfomance.Dal.Entities;
 using StudentPerfomance.Dal.Interfaces;
 using System;

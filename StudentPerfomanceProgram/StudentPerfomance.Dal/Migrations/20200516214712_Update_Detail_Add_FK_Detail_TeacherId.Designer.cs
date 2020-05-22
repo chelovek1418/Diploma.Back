@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using StudentPerfomance.Dal;
 
 namespace StudentPerfomance.Dal.Migrations
 {
     [DbContext(typeof(StudentPerfomanceDbContext))]
-    partial class StudentPerfomanceDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200516214712_Update_Detail_Add_FK_Detail_TeacherId")]
+    partial class Update_Detail_Add_FK_Detail_TeacherId
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -58,7 +60,7 @@ namespace StudentPerfomance.Dal.Migrations
 
                     b.HasCheckConstraint("CK_Detail_DayOfWeek", "[DayOfWeek] >= 0 AND [DayOfWeek] <= 6");
 
-                    b.HasCheckConstraint("CK_Detail_Pair", "[Pair] >= 0 AND [Pair] <= 4");
+                    b.HasCheckConstraint("CK_Detail_Pair", "[Pair] >= 1 AND [Pair] <= 5");
                 });
 
             modelBuilder.Entity("StudentPerfomance.Dal.Entities.Group", b =>
@@ -86,6 +88,9 @@ namespace StudentPerfomance.Dal.Migrations
                     b.Property<int?>("StudentId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("StudentId1")
+                        .HasColumnType("int");
+
                     b.Property<int?>("TeacherId")
                         .HasColumnType("int");
 
@@ -98,6 +103,8 @@ namespace StudentPerfomance.Dal.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("StudentId1");
 
                     b.HasIndex("TeacherId");
 
@@ -201,11 +208,6 @@ namespace StudentPerfomance.Dal.Migrations
                     b.Property<int>("Id")
                         .HasColumnType("int");
 
-                    b.Property<bool>("IsConfirmed")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
-
                     b.Property<string>("Position")
                         .IsRequired()
                         .HasColumnType("nvarchar(30)")
@@ -296,12 +298,17 @@ namespace StudentPerfomance.Dal.Migrations
                     b.HasOne("StudentPerfomance.Dal.Entities.Teacher", "Teacher")
                         .WithMany("Details")
                         .HasForeignKey("TeacherId")
+                        .HasConstraintName("FK_Detail_TeacherId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
             modelBuilder.Entity("StudentPerfomance.Dal.Entities.Group", b =>
                 {
+                    b.HasOne("StudentPerfomance.Dal.Entities.Student", "Student")
+                        .WithMany()
+                        .HasForeignKey("StudentId1");
+
                     b.HasOne("StudentPerfomance.Dal.Entities.Teacher", "Teacher")
                         .WithMany()
                         .HasForeignKey("TeacherId");

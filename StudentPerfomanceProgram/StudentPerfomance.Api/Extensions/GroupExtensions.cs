@@ -1,4 +1,5 @@
 ﻿using StudentPerfomance.Api.ViewModels.GroupViewModels;
+using StudentPerfomance.Api.ViewModels.UserViewModels;
 using StudentPerfomance.Bll.Dtos;
 using System;
 using System.Linq;
@@ -31,18 +32,35 @@ namespace StudentPerfomance.Api.Extensions
             if (dto == null)
                 throw new ArgumentNullException(nameof(GroupDto));
 
-            return new GroupViewModel
+            var group =  new GroupViewModel
             {
                 Id = dto.Id,
                 Title = dto.Title,
                 Curator = dto.Curator?.ToViewModel(),
-                Headmen = dto.Headmen?.ToViewModel(),
+                //Headmen = dto.Headmen?.ToViewModel(),
                 Faculty = dto.Faculty,
                 Speciality = dto.Speciality,
                 Specialization = dto.Specialization,
                 Year = dto.Year,
-                Students = dto.Students.Select(x=>x.ToViewModel())
+                //Students = dto.Students.Select(x => new StudentViewModel 
+                //{
+                //    User = x.User?.ToViewModel() ?? throw new NullReferenceException(nameof(StudentDto)),
+                //    Id = x.Id,
+                //    Marks = x.Marks?.Select(y => y.ToViewModel())
+                //})
             };
+
+            group.Students = dto.Students?.Select(x => new StudentViewModel
+            {
+                Id = x.Id,
+                User = x.User.ToViewModel(),
+                Group = group,
+                Marks = x.Marks?.Select(x => x.ToViewModel())
+            });
+
+            group.Headmen = group.Students.FirstOrDefault(x => x.Id == dto.Headmen?.Id);
+
+            return group;
         }
     }
 }

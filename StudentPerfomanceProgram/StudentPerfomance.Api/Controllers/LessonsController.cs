@@ -21,50 +21,14 @@ namespace StudentPerfomance.Api.Controllers
             _lessonService = lessonService;
         }
 
+        #region CRUD
+
         [HttpGet]
         public async IAsyncEnumerable<LessonViewModel> Get()
         {
-            var lessons = _lessonService.GetAllAsync(Bll.Extensions.LessonExtensions.ToDto);
-
-            await foreach (var lesson in lessons)
-            {
+            await foreach (var lesson in _lessonService.GetAllAsync(Bll.Extensions.LessonExtensions.ToDto))
                 yield return lesson.ToViewModel();
-            }
-        }
-
-        [HttpGet("[action]")]
-        public async Task<IEnumerable<LessonViewModel>> GetByGroup(int groupId) => (await _lessonService.GetLessonsByGroup(groupId)).Select(x => x.ToViewModel());
-
-        [HttpGet("[action]")]
-        public async Task<ActionResult<IAsyncEnumerable<LessonViewModel>>> SearchLessons(string search)
-        {
-            if (string.IsNullOrWhiteSpace(search))
-                return BadRequest();
-            else
-                return Ok((await _lessonService.SearchLessons(search)).Select(x => x.ToViewModel()));
-        }
-
-        [HttpGet("[action]")]
-        public async Task<ActionResult<IEnumerable<LessonViewModel>>> GetLessonsWithMarksForTimeByStudentId(int studentId, DateTime? startDate, DateTime? endDate)
-        {
-            if (studentId < 0)
-                ModelState.AddModelError(nameof(studentId), "Id cannot be less then 0");
-
-            if (!startDate.HasValue)
-                startDate = DateTimeHelper.GetNearestEducationalMonthStartDate();
-
-            var errorMessage = DateTimeHelper.CheckStartDate(startDate.Value);
-            if (errorMessage != null)
-                ModelState.AddModelError(nameof(startDate), errorMessage);
-
-            if (!endDate.HasValue || endDate.Value < startDate.Value)
-                endDate = startDate.Value.AddMonths(1);
-
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
-            return Ok((await _lessonService.GetLessonsWithMarksForTimeByStudentId(studentId, startDate.Value, endDate.Value)).Select(x => x.ToViewModel()));
-        }
+        }        
 
         [HttpGet("{id}")]
         public async Task<ActionResult<LessonViewModel>> Get(int id)
@@ -75,15 +39,6 @@ namespace StudentPerfomance.Api.Controllers
                 return NotFound(nameof(LessonViewModel));
 
             return Ok(lesson.ToViewModel());
-        }
-
-        [HttpGet("[action]")]
-        public async Task<ActionResult<bool>> CheckTitle(string title)
-        {
-            if (string.IsNullOrWhiteSpace(title))
-                return BadRequest(nameof(title));
-
-            return Ok(await _lessonService.CheckTitleAsync(title));
         }
 
         [HttpPost]
@@ -116,5 +71,50 @@ namespace StudentPerfomance.Api.Controllers
 
             return NoContent();
         }
+
+        #endregion
+
+        [HttpGet("[action]")]
+        public async Task<ActionResult<bool>> CheckTitle(string title)
+        {
+            if (string.IsNullOrWhiteSpace(title))
+                return BadRequest(nameof(title));
+
+            return Ok(await _lessonService.CheckTitleAsync(title));
+        }
+
+        [HttpGet("[action]")]
+        public async Task<IEnumerable<LessonViewModel>> GetByGroup(int groupId) => (await _lessonService.GetLessonsByGroup(groupId)).Select(x => x.ToViewModel());
+
+        [HttpGet("[action]")]
+        public async Task<ActionResult<IAsyncEnumerable<LessonViewModel>>> SearchLessons(string search)
+        {
+            if (string.IsNullOrWhiteSpace(search))
+                return BadRequest();
+            else
+                return Ok((await _lessonService.SearchLessons(search)).Select(x => x.ToViewModel()));
+        }
+
+        //[HttpGet("[action]")]
+        //public async Task<ActionResult<IEnumerable<LessonViewModel>>> GetLessonsWithMarksForTimeByStudentId(int studentId, DateTime? startDate, DateTime? endDate)
+        //{
+        //    if (studentId < 0)
+        //        ModelState.AddModelError(nameof(studentId), "Id cannot be less then 0");
+
+        //    if (!startDate.HasValue)
+        //        startDate = DateTimeHelper.GetNearestEducationalMonthStartDate();
+
+        //    var errorMessage = DateTimeHelper.CheckStartDate(startDate.Value);
+        //    if (errorMessage != null)
+        //        ModelState.AddModelError(nameof(startDate), errorMessage);
+
+        //    if (!endDate.HasValue || endDate.Value < startDate.Value)
+        //        endDate = startDate.Value.AddMonths(1);
+
+        //    if (!ModelState.IsValid)
+        //        return BadRequest(ModelState);
+
+        //    return Ok((await _lessonService.GetLessonsWithMarksForTimeByStudentId(studentId, startDate.Value, endDate.Value)).Select(x => x.ToViewModel()));
+        //}
     }
 }

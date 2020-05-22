@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace StudentPerfomance.Dal.Interfaces
@@ -8,7 +9,7 @@ namespace StudentPerfomance.Dal.Interfaces
     {
         IAsyncEnumerable<T> GetAllAsync();
 
-        Task<IEnumerable<T>> FilterAsync(Func<T, bool> predicate);
+        Task<IEnumerable<T>> FilterAsync(Expression<Func<T, bool>> predicate);
 
         Task<int> CreateAsync(T model);
 

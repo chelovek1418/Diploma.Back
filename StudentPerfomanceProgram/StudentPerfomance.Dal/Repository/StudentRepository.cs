@@ -4,6 +4,7 @@ using StudentPerfomance.Dal.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace StudentPerfomance.Dal.Repository
@@ -24,7 +25,7 @@ namespace StudentPerfomance.Dal.Repository
 
         public override async Task<Student> GetByIdAsync(int id)
         {
-            var student = await dbContext.Students.Include(x => x.User).FirstOrDefaultAsync(x => x.Id == id);
+            var student = await dbContext.Students.Include(x => x.User).Include(x => x.Group).FirstOrDefaultAsync(x => x.Id == id);
             if (student == null)
                 throw new NullReferenceException(nameof(Student));
 
@@ -33,7 +34,7 @@ namespace StudentPerfomance.Dal.Repository
 
         public override IAsyncEnumerable<Student> GetAllAsync() => dbContext.Students.Include(x => x.User).AsNoTracking().AsAsyncEnumerable();
 
-        public override async Task<IEnumerable<Student>> FilterAsync(Func<Student, bool> predicate) => await Task.Run(() => dbContext.Students.Include(x => x.User).Where(predicate));
+        public override async Task<IEnumerable<Student>> FilterAsync(Expression<Func<Student, bool>> predicate) => await Task.Run(() => dbContext.Students.Include(x => x.User).Where(predicate));
 
         public override async Task DeleteAsync(int id)
         {
@@ -48,6 +49,7 @@ namespace StudentPerfomance.Dal.Repository
 
         public Task<Student> GetBestStudent(DateTime startDate, DateTime endDate)
         {
+            //var bestMarkk = dbContext.Marks.Where(x => x.Date >= startDate && x.Date <= endDate).GroupBy(x => x.StudentId).FirstOrDefaultAsync(x => x..MaxAsync(x => x.Sum(y => y.Grade));
             throw new NotImplementedException();
 
             ////var student = dbContext.Students.Include(x => x.User).FirstOrDefaultAsync(x => x.Marks.Sum(m => m.Grade) >= dbContext.Students.)
@@ -68,9 +70,9 @@ namespace StudentPerfomance.Dal.Repository
             throw new NotImplementedException();
         }
 
-        public IAsyncEnumerable<Student> GetTopStudents(DateTime startDate, DateTime endDate)
+        public async Task<IEnumerable<Student>> GetTopStudents(DateTime startDate, DateTime endDate)
         {
-            throw new NotImplementedException();
+            return await FilterAsync(x => x.Id > 0);
         }
 
         public Task<Student> GetWorstStudent(DateTime startDate, DateTime endDate)

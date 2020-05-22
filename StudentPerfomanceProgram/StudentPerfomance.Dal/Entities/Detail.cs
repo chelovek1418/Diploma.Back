@@ -11,5 +11,7 @@ namespace StudentPerfomance.Dal.Entities
         public GroupSubject GroupSubject { get; set; }
         public bool? IsNumerator { get; set; }
         public int Semestr { get; set; }
+        public int TeacherId { get; set; }
+        public Teacher Teacher { get; set; }
     }
 }
