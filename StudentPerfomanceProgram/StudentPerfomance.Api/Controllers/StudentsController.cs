@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using StudentPerfomance.Api.Constants;
 using StudentPerfomance.Api.Extensions;
 using StudentPerfomance.Api.Helpers;
 using StudentPerfomance.Api.ViewModels.UserViewModels;
@@ -10,6 +13,7 @@ using StudentPerfomance.Bll.Interfaces;
 
 namespace StudentPerfomance.Api.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class StudentsController : ControllerBase
@@ -24,6 +28,7 @@ namespace StudentPerfomance.Api.Controllers
         #region CRUD
 
         [HttpGet]
+        [AllowAnonymous]
         public async IAsyncEnumerable<StudentViewModel> Get()
         {
             await foreach (var user in _studentService.GetAllAsync(Bll.Extensions.UserExtensions.ToDto))
@@ -31,6 +36,7 @@ namespace StudentPerfomance.Api.Controllers
         }
 
         [HttpGet("{id}")]
+        [AllowAnonymous]
         public async Task<ActionResult<StudentViewModel>> Get(int id)
         {
             var user = await _studentService.GetByIdAsync(id, Bll.Extensions.UserExtensions.ToDto);
@@ -42,17 +48,26 @@ namespace StudentPerfomance.Api.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = Roles.Student)]
         public async Task<IActionResult> Post([FromBody] StudentViewModel viewModel)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            viewModel.Id = await _studentService.CreateAsync(viewModel.ToDto(), Bll.Extensions.UserExtensions.ToEntity);
+            var id = ClaimsHelper.GetIdentifier(User);
+            if (id.HasValue)
+            {
+                viewModel.User.Id = id.Value;
+                await _studentService.CreateAsync(viewModel.ToDto(), Bll.Extensions.UserExtensions.ToEntity);
+                viewModel.Id = id.Value;
+                return CreatedAtAction(nameof(Get), viewModel);
+            }
 
-            return CreatedAtAction(nameof(Get), viewModel);
+            return Unauthorized();
         }
 
         [HttpPut("{id}")]
+        [Authorize(Roles = Roles.Admin + ", " + Roles.Student)]
         public async Task<IActionResult> Put(int id, [FromBody] StudentViewModel viewModel)
         {
             if (!ModelState.IsValid)
@@ -65,12 +80,15 @@ namespace StudentPerfomance.Api.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = Roles.Admin + ", " + Roles.Student)]
         public async Task<IActionResult> Delete(int id)
         {
             await _studentService.DeleteAsync(id);
-
             return NoContent();
         }
+
+        [HttpGet("[action]")]
+        public async Task<int> Count() => await _studentService.GetCount();
 
         #endregion
 
@@ -86,6 +104,7 @@ namespace StudentPerfomance.Api.Controllers
         }
 
         [HttpGet("[action]")]
+        [AllowAnonymous]
         public async Task<ActionResult<IEnumerable<StudentViewModel>>> GetBestStudents(DateTime? startDate, DateTime? endDate)
         {
             if (!startDate.HasValue)

@@ -45,9 +45,8 @@ namespace StudentPerfomance.Api.Extensions
 
             return new RatingByLessonDto
             {
-                Id = viewModel.Id,
                 Rating = viewModel.Rating,
-                Title = viewModel.Title
+                LessonId = viewModel.LessonId
             };
         }
 
@@ -58,9 +57,8 @@ namespace StudentPerfomance.Api.Extensions
 
             return new RatingByLessonViewModel
             {
-                Id = dto.Id,
                 Rating = dto.Rating,
-                Title = dto.Title
+                LessonId = dto.LessonId
             };
         }
     }

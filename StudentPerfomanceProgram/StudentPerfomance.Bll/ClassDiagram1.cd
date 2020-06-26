@@ -1,0 +1,215 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="StudentPerfomance.Bll.Dtos.DetailDto" Collapsed="true">
+    <Position X="4" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAECAEAAAAgAAAAAAIAAAQAAAAAAAAAAAAAEAAEQAAA=</HashCode>
+      <FileName>Dtos\DetailDto.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StudentPerfomance.Bll.Dtos.GroupDto" Collapsed="true">
+    <Position X="7.5" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAICAAAABAAAAMAAAACAAAAAAAAAAQAAAAAAAAACAEA=</HashCode>
+      <FileName>Dtos\GroupDto.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StudentPerfomance.Bll.Dtos.LessonDto" Collapsed="true">
+    <Position X="4" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAQAAAAAAAA=</HashCode>
+      <FileName>Dtos\LessonDto.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StudentPerfomance.Bll.Dtos.MarkDto" Collapsed="true">
+    <Position X="5.75" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAEAAAAAACAAAAQAAAAAAAACAAAACAAA=</HashCode>
+      <FileName>Dtos\MarkDto.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StudentPerfomance.Bll.Dtos.RatingByLessonDto" Collapsed="true">
+    <Position X="4" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAEAAAAAAAAAAAAAAAAEAAAAAAAAAAAA=</HashCode>
+      <FileName>Dtos\RatingByLessonDto.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StudentPerfomance.Bll.Dtos.StudentDto" Collapsed="true">
+    <Position X="5.75" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAADAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAA=</HashCode>
+      <FileName>Dtos\StudentDto.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StudentPerfomance.Bll.Dtos.TeacherDto" Collapsed="true">
+    <Position X="5.75" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAADAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Dtos\TeacherDto.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StudentPerfomance.Bll.Dtos.UserDto" Collapsed="true">
+    <Position X="7.5" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAGAAACAAACAAAAAAQAAAEAAAAAAAAAAAAAAAAAg=</HashCode>
+      <FileName>Dtos\UserDto.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StudentPerfomance.Bll.Extensions.DetailExtensions" Collapsed="true">
+    <Position X="12" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAEAAAAAAA=</HashCode>
+      <FileName>Extensions\DetailExtensions.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StudentPerfomance.Bll.Extensions.GroupExtensions" Collapsed="true">
+    <Position X="12" Y="8.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAEAAAAAAA=</HashCode>
+      <FileName>Extensions\GroupExtensions.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StudentPerfomance.Bll.Extensions.LessonExtensions" Collapsed="true">
+    <Position X="12" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAEAAAAAAA=</HashCode>
+      <FileName>Extensions\LessonExtensions.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StudentPerfomance.Bll.Extensions.MarkExtensions" Collapsed="true">
+    <Position X="14" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAEAAAAAAA=</HashCode>
+      <FileName>Extensions\MarkExtensions.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StudentPerfomance.Bll.Extensions.UserExtensions" Collapsed="true">
+    <Position X="14" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAEAAAAAAA=</HashCode>
+      <FileName>Extensions\UserExtensions.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StudentPerfomance.Bll.Services.AbstractCrudService&lt;QEntity, TEntity&gt;" Collapsed="true">
+    <Position X="7.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAUAAAAAAABAAAAAAAAAAAAAAAAAAAgAAAAAAIAAIIA=</HashCode>
+      <FileName>Services\AbstractCrudService.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="StudentPerfomance.Bll.Services.DetailService" Collapsed="true">
+    <Position X="9.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAQBAAABEACAAAAAAAAAAAAAAAAAAAIAAAAA=</HashCode>
+      <FileName>Services\DetailService.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="StudentPerfomance.Bll.Services.GroupService" Collapsed="true">
+    <Position X="14" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAABAAAAAAAAEAAAABAAAACAABgAAAAAQAAA=</HashCode>
+      <FileName>Services\GroupService.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="StudentPerfomance.Bll.Services.LessonService" Collapsed="true">
+    <Position X="0.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAAAAAAABAAAQAAAAgAAAAAAAAAAAAAgAAAAAAAQA=</HashCode>
+      <FileName>Services\LessonService.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="StudentPerfomance.Bll.Services.MarkService" Collapsed="true">
+    <Position X="2.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAACAkBgAAEAAAAAAkAAAEAIAAEAkCAAAAAAQAA=</HashCode>
+      <FileName>Services\MarkService.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="StudentPerfomance.Bll.Services.StudentService" Collapsed="true">
+    <Position X="5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAABAAAQAAACAAIAAQEIACAgAAACAAAAABIA=</HashCode>
+      <FileName>Services\StudentService.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="StudentPerfomance.Bll.Services.TeacherService" Collapsed="true">
+    <Position X="7.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAABQAAABABAAAAAAAAgAABAAAAAAAAAAAAAAQAAA=</HashCode>
+      <FileName>Services\TeacherService.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="StudentPerfomance.Bll.Services.UserService" Collapsed="true">
+    <Position X="11.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAABAAAAAAAAgAAAAAAAAAAACAAAAAAAAAAA=</HashCode>
+      <FileName>Services\UserService.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Interface Name="StudentPerfomance.Bll.Interfaces.ICrudService&lt;Q, T&gt;" Collapsed="true">
+    <Position X="7.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAUAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAIAAIIA=</HashCode>
+      <FileName>Interfaces\ICrudService.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="StudentPerfomance.Bll.Interfaces.IDetailService" Collapsed="true">
+    <Position X="5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAQAAAABAACAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Interfaces\IDetailService.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="StudentPerfomance.Bll.Interfaces.IGroupService" Collapsed="true">
+    <Position X="9.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAEAAAABAAAACAABgAAAAAQAAA=</HashCode>
+      <FileName>Interfaces\IGroupService.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="StudentPerfomance.Bll.Interfaces.ILessonService" Collapsed="true">
+    <Position X="11.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAAAAAAAAAAAQAAAAgAAAAAAAAAAAAAgAAAAAAAQA=</HashCode>
+      <FileName>Interfaces\ILessonService.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="StudentPerfomance.Bll.Interfaces.IMarkService" Collapsed="true">
+    <Position X="14" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAACAkAgAAEAAAAAAkAAAEAIAAEAkCAAAAAAQAA=</HashCode>
+      <FileName>Interfaces\IMarkService.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="StudentPerfomance.Bll.Interfaces.IStudentService" Collapsed="true">
+    <Position X="0.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAAACAAIAAQEIACAgAAACAAAAABIA=</HashCode>
+      <FileName>Interfaces\IStudentService.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="StudentPerfomance.Bll.Interfaces.ITeacherService" Collapsed="true">
+    <Position X="2.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAABQAAAAABAAAAAAAAgAABAAAAAAAAAAAAAAQAAA=</HashCode>
+      <FileName>Interfaces\ITeacherService.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="StudentPerfomance.Bll.Interfaces.IUserService" Collapsed="true">
+    <Position X="7.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAgAAAAAAAAAAACAAAAAAAAAAA=</HashCode>
+      <FileName>Interfaces\IUserService.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

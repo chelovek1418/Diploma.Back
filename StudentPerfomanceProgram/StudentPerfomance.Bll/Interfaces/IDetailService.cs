@@ -9,5 +9,6 @@ namespace StudentPerfomance.Bll.Interfaces
     {
         Task<IEnumerable<DetailDto>> GetScheduleForGroup(int groupId, int semestr);
         Task<IEnumerable<DetailDto>> GetScheduleForTeacher(int teacherId, int semestr);
+        Task<IEnumerable<DetailDto>> GetScheduleForTeacheByLessonAndGroup(int teacherId, int lessonId, int groupId, int semestr);        
     }
 }

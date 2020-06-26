@@ -20,6 +20,7 @@ namespace StudentPerfomance.Dal.Repository
             if (model.User == null)
                 throw new ArgumentNullException(nameof(model.User));
 
+            model.IsConfirmed = false;
             return await base.CreateAsync(model);
         }
 

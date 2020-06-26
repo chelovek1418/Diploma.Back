@@ -2,13 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using StudentPerfomance.Api.Constants;
 using StudentPerfomance.Api.Extensions;
 using StudentPerfomance.Api.ViewModels.GroupViewModels;
 using StudentPerfomance.Bll.Interfaces;
 
 namespace StudentPerfomance.Api.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class GroupsController : ControllerBase
@@ -24,6 +27,7 @@ namespace StudentPerfomance.Api.Controllers
 
         // GET: api/Groups
         [HttpGet]
+        [AllowAnonymous]
         public async IAsyncEnumerable<GroupViewModel> Get()
         {
             await foreach (var group in _groupService.GetAllAsync(Bll.Extensions.GroupExtensions.ToDto))
@@ -44,6 +48,7 @@ namespace StudentPerfomance.Api.Controllers
 
         // POST: api/Groups
         [HttpPost]
+        [Authorize(Roles = Roles.Admin)]
         public async Task<IActionResult> Post([FromBody] GroupViewModel viewModel)
         {
             if (!ModelState.IsValid)
@@ -56,6 +61,7 @@ namespace StudentPerfomance.Api.Controllers
 
         // PUT: api/Groups/5
         [HttpPut("{id}")]
+        [Authorize(Roles = Roles.Admin)]
         public async Task<IActionResult> Put(int id, [FromBody] GroupViewModel viewModel)
         {
             if (!ModelState.IsValid)
@@ -69,12 +75,16 @@ namespace StudentPerfomance.Api.Controllers
 
         // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]
+        [Authorize(Roles = Roles.Admin)]
         public async Task<IActionResult> Delete(int id)
         {
             await _groupService.DeleteAsync(id);
 
             return NoContent();
         }
+
+        [HttpGet("[action]")]
+        public async Task<int> Count() => await _groupService.GetCount();
 
         #endregion
 
@@ -83,9 +93,6 @@ namespace StudentPerfomance.Api.Controllers
         {
             if (!date.HasValue || date.Value.Month > DateTime.Today.Month)
                 date = DateTime.Today;
-
-            if (groupId < 0 || lessonId < 0)
-                return BadRequest($"{nameof(groupId)} or/and {nameof(lessonId)}");
 
             return Ok((await _groupService.GetWithMarksByLesson(groupId, lessonId, date.Value)).ToViewModel());
         }
@@ -100,6 +107,7 @@ namespace StudentPerfomance.Api.Controllers
         }
 
         [HttpGet("[action]")]
+        [Authorize(Roles = Roles.Admin)]
         public async Task<ActionResult<bool>> CheckTitle(string title)
         {
             if (string.IsNullOrWhiteSpace(title))
@@ -112,6 +120,7 @@ namespace StudentPerfomance.Api.Controllers
         public async Task<IEnumerable<GroupViewModel>> GetByLesson(int lessonId) => (await _groupService.GetByLessonAsync(lessonId)).Select(x => x.ToViewModel());
 
         [HttpPost("[action]")]
+        [Authorize(Roles = Roles.Admin)]
         public async Task<IActionResult> AddLesson([FromBody] LessonGroupViewModel viewModel)
         {
             if (viewModel == null)
@@ -123,6 +132,7 @@ namespace StudentPerfomance.Api.Controllers
         }
 
         [HttpDelete("[action]")]
+        [Authorize(Roles = Roles.Admin)]
         public async Task<IActionResult> DropLesson([FromBody] LessonGroupViewModel viewModel)
         {
             if (viewModel == null)

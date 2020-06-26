@@ -49,11 +49,13 @@ namespace StudentPerfomance.Api
             services.AddScoped<IDetailRepository, DetailRepository>();
             services.AddScoped<IDetailService, DetailService>();
 
+            services.AddScoped<IGroupSubjectRepository, GroupSubjectRepository>();
+
             services.AddAuthentication("Bearer")
                 .AddJwtBearer("Bearer", config =>
                 {
                     config.Authority = "https://localhost:44361/";
-
+                    
                     config.Audience = "StudentPerfomanceApi";
                 });
 

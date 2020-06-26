@@ -1,0 +1,187 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="StudentPerfomance.Api.Controllers.DetailsController" Collapsed="true">
+    <Position X="0.5" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAACQAAAABAAAAAAAAACAEAAAAAAAAACAAAAAg=</HashCode>
+      <FileName>Controllers\DetailsController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StudentPerfomance.Api.Controllers.GroupsController" Collapsed="true">
+    <Position X="0.5" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAQAAAAAAABAAAAAAAAADAEAAAAABAAAKAAQAAg=</HashCode>
+      <FileName>Controllers\GroupsController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StudentPerfomance.Api.Controllers.LessonsController" Collapsed="true">
+    <Position X="0.5" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAAAAAAAAAAABBAAAgAAAACAEAAAAAAAAAIAAAAQg=</HashCode>
+      <FileName>Controllers\LessonsController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StudentPerfomance.Api.Controllers.MarksController" Collapsed="true">
+    <Position X="0.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQBAAgEAAACBAAAAAAAAACAEAAAAACAAAAAAAAAg=</HashCode>
+      <FileName>Controllers\MarksController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StudentPerfomance.Api.Controllers.StudentsController" Collapsed="true">
+    <Position X="0.5" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAABAAAAAAAEACAEAAAgAAAAAAAAgAAg=</HashCode>
+      <FileName>Controllers\StudentsController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StudentPerfomance.Api.Controllers.TeachersController" Collapsed="true">
+    <Position X="0.5" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAABQAAAAgAABAAAAAAgCACAEAAAAAgAAAAAAgAAg=</HashCode>
+      <FileName>Controllers\TeachersController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StudentPerfomance.Api.Controllers.UsersController" Collapsed="true">
+    <Position X="0.5" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAQAAAABAAAAAAAAACAEAAAACAAAEAAAAAAg=</HashCode>
+      <FileName>Controllers\UsersController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StudentPerfomance.Api.Extensions.DetailExtensions" Collapsed="true">
+    <Position X="5" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAABAAAAAAAAAA=</HashCode>
+      <FileName>Extensions\DetailExtensions.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StudentPerfomance.Api.Extensions.GroupExtensions" Collapsed="true">
+    <Position X="5" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAABAAAAAAAAAA=</HashCode>
+      <FileName>Extensions\GroupExtensions.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StudentPerfomance.Api.Extensions.LessonExtensions" Collapsed="true">
+    <Position X="6.75" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAABAAAAAAAAAA=</HashCode>
+      <FileName>Extensions\LessonExtensions.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StudentPerfomance.Api.Extensions.MarkExtensions" Collapsed="true">
+    <Position X="3" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAABAAAAAAAAAA=</HashCode>
+      <FileName>Extensions\MarkExtensions.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StudentPerfomance.Api.Extensions.UserExtensions" Collapsed="true">
+    <Position X="3" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAABAAAAAAAAAA=</HashCode>
+      <FileName>Extensions\UserExtensions.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StudentPerfomance.Api.Helpers.Filters.ExceptionFilterAttribute" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="8" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAA=</HashCode>
+      <FileName>Helpers\Filters\ExceptionFilterAttribute.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="StudentPerfomance.Api.Helpers.DateTimeHelper" Collapsed="true">
+    <Position X="8" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACAAAAAEAAAAAAAAAAAAAAAACAABAAAAAAAAAA=</HashCode>
+      <FileName>Helpers\DateTimeHelper.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StudentPerfomance.Api.ViewModels.GroupViewModels.GroupViewModel" Collapsed="true">
+    <Position X="4.5" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAICAAAABAAAAMAAAAAAAAAAAAAAAQAAAAAAAAACAEA=</HashCode>
+      <FileName>ViewModels\GroupViewModels\GroupViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StudentPerfomance.Api.ViewModels.GroupViewModels.LessonGroupViewModel" Collapsed="true">
+    <Position X="6.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAEAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ViewModels\GroupViewModels\LessonGroupViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StudentPerfomance.Api.ViewModels.MarkViewModels.MarkViewModel" Collapsed="true">
+    <Position X="4.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAEAAAAAACAAAAQAAAAAAAACAAAACAAA=</HashCode>
+      <FileName>ViewModels\MarkViewModels\MarkViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StudentPerfomance.Api.ViewModels.MarkViewModels.RatingByLessonViewModel" Collapsed="true">
+    <Position X="8" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAEAAAAAAAAAAAAAAAAEAAAAAAAAAAAA=</HashCode>
+      <FileName>ViewModels\MarkViewModels\RatingByLessonViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StudentPerfomance.Api.ViewModels.UserViewModels.StudentViewModel" Collapsed="true">
+    <Position X="2.75" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAADAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAA=</HashCode>
+      <FileName>ViewModels\UserViewModels\StudentViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StudentPerfomance.Api.ViewModels.UserViewModels.TeacherViewModel" Collapsed="true">
+    <Position X="8" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAADAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ViewModels\UserViewModels\TeacherViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StudentPerfomance.Api.ViewModels.UserViewModels.UserViewModel" Collapsed="true">
+    <Position X="4.5" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAGAAACAAACAAAAAAQAAAEAAAAAAAAAAAAAAAAAg=</HashCode>
+      <FileName>ViewModels\UserViewModels\UserViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StudentPerfomance.Api.ViewModels.DetailViewModel" Collapsed="true">
+    <Position X="2.75" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAECAEAAAAgAAAAAAIAAAQAAAAAAAAAAAAAEAAEQAAA=</HashCode>
+      <FileName>ViewModels\DetailViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StudentPerfomance.Api.ViewModels.LessonViewModel" Collapsed="true">
+    <Position X="6.25" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAQAAAAAAAA=</HashCode>
+      <FileName>ViewModels\LessonViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StudentPerfomance.Api.ViewModels.TeacherLessonViewModel" Collapsed="true">
+    <Position X="2.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAEAAAAAACAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ViewModels\TeacherLessonViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StudentPerfomance.Api.Program" Collapsed="true">
+    <Position X="3.75" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Program.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StudentPerfomance.Api.Startup" Collapsed="true">
+    <Position X="3.75" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAgAAACAAAAAA=</HashCode>
+      <FileName>Startup.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

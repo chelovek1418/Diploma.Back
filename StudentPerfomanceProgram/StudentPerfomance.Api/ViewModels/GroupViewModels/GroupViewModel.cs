@@ -26,7 +26,7 @@ namespace StudentPerfomance.Api.ViewModels.GroupViewModels
         [Range(1, 6, ErrorMessage = "Education year must be in the range of 1 to 6")]
         public int Year { get; set; }
         public StudentViewModel Headmen { get; set; }
-        public TeacherViewModel Curator { get; set; }
+        public TeacherViewModel Сurator { get; set; }
 
         public IEnumerable<StudentViewModel> Students { get; set; }
 

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq;
 
 namespace StudentPerfomance.Api.Controllers
 {
@@ -11,9 +12,10 @@ namespace StudentPerfomance.Api.Controllers
         }
 
         [Route("/secret")]
-        [Authorize]
+        [Authorize(Roles = "admin")]
         public string Index()
         {
+            var kek = User.Claims.ToList();
             return "secret message lul";
         }
     }

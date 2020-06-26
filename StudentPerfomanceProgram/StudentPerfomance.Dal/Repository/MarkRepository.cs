@@ -28,21 +28,21 @@ namespace StudentPerfomance.Dal.Repository
             .OrderByDescending(x => x.Date)
             .AsAsyncEnumerable();
 
-        public async Task<double> GetAverageMark(DateTime startDate, DateTime endDate) => (await dbContext.Marks.Where(x => x.Date >= startDate && x.Date <= endDate).AverageAsync(x => x.Grade)) ?? 0;
+        public async Task<double> GetAverageMark(DateTime startDate, DateTime endDate) => Math.Round((await dbContext.Marks.Where(x => x.Date >= startDate && x.Date <= endDate).AverageAsync(x => x.Grade)) ?? 0,2 );
 
         public async Task<double> GetAverageMarkByLessonForStudent(int studentId, int lessonId, DateTime startDate, DateTime endDate) =>
-            (await dbContext.Marks.Where(x => x.StudentId == studentId && x.SubjectId == lessonId && x.Date >= startDate && x.Date <= endDate).AverageAsync(x => x.Grade)) ?? 0;
+            Math.Round((await dbContext.Marks.Where(x => x.StudentId == studentId && x.SubjectId == lessonId && x.Date >= startDate && x.Date <= endDate).AverageAsync(x => x.Grade)) ?? 0, 2);
 
         public async Task<double> GetAverageMarkByLessonInGroup(int lessonId, int groupId, DateTime startDate, DateTime endDate) =>
-            (await dbContext.Marks.Where(x => x.SubjectId == lessonId && x.Student.GroupId == groupId && x.Date >= startDate && x.Date <= endDate).AverageAsync(x => x.Grade)) ?? 0;
+            Math.Round((await dbContext.Marks.Where(x => x.SubjectId == lessonId && x.Student.GroupId == groupId && x.Date >= startDate && x.Date <= endDate).AverageAsync(x => x.Grade)) ?? 0, 2);
 
         public async Task<double> GetAverageMarkForLesson(int lessonId, DateTime startDate, DateTime endDate) =>
-            (await dbContext.Marks.Where(x => x.SubjectId == lessonId && x.Date >= startDate && x.Date <= endDate).AverageAsync(x => x.Grade)) ?? 0;
+            Math.Round((await dbContext.Marks.Where(x => x.SubjectId == lessonId && x.Date >= startDate && x.Date <= endDate).AverageAsync(x => x.Grade)) ?? 0, 2);
 
         public async Task<double> GetAverageMarkForStudent(int studentId, DateTime startDate, DateTime endDate) =>
-            (await dbContext.Marks.Where(x => x.StudentId == studentId && x.Date >= startDate && x.Date <= endDate).AverageAsync(x => x.Grade)) ?? 0;
+            Math.Round((await dbContext.Marks.Where(x => x.StudentId == studentId && x.Date >= startDate && x.Date <= endDate).AverageAsync(x => x.Grade)) ?? 0, 2);
 
         public async Task<double> GetAverageMarkInGroup(int groupId, DateTime startDate, DateTime endDate) =>
-            (await dbContext.Marks.Where(x => x.Student.GroupId == groupId && x.Date >= startDate && x.Date <= endDate).AverageAsync(x => x.Grade)) ?? 0;
+            Math.Round((await dbContext.Marks.Where(x => x.Student.GroupId == groupId && x.Date >= startDate && x.Date <= endDate).AverageAsync(x => x.Grade)) ?? 0, 2);
     }
 }

@@ -1,33 +1,42 @@
 ﻿@model LoginViewModel
 
-<h1>Sign In With</h1>
-<form asp-controller="Auth" asp-action="ExternalLogin"
-      asp-route-returnUrl="@Model.ReturnUrl" method="post">
-    @foreach (var provider in Model.ExternalProviders)
-    {
-        <button name="provider"
-                type="submit"
-                value="@provider.Name">
-            @provider.Name
-        </button>
-    }
-</form>
-
-<form asp-controller="Auth" asp-action="Login" method="post">
-    <input type="hidden" asp-for="ReturnUrl" />
-    <div>
-        <label>Username</label>
-        <input asp-for="Username" />
+    <div class="sign-in-container">
+        <div class="sign-in">
+            <form asp-controller="Auth" asp-action="Login" method="post">
+                <div class="validation" asp-validation-summary="All"></div>
+                <input type="hidden" asp-for="ReturnUrl" />
+                <div>
+                    <label>Username</label>
+                    <input asp-for="Username" />
+                    <span asp-validation-for="Username"></span>
+                </div>
+                <div>
+                    <label>Password</label>
+                    <input type="password" asp-for="Password" />
+                    <span asp-validation-for="Password" />
+                    <span asp-validation-for="Password"></span>
+                </div>
+                <div>
+                    <button type="submit">Sign In</button>
+                </div>
+            </form>
+            <div>
+                <a asp-controller="Auth" asp-action="Register"
+                   asp-route-returnUrl="@Model.ReturnUrl">Register</a>
+            </div>
+        </div>
+        <div class="external-provider">
+            <h3>Sign In With</h3>
+            <form asp-controller="Auth" asp-action="ExternalLogin"
+                  asp-route-returnUrl="@Model.ReturnUrl" method="post">
+                @foreach (var provider in Model.ExternalProviders)
+                {
+                    <button name="provider"
+                            type="submit"
+                            value="@provider.Name">
+                        @provider.Name
+                    </button>
+                }
+            </form>
+        </div>
     </div>
-    <div>
-        <label>Password</label>
-        <input asp-for="Password" />
-    </div>
-    <div>
-        <button type="submit">Sign In</button>
-    </div>
-</form>
-<div>
-    <a asp-controller="Auth" asp-action="Register"
-       asp-route-returnUrl="@Model.ReturnUrl">Register</a>
-</div>

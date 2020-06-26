@@ -1,0 +1,238 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="FullSignature">
+  <Class Name="StudentPerfomance.Dal.Entities.Detail" BaseTypeListCollapsed="true">
+    <Position X="3" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAECAAAAAAggAAAAAAAACQAAAAAAAAAAAAAEAAEQAAA=</HashCode>
+      <FileName>Entities\Detail.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="StudentPerfomance.Dal.Entities.Group" BaseTypeListCollapsed="true">
+    <Position X="10" Y="0.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAMCAAAABAAAAMAAAAAACAAAAAAAAAAAAAAAAABCAEA=</HashCode>
+      <FileName>Entities\Group.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="StudentPerfomance.Dal.Entities.GroupSubject" BaseTypeListCollapsed="true">
+    <Position X="12" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAEAEEAABAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entities\GroupSubject.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="StudentPerfomance.Dal.Entities.Mark" BaseTypeListCollapsed="true">
+    <Position X="13.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAUAAAAAAAAIAAAAAAAAAAAAABAAAAAAECAAA=</HashCode>
+      <FileName>Entities\Mark.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.477" />
+  </Class>
+  <Class Name="StudentPerfomance.Dal.Entities.Student" BaseTypeListCollapsed="true">
+    <Position X="6.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAADAEAEAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAA=</HashCode>
+      <FileName>Entities\Student.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="StudentPerfomance.Dal.Entities.Subject" BaseTypeListCollapsed="true">
+    <Position X="1.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAQAAEBAAAA=</HashCode>
+      <FileName>Entities\Subject.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="StudentPerfomance.Dal.Entities.Teacher" BaseTypeListCollapsed="true">
+    <Position X="4.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAADAAAAAAABAAAgAAAAAAAAAAAAAAAAAAAgAEAAAAA=</HashCode>
+      <FileName>Entities\Teacher.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="StudentPerfomance.Dal.Entities.TeacherSubject" Collapsed="true">
+    <Position X="8.25" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAAAEAAAAAAAAIAACAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entities\TeacherSubject.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StudentPerfomance.Dal.Entities.User" BaseTypeListCollapsed="true">
+    <Position X="15.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAECAGAAQCAAACAAAAAAQAAAEAAAAAAAAAAAAAAAAAg=</HashCode>
+      <FileName>Entities\User.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="StudentPerfomance.Dal.Migrations.Recreation">
+    <Position X="18.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAI=</HashCode>
+      <FileName>Migrations\20200531233846_Recreation.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StudentPerfomance.Dal.Migrations.StudentPerfomanceDbContextModelSnapshot">
+    <Position X="16.25" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAA=</HashCode>
+      <FileName>Migrations\StudentPerfomanceDbContextModelSnapshot.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StudentPerfomance.Dal.Repository.AbstractRepository&lt;TEntity&gt;">
+    <Position X="8.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAUAAAAAAAAAAAAAAQAAAAAAAAAACAgAAAAAAIAAIIA=</HashCode>
+      <FileName>Repository\AbstractRepository.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="StudentPerfomance.Dal.Repository.DetailRepository">
+    <Position X="9.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAQAAAABAACAAAAAAAAAAAAgAAAACAIAAAAA=</HashCode>
+      <FileName>Repository\DetailRepository.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="StudentPerfomance.Dal.Repository.GroupRepository">
+    <Position X="14" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAABAAAAAAABgAAAAAQIAA=</HashCode>
+      <FileName>Repository\GroupRepository.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="StudentPerfomance.Dal.Repository.GroupSubjectRepository">
+    <Position X="0.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Repository\GroupSubjectRepository.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="StudentPerfomance.Dal.Repository.MarkRepository">
+    <Position X="2.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAACAkAAAAAAAAAAAiAAAAAAAAEAAAACAAAAQAA=</HashCode>
+      <FileName>Repository\MarkRepository.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="StudentPerfomance.Dal.Repository.StudentRepository">
+    <Position X="5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAAAAAAAAAQAAACAAIAAQAIACAgAAACAAIAAJIA=</HashCode>
+      <FileName>Repository\StudentRepository.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="StudentPerfomance.Dal.Repository.SubjectRepository">
+    <Position X="7.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQA=</HashCode>
+      <FileName>Repository\SubjectRepository.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="StudentPerfomance.Dal.Repository.TeacherRepository">
+    <Position X="11.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAABAAAAAAAAAAAAAAAgAABAAACAAAAAAAAIAQIIA=</HashCode>
+      <FileName>Repository\TeacherRepository.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="StudentPerfomance.Dal.Repository.UserRepository">
+    <Position X="16.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Repository\UserRepository.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="StudentPerfomance.Dal.StudentPerfomanceDbContext">
+    <Position X="18.25" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAGAAAAABAAAAAAAAAAAAEAAAAAAAAAQAAkBAAAA=</HashCode>
+      <FileName>StudentPerfomanceDbContext.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="StudentPerfomance.Dal.Interfaces.IDbEntity">
+    <Position X="17.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Interfaces\IDbEntity.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="StudentPerfomance.Dal.Interfaces.IDetailRepository">
+    <Position X="9.5" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAQAAAABAACAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Interfaces\IDetailRepository.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="StudentPerfomance.Dal.Interfaces.IGroupRepository">
+    <Position X="14" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAABAAAAAAABgAAAAAQAAA=</HashCode>
+      <FileName>Interfaces\IGroupRepository.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="StudentPerfomance.Dal.Interfaces.IGroupSubjectRepository">
+    <Position X="0.5" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Interfaces\IGroupSubjectRepository.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="StudentPerfomance.Dal.Interfaces.IMarkRepository">
+    <Position X="5" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAACAkAAAAAAAAAAAiAAAAAAAAEAAAACAAAAQAA=</HashCode>
+      <FileName>Interfaces\IMarkRepository.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="StudentPerfomance.Dal.Interfaces.IRepository&lt;T&gt;" Collapsed="true">
+    <Position X="8.25" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAUAAAAAAAAAAAAAAAAAAAAAAAAACAgAAAAAAIAAIIA=</HashCode>
+      <FileName>Interfaces\IRepository.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="StudentPerfomance.Dal.Interfaces.IStudentRepository">
+    <Position X="7.25" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAAACAAIAAQAIAAAgAAACAAAAABIA=</HashCode>
+      <FileName>Interfaces\IStudentRepository.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="StudentPerfomance.Dal.Interfaces.ISubjectRepository">
+    <Position X="11.75" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQA=</HashCode>
+      <FileName>Interfaces\ISubjectRepository.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="StudentPerfomance.Dal.Interfaces.ITeacherRepository">
+    <Position X="16.25" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAABAAAAAAAAAAAAAAAgAABAAAAAAAAAAAAAAQAAA=</HashCode>
+      <FileName>Interfaces\ITeacherRepository.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="StudentPerfomance.Dal.Interfaces.IUserRepository">
+    <Position X="2.75" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Interfaces\IUserRepository.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

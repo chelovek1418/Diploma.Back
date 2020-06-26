@@ -237,9 +237,7 @@ namespace StudentPerfomance.Dal.Migrations
             modelBuilder.Entity("StudentPerfomance.Dal.Entities.User", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
 
                     b.Property<string>("Department")
                         .IsRequired()

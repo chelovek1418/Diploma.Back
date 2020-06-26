@@ -22,6 +22,8 @@ namespace StudentPerfomance.Dal
         {
             modelBuilder.Entity<User>(entity =>
             {
+                entity.Property(e => e.Id).ValueGeneratedNever();
+
                 entity.HasIndex(e => e.Email)
                     .HasName("UQ_User_Email")
                     .IsUnique();

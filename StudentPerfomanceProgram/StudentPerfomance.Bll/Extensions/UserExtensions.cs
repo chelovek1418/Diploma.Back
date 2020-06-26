@@ -93,7 +93,8 @@ namespace StudentPerfomance.Bll.Extensions
             {
                 Id = dto.Id,
                 Position = dto.Position,
-                User = dto.User.ToEntity()
+                User = dto.User.ToEntity(),
+                IsConfirmed = true
             };
         }
     }

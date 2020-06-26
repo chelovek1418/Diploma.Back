@@ -72,6 +72,12 @@ namespace StudentPerfomance.Dal.Repository
 
         public async Task<IEnumerable<Student>> GetTopStudents(DateTime startDate, DateTime endDate)
         {
+            //var smstg = dbContext.Marks.GroupBy(x => new { x.StudentId, x.SubjectId });
+            //List<object> list = new List<object>();
+            //foreach (var item in smstg)
+            //{
+            //    item.Key.
+            //}
             return await FilterAsync(x => x.Id > 0);
         }
 

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace StudentPerfomance.Dal.Migrations
 {
-    public partial class Initial : Migration
+    public partial class Recreation : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -24,13 +24,12 @@ namespace StudentPerfomance.Dal.Migrations
                 name: "Users",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<int>(nullable: false),
                     FirstName = table.Column<string>(maxLength: 20, nullable: false),
                     LastName = table.Column<string>(maxLength: 20, nullable: false),
-                    Patronymic = table.Column<string>(maxLength: 30, nullable: false),
+                    Patronymic = table.Column<string>(maxLength: 30, nullable: true),
                     Email = table.Column<string>(unicode: false, maxLength: 30, nullable: false),
-                    PhoneNumber = table.Column<string>(maxLength: 15, nullable: true),
+                    PhoneNumber = table.Column<string>(unicode: false, maxLength: 15, nullable: false),
                     Department = table.Column<string>(maxLength: 20, nullable: false),
                     Photo = table.Column<byte[]>(nullable: true)
                 },
@@ -44,7 +43,8 @@ namespace StudentPerfomance.Dal.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false),
-                    Position = table.Column<string>(maxLength: 30, nullable: false)
+                    Position = table.Column<string>(maxLength: 30, nullable: false),
+                    IsConfirmed = table.Column<bool>(nullable: false, defaultValue: false)
                 },
                 constraints: table =>
                 {
@@ -55,6 +55,32 @@ namespace StudentPerfomance.Dal.Migrations
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Groups",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Title = table.Column<string>(maxLength: 20, nullable: false),
+                    Faculty = table.Column<string>(maxLength: 20, nullable: false),
+                    Speciality = table.Column<string>(maxLength: 30, nullable: false),
+                    Specialization = table.Column<string>(maxLength: 30, nullable: false),
+                    Year = table.Column<int>(nullable: false),
+                    TeacherId = table.Column<int>(nullable: true),
+                    StudentId = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Groups", x => x.Id);
+                    table.CheckConstraint("CK_Group_Year_More_Than_0", "[Year] >= 1 AND [Year] <= 6");
+                    table.ForeignKey(
+                        name: "FK_Groups_Teachers_TeacherId",
+                        column: x => x.TeacherId,
+                        principalTable: "Teachers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -93,34 +119,17 @@ namespace StudentPerfomance.Dal.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_GroupSubjects", x => x.Id);
+                    table.UniqueConstraint("AK_GroupSubjects_GroupId_SubjectId", x => new { x.GroupId, x.SubjectId });
+                    table.ForeignKey(
+                        name: "FK_GroupSubject_GroupId",
+                        column: x => x.GroupId,
+                        principalTable: "Groups",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_GroupSubject_SubjectId",
                         column: x => x.SubjectId,
                         principalTable: "Subjects",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Details",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    DayOfWeek = table.Column<int>(nullable: false),
-                    Pair = table.Column<int>(nullable: false),
-                    GroupSubjecttId = table.Column<int>(nullable: false),
-                    IsNumerator = table.Column<bool>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Details", x => x.Id);
-                    table.CheckConstraint("CK_Detail_DayOfWeek", "[DayOfWeek] >= 0 AND [DayOfWeek] <= 6");
-                    table.CheckConstraint("CK_Detail_Pair", "[Pair] >= 1 AND [Pair] <= 5");
-                    table.ForeignKey(
-                        name: "FK_Detail_GroupSubjecttId",
-                        column: x => x.GroupSubjecttId,
-                        principalTable: "GroupSubjects",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -136,6 +145,12 @@ namespace StudentPerfomance.Dal.Migrations
                 {
                     table.PrimaryKey("PK_Students", x => x.Id);
                     table.ForeignKey(
+                        name: "FK_Student_GroupId",
+                        column: x => x.GroupId,
+                        principalTable: "Groups",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.SetNull);
+                    table.ForeignKey(
                         name: "FK_Student_Id",
                         column: x => x.Id,
                         principalTable: "Users",
@@ -144,36 +159,36 @@ namespace StudentPerfomance.Dal.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Groups",
+                name: "Details",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Title = table.Column<string>(maxLength: 20, nullable: false),
-                    Faculty = table.Column<string>(maxLength: 20, nullable: false),
-                    Speciality = table.Column<string>(maxLength: 30, nullable: false),
-                    Specialization = table.Column<string>(maxLength: 30, nullable: false),
-                    Year = table.Column<int>(nullable: false),
-                    TeacherId = table.Column<int>(nullable: true),
-                    StudentId = table.Column<int>(nullable: true),
-                    StudentId1 = table.Column<int>(nullable: true)
+                    DayOfWeek = table.Column<int>(nullable: false),
+                    Pair = table.Column<int>(nullable: false),
+                    GroupSubjectId = table.Column<int>(nullable: false),
+                    IsNumerator = table.Column<bool>(nullable: true),
+                    Semestr = table.Column<byte>(type: "tinyint", nullable: false, defaultValue: (byte)0),
+                    TeacherId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Groups", x => x.Id);
-                    table.CheckConstraint("CK_Group_Year_More_Than_0", "[Year] >= 1 AND [Year] <= 6");
+                    table.PrimaryKey("PK_Details", x => x.Id);
+                    table.CheckConstraint("CK_Detail_Semestr", "[Semestr] >= 0 AND [Semestr] <= 3");
+                    table.CheckConstraint("CK_Detail_DayOfWeek", "[DayOfWeek] >= 0 AND [DayOfWeek] <= 6");
+                    table.CheckConstraint("CK_Detail_Pair", "[Pair] >= 0 AND [Pair] <= 4");
                     table.ForeignKey(
-                        name: "FK_Groups_Students_StudentId1",
-                        column: x => x.StudentId1,
-                        principalTable: "Students",
+                        name: "FK_Detail_GroupSubjectId",
+                        column: x => x.GroupSubjectId,
+                        principalTable: "GroupSubjects",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Groups_Teachers_TeacherId",
+                        name: "FK_Details_Teachers_TeacherId",
                         column: x => x.TeacherId,
                         principalTable: "Teachers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -205,14 +220,14 @@ namespace StudentPerfomance.Dal.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Details_GroupSubjecttId",
+                name: "IX_Details_GroupSubjectId",
                 table: "Details",
-                column: "GroupSubjecttId");
+                column: "GroupSubjectId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Groups_StudentId1",
-                table: "Groups",
-                column: "StudentId1");
+                name: "IX_Details_TeacherId",
+                table: "Details",
+                column: "TeacherId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Groups_TeacherId",
@@ -261,34 +276,14 @@ namespace StudentPerfomance.Dal.Migrations
                 column: "TeacherId");
 
             migrationBuilder.CreateIndex(
-                name: "UQ_User_Email",
+                name: "UQ_User_PhoneNumber",
                 table: "Users",
                 column: "Email",
                 unique: true);
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_GroupSubject_GroupId",
-                table: "GroupSubjects",
-                column: "GroupId",
-                principalTable: "Groups",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_Student_GroupId",
-                table: "Students",
-                column: "GroupId",
-                principalTable: "Groups",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.SetNull);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_Groups_Students_StudentId1",
-                table: "Groups");
-
             migrationBuilder.DropTable(
                 name: "Details");
 
@@ -302,10 +297,10 @@ namespace StudentPerfomance.Dal.Migrations
                 name: "GroupSubjects");
 
             migrationBuilder.DropTable(
-                name: "Subjects");
+                name: "Students");
 
             migrationBuilder.DropTable(
-                name: "Students");
+                name: "Subjects");
 
             migrationBuilder.DropTable(
                 name: "Groups");

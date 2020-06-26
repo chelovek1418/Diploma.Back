@@ -1,0 +1,127 @@
+﻿header {
+    height: 80px;
+    display: flex;
+    background-color: #212121;
+    color: #69f0ae;
+    font-family: sans-serif;
+    justify-content: center;
+}
+
+html {
+    font-size: 14px;
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+main {
+    flex: 1 1 auto;
+    margin-bottom: 100px;
+    justify-content: center;
+    flex-direction: column;
+    align-self: center;
+    display: flex;
+}
+
+    main > div {
+        display: flex;
+        border: 1px solid gray;
+        border-radius: 4px;
+    }
+
+html {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: #303030;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+}
+
+footer {
+    position: absolute;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    height: 60px;
+    padding: 20px 0;
+    background-color: #1f1f1f;
+    width: 100%;
+    color: white;
+    font-family: monospace;
+}
+
+    footer > div {
+        padding: 0 10px;
+    }
+
+.sign-in-container {
+    display: flex;
+    background-color: #424242;
+}
+
+.sign-in, .sign-in > form, .sign-in > form > div, .register-form, .register-form > div, .register, external-form, external-form > div {
+    display: flex;
+    flex-direction: column;
+}
+
+.sign-in, .external-provider, .register, .external-form {
+    padding: 20px;
+    width: 200px;
+}
+
+.sign-in {
+    border-right: 1px solid gray;
+}
+
+label {
+    color: white;
+}
+
+input {
+    background-color: #848484;
+    border: none;
+    height: 25px;
+    border-radius: 4px;
+    margin: 10px 0;
+    font-size: initial;
+}
+
+button {
+    background: transparent;
+    border: 1px solid gray;
+    border-radius: 4px;
+    font-size: medium;
+    color: white;
+    padding: 5px;
+    cursor: pointer;
+}
+
+    button:hover {
+        background-color: #272727;
+    }
+
+.sign-in > div > a, .register > a {
+    float: right;
+    text-decoration: none;
+    color: #69f0ae;
+    margin-top: 10px;
+}
+
+.external-provider h3 {
+    margin-top: 0px;
+    color: white;
+}
+
+span {
+    color: red;
+}

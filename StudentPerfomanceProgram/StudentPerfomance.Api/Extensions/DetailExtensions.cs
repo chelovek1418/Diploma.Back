@@ -20,7 +20,8 @@ namespace StudentPerfomance.Api.Extensions
                 Semestr = viewModel.Semestr,
                 Group = viewModel.Group?.ToDto(),
                 Subject = viewModel.Subject?.ToDto(),
-                Teacher = viewModel.Teacher?.ToDto()
+                Teacher = viewModel.Teacher?.ToDto(),
+                GroupSubjectId = viewModel.GroupSubjectId
             };
         }
 
@@ -38,7 +39,8 @@ namespace StudentPerfomance.Api.Extensions
                 Semestr = dto.Semestr,
                 Group = dto.Group?.ToViewModel(),
                 Subject = dto.Subject?.ToViewModel(),
-                Teacher = dto.Teacher?.ToViewModel()
+                Teacher = dto.Teacher?.ToViewModel(),
+                GroupSubjectId = dto.GroupSubjectId,
             };
         }
     }

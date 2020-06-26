@@ -9,6 +9,8 @@ namespace StudentPerfomance.Bll.Interfaces
     public interface ILessonService : ICrudService<Subject, LessonDto>
     {
         Task<IEnumerable<LessonDto>> GetLessonsByGroup(int groupId);
+        Task<IEnumerable<LessonDto>> GetByTeacher(int teacherId);
+        
         Task<bool> CheckTitleAsync(string title);
         Task<IEnumerable<LessonDto>> GetLessonsWithMarksForTimeByStudentId(int studentId, DateTime startDate, DateTime endDate);
         Task<IEnumerable<LessonDto>> SearchLessons(string term);

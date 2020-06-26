@@ -23,6 +23,11 @@ namespace StudentPerfomance.Bll.Services
 
         public async Task AddLesson(int teacherId, int subjectId) => await _repository.AddLesson(teacherId, subjectId);
 
-        public async Task DeopLesson(int teacherId, int subjectId) => await _repository.DropLesson(teacherId, subjectId);
+        public async Task DropLesson(int teacherId, int subjectId) => await _repository.DropLesson(teacherId, subjectId);
+
+        public async Task<IEnumerable<TeacherDto>> SearchAsync(string search) => (await _repository.FilterAsync(x => x.User.Email.ToLower().StartsWith(search) ||
+            x.User.LastName.ToLower().StartsWith(search) ||x.Position.ToLower().StartsWith(search))).Select(x => x.ToDto());
+
+        public async Task<IEnumerable<TeacherDto>> GetByLesson(int lessonId) => (await _repository.FilterAsync(x => x.TeacherSubjects.Any(g => g.SubjectId == lessonId))).Select(x => x.ToDto());
     }
 }

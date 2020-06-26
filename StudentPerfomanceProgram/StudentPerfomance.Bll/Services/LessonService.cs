@@ -21,6 +21,8 @@ namespace StudentPerfomance.Bll.Services
 
         public async Task<bool> CheckTitleAsync(string title) => !(await _repository.FilterAsync(x => x.Title == title)).Any();
 
+        public async Task<IEnumerable<LessonDto>> GetByTeacher(int teacherId) => (await _repository.FilterAsync(x => x.TeacherSubjects.Any(g => g.TeacherId == teacherId))).Select(x => x.ToDto());
+
         public async Task<IEnumerable<LessonDto>> GetLessonsByGroup(int groupId) => (await _repository.FilterAsync(x => x.GroupSubjects.Any(g => g.GroupId == groupId))).Select(x => x.ToDto());
 
         public async Task<IEnumerable<LessonDto>> GetLessonsWithMarksForTimeByStudentId(int studentId, DateTime startDate, DateTime endDate) =>

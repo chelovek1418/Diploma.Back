@@ -53,7 +53,7 @@ namespace StudentPerfomance.Dal.Repository
 
         public virtual async Task<int> GetCount() => await dbContext.Set<TEntity>().CountAsync();
 
-        public async Task UpdateAsync(TEntity model)
+        public virtual async Task UpdateAsync(TEntity model)
         {
             if (model == null)
                 throw new ArgumentNullException(nameof(TEntity));

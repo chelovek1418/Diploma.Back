@@ -63,8 +63,8 @@ namespace StudentPerfomance.Bll.Services
                 if (count != 0 && sum / count > bestLesson.Rating)
                 {
                     bestLesson.Rating = Math.Round((sum / count), 2);
-                    bestLesson.Id = group.Key;
-                    bestLesson.Title = group.FirstOrDefault()?.Subject?.Title;
+                    bestLesson.LessonId = group.Key;
+                    //bestLesson.Title = group.FirstOrDefault()?.Subject?.Title;
                 }
             }
 
@@ -94,8 +94,8 @@ namespace StudentPerfomance.Bll.Services
                 if (count != 0 && (sum / count < worstLesson.Rating || worstLesson.Rating == 0))
                 {
                     worstLesson.Rating = Math.Round((sum / count), 2);
-                    worstLesson.Id = group.Key;
-                    worstLesson.Title = group.FirstOrDefault()?.Subject?.Title;
+                    worstLesson.LessonId = group.Key;
+                    //worstLesson.LessonId = group.FirstOrDefault()?.Subject?.Id;
                 }
             }
 
@@ -168,7 +168,14 @@ namespace StudentPerfomance.Bll.Services
             return marks.GroupBy(x => x.StudentId).Select(x => new MarkDto { LessonId = lessonId, StudentId = x.Key, Mark = x.Sum(m => m.Grade), MarkDate = endDate });
         }
 
-        public async Task<IEnumerable<RatingByLessonDto>> GetStudentRating(int studentId, DateTime startDate, DateTime endDate) => throw new NotImplementedException();
-            //(await _repository.FilterAsync(x => x.StudentId == studentId && x.Date >= startDate && x.Date <= endDate)).Select(x => new RatingByLessonDto { Id = x.SubjectId, Title = x.S })
+        public async Task<IEnumerable<RatingByLessonDto>> GetStudentRating(int studentId, DateTime startDate, DateTime endDate)
+        {
+            var marks = await _repository.FilterAsync(x => x.StudentId == studentId && x.Date >= startDate && x.Date <= endDate);
+
+            return marks.GroupBy(x => x.SubjectId).Select(x => new RatingByLessonDto { LessonId = x.Key, Rating = x.Sum(y => y.Grade) });
+        }
+
+        public async Task<int> GetMissingsForStudent(int studnetId) => (await _repository.FilterAsync(x => x.StudentId == studnetId && x.Grade == null)).Count();
+        public async Task<int> GetMissingsForStudentByLesson(int studnetId, int lessonId) => (await _repository.FilterAsync(x => x.StudentId == studnetId && x.SubjectId == lessonId && x.Grade == null)).Count();
     }
 }

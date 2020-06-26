@@ -17,8 +17,8 @@ namespace StudentPerfomance.Api.Extensions
             {
                 Id = vm.Id,
                 Title = vm.Title,
-                Curator = vm.Curator?.ToDto(),
                 Headmen = vm.Headmen?.ToDto(),
+                Curator = vm.Сurator?.ToDto(),
                 Faculty = vm.Faculty,
                 Speciality = vm.Speciality,
                 Specialization = vm.Specialization,
@@ -36,7 +36,7 @@ namespace StudentPerfomance.Api.Extensions
             {
                 Id = dto.Id,
                 Title = dto.Title,
-                Curator = dto.Curator?.ToViewModel(),
+                Сurator = dto.Curator?.ToViewModel(),
                 //Headmen = dto.Headmen?.ToViewModel(),
                 Faculty = dto.Faculty,
                 Speciality = dto.Speciality,

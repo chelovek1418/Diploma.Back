@@ -20,7 +20,8 @@ namespace StudentPerfomance.Bll.Extensions
                 Semestr = entity.Semestr,
                 Group = entity.GroupSubject?.Group?.ToDto(),
                 Subject = entity.GroupSubject?.Subject?.ToDto(),
-                Teacher = entity.Teacher?.ToDto()
+                Teacher = entity.Teacher?.ToDto(),
+                GroupSubjectId = entity.GroupSubjectId
             };
         }
 
@@ -32,10 +33,12 @@ namespace StudentPerfomance.Bll.Extensions
             return new Detail
             {
                 Id = dto.Id,
+                GroupSubjectId = dto.GroupSubjectId,
                 DayOfWeek = dto.DayOfWeek,
                 IsNumerator = dto.IsNumerator,
                 Pair = dto.Pair,
-                Semestr = dto.Semestr
+                Semestr = dto.Semestr,
+                TeacherId = dto.Teacher.Id
             };
         }
     }

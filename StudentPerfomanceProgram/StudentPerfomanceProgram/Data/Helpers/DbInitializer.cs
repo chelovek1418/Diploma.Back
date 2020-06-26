@@ -1,49 +1,75 @@
 ﻿using IdentityServer4.EntityFramework.DbContexts;
 using IdentityServer4.EntityFramework.Mappers;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using StudentPerfomance.Api;
-using System.Linq;
+using StudentPerfomance.IdentityServer.Data.Constants;
+using StudentPerfomance.IdentityServer.Models;
+using System.Threading.Tasks;
 
 namespace StudentPerfomance.IdentityServer.Data.Helpers
 {
     internal static class DbInitializer
     {
-        internal static void InitializeDatabase(IApplicationBuilder app)
+        private const string AdminEmail = "daniilchelyshev@gmail.com";
+        private const string Password = "password123";
+
+        internal static async Task InitializeIdentityServer(ConfigurationDbContext context)
         {
-            using var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope();
+            await context.Database.MigrateAsync();
 
-            serviceScope.ServiceProvider.GetRequiredService<PersistedGrantDbContext>().Database.Migrate();
-
-            var context = serviceScope.ServiceProvider.GetRequiredService<ConfigurationDbContext>();
-            context.Database.Migrate();
-
-            if (!context.Clients.Any())
+            if (!await context.Clients.AnyAsync())
             {
                 foreach (var client in Config.GetClients())
                 {
-                    context.Clients.Add(client.ToEntity());
+                    await context.Clients.AddAsync(client.ToEntity());
                 }
-                context.SaveChanges();
+                await context.SaveChangesAsync();
             }
 
-            if (!context.IdentityResources.Any())
+            if (!await context.IdentityResources.AnyAsync())
             {
                 foreach (var resource in Config.GetIdentityResources())
                 {
-                    context.IdentityResources.Add(resource.ToEntity());
+                    await context.IdentityResources.AddAsync(resource.ToEntity());
                 }
-                context.SaveChanges();
+                await context.SaveChangesAsync();
             }
 
-            if (!context.ApiResources.Any())
+            if (!await context.ApiResources.AnyAsync())
             {
                 foreach (var resource in Config.GetApis())
                 {
-                    context.ApiResources.Add(resource.ToEntity());
+                    await context.ApiResources.AddAsync(resource.ToEntity());
                 }
-                context.SaveChanges();
+                await context.SaveChangesAsync();
+            }
+        }
+
+        internal static async Task InitializeRolesAsync(UserManager<SPUser> userManager, RoleManager<SPRole> roleManager)
+        {
+            if (await roleManager.FindByNameAsync(IdentityData.Admin) == null)
+            {
+                await roleManager.CreateAsync(new SPRole { Name = IdentityData.Admin });
+            }
+            if (await roleManager.FindByNameAsync(IdentityData.Teacher) == null)
+            {
+                await roleManager.CreateAsync(new SPRole { Name = IdentityData.Teacher });
+            }
+            if (await roleManager.FindByNameAsync(IdentityData.Student) == null)
+            {
+                await roleManager.CreateAsync(new SPRole { Name = IdentityData.Student });
+            }
+            if (await userManager.FindByNameAsync(AdminEmail) == null)
+            {
+                var admin = new SPUser { Email = AdminEmail, UserName = AdminEmail };
+                IdentityResult result = await userManager.CreateAsync(admin, Password);
+                if (result.Succeeded)
+                {
+                    await userManager.AddToRoleAsync(admin, IdentityData.Admin);
+                }
             }
         }
     }

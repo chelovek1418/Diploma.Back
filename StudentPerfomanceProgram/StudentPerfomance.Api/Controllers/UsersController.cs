@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using StudentPerfomance.Api.Extensions;
 using StudentPerfomance.Api.ViewModels.UserViewModels;
@@ -61,6 +63,7 @@ namespace StudentPerfomance.Api.Controllers
             return NoContent();
         }
 
+        [Authorize(Roles = "admin, student")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {

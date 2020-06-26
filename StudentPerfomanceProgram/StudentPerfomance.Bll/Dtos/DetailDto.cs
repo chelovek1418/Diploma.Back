@@ -3,6 +3,7 @@
     public class DetailDto
     {
         public int Id { get; set; }
+        public int GroupSubjectId { get; set; }
         public int DayOfWeek { get; set; }
         public int Pair { get; set; }
         public bool? IsNumerator { get; set; }

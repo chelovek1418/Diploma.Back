@@ -9,5 +9,6 @@ namespace StudentPerfomance.Dal.Interfaces
         Task<IEnumerable<Detail>> GetScheduleForGroup(int groupId, int semestr);
 
         Task<IEnumerable<Detail>> GetScheduleForTeacher(int teacherId, int semestr);
+        Task<IEnumerable<Detail>> GetScheduleForTeacheByLessonAndGroup(int teacherId, int lessonId, int groupId, int semestr);
     }
 }

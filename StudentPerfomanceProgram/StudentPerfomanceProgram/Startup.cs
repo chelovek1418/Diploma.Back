@@ -6,7 +6,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using StudentPerfomance.IdentityServer.Data;
-using StudentPerfomance.IdentityServer.Data.Helpers;
 using StudentPerfomance.IdentityServer.Models;
 using System.IO;
 using System.Security.Cryptography.X509Certificates;
@@ -17,7 +16,6 @@ namespace StudentPerfomanceProgram
     {
         private readonly IConfiguration _config;
         private readonly IWebHostEnvironment _env;
-
 
         public Startup(IConfiguration configuration, IWebHostEnvironment webHostEnvironment)
         {
@@ -36,7 +34,7 @@ namespace StudentPerfomanceProgram
 
             services.AddIdentity<SPUser, SPRole>(config =>
             {
-                config.Password.RequiredLength = 8;
+                config.Password.RequiredLength = 6;
                 config.Password.RequireUppercase = false;
                 config.Password.RequireNonAlphanumeric = false;
             })
@@ -77,9 +75,8 @@ namespace StudentPerfomanceProgram
 
             services.AddCors();
 
-            services.AddControllersWithViews().AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
-
-            //services.AddScoped<StudentManagementRepository>();
+            services.AddControllersWithViews()
+                .AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -90,6 +87,7 @@ namespace StudentPerfomanceProgram
             }
 
             app.UseHttpsRedirection();
+            app.UseStaticFiles();
 
             app.UseRouting();
 
@@ -99,7 +97,7 @@ namespace StudentPerfomanceProgram
 
             //app.UseAuthentication();
 
-            DbInitializer.InitializeDatabase(app);
+            //DbInitializer.InitializeDatabase(app);
 
             //app.UseAuthorization();
 

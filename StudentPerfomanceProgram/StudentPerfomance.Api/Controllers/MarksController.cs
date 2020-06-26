@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using StudentPerfomance.Api.Constants;
 using StudentPerfomance.Api.Extensions;
 using StudentPerfomance.Api.Helpers;
 using StudentPerfomance.Api.ViewModels.MarkViewModels;
@@ -10,6 +12,7 @@ using StudentPerfomance.Bll.Interfaces;
 
 namespace StudentPerfomance.Api.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class MarksController : ControllerBase
@@ -24,6 +27,7 @@ namespace StudentPerfomance.Api.Controllers
         #region CRUD
 
         [HttpGet]
+        [Authorize(Roles = Roles.Admin)]
         public async IAsyncEnumerable<MarkViewModel> Get()
         {
             await foreach (var mark in _markService.GetAllAsync(Bll.Extensions.MarkExtensions.ToDto))
@@ -42,6 +46,7 @@ namespace StudentPerfomance.Api.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = Roles.Admin + ", " + Roles.Teacher)]
         public async Task<IActionResult> Post([FromBody] MarkViewModel viewModel)
         {
             if (!ModelState.IsValid || viewModel.MarkDate > DateTime.Now)
@@ -53,6 +58,7 @@ namespace StudentPerfomance.Api.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(Roles = Roles.Admin + ", " + Roles.Teacher)]
         public async Task<IActionResult> Put(int id, [FromBody] MarkViewModel viewModel)
         {
             if (!ModelState.IsValid)
@@ -65,6 +71,7 @@ namespace StudentPerfomance.Api.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = Roles.Admin + ", " + Roles.Teacher)]
         public async Task<IActionResult> Delete(int id)
         {
             await _markService.DeleteAsync(id);
@@ -75,53 +82,53 @@ namespace StudentPerfomance.Api.Controllers
         #endregion
 
         [HttpGet("[action]")]
-        public async Task<IEnumerable<RatingByLessonViewModel>> GetRating(int studentId, DateTime? startDate, DateTime? endDate) => throw new NotImplementedException();
-            //(await _markService.GetStudentRating(studentId, new DateTime(), new DateTime())).Select(x => x)
+        public async Task<IEnumerable<RatingByLessonViewModel>> GetRating(int studentId, DateTime? startDate, DateTime? endDate)
+        {
+            (var start, var end) = CheckDate(startDate, endDate);
+            return (await _markService.GetStudentRating(studentId, start, end)).Select(x => x.ToViewModel());
+        }
 
         [HttpGet("[action]")]
         public async IAsyncEnumerable<MarkViewModel> GetMarksForTime(int studentId, DateTime? date)
         {
-            if (date == null || date.Value > DateTime.Now || date.Value < DateTime.Today.AddYears(-10))
+            if (date == null || date.Value > DateTime.Now || date.Value < DateTime.Today.AddYears(-1))
                 date = DateTimeHelper.GetTermStartDate();
 
-            var marks = _markService.GetMarksForTimeByStudentId(studentId, (DateTime)date, new DateTime());
-
-            await foreach (var mark in marks)
-            {
+            await foreach (var mark in _markService.GetMarksForTimeByStudentId(studentId, (DateTime)date, new DateTime()))
                 yield return mark.ToViewModel();
-            }
         }
 
         [HttpGet("[action]")]
         public async Task<IEnumerable<MarkViewModel>> GetTotalMarksForGroupByLesson(int groupId, int lessonId, DateTime? startDate, DateTime? endDate)
         {
-            if (startDate == null || startDate.Value > DateTime.Now || startDate.Value < DateTime.Today.AddYears(-10))
+            (var start, var end) = CheckDate(startDate, endDate);
+            return (await _markService.GetTotalMarksForGroupByLessonId(groupId, lessonId, start, end)).Select(x => x.ToViewModel());
+        }
+
+        [HttpGet("[action]")]
+        public async IAsyncEnumerable<MarkViewModel> GetMarksForTimeByLesson(int studentId, int lessonId, DateTime? startDate, DateTime? endDate)
+        {
+            (var start, var end) = CheckDate(startDate, endDate);
+            await foreach (var mark in _markService.GetMarksForTimeByLessonByStudentId(studentId, lessonId, start, end))
+                yield return mark.ToViewModel();
+        }
+
+        [NonAction]
+        private (DateTime, DateTime) CheckDate(DateTime? startDate, DateTime? endDate)
+        {
+            if (startDate == null || startDate.Value > DateTime.Now || startDate.Value < DateTime.Today.AddYears(-1))
                 startDate = DateTimeHelper.GetTermStartDate();
 
             if (endDate == null || endDate.Value <= startDate.Value || endDate.Value > DateTime.Today)
                 endDate = DateTime.Now;
 
-            return (await _markService.GetTotalMarksForGroupByLessonId(groupId, lessonId, startDate.Value, endDate.Value)).Select(x => x.ToViewModel());
+            return (startDate.Value, endDate.Value);
         }
+
+
 
         [HttpGet("[action]")]
-        public async IAsyncEnumerable<MarkViewModel> GetMarksForTimeByLesson(int studentId, int lessonId, DateTime? date)
-        {
-            if (date == null || date.Value > DateTime.Now || date.Value < DateTime.Today.AddYears(-10))
-                date = DateTimeHelper.GetTermStartDate();
-
-            var marks = _markService.GetMarksForTimeByLessonByStudentId(studentId, lessonId, (DateTime)date, new DateTime());
-
-            await foreach (var mark in marks)
-            {
-                yield return mark.ToViewModel();
-            }
-        }
-
-
-
-        ////[HttpGet("[action]")]
-        ////public async Task<double> GetAverageForStudentByLesson(int studentId, int lessonId) => await _markService.GetAverageMarkByLessonForStudent(studentId, lessonId);
+        public async Task<double> GetAverageForStudentByLesson(int studentId, int lessonId, DateTime? start, DateTime? end) => await _markService.GetAverageMarkByLessonForStudent(studentId, lessonId, start ?? DateTime.Now.AddMonths(-5), end ?? DateTime.Now);
 
         ////[HttpGet("[action]")]
         ////public async Task<double> GetAverageByLessonInGroup(int lessonId, int groupId) => await _markService.GetAverageMarkByLessonInGroup(lessonId, groupId);
@@ -129,8 +136,14 @@ namespace StudentPerfomance.Api.Controllers
         ////[HttpGet("[action]")]
         ////public async Task<double> GetAverageByLesson(int lessonId) => await _markService.GetAverageMarkForLesson(lessonId);
 
-        ////[HttpGet("[action]")]
-        ////public async Task<double> GetAverageByStudent(int studentId) => await _markService.GetAverageMarkForStudent(studentId);
+        [HttpGet("[action]")]
+        public async Task<double> GetAverageByStudent(int studentId, DateTime? start, DateTime? end) => await _markService.GetAverageMarkForStudent(studentId, start ?? DateTime.Now.AddMonths(-5), end ?? DateTime.Now);
+
+        [HttpGet("[action]")]
+        public async Task<int> GetMissingsByStudent(int studentId) => await _markService.GetMissingsForStudent(studentId);
+
+        [HttpGet("[action]")]
+        public async Task<int> GetMissingsByStudentByLesson(int studentId, int lessonId) => await _markService.GetMissingsForStudentByLesson(studentId, lessonId);
 
         ////[HttpGet("[action]")]
         ////public async Task<double> GetAverageInGroup(int groupId) => await _markService.GetAverageMarkInGroup(groupId);
